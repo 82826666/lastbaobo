@@ -87,6 +87,26 @@ SINGLETON_FOR_CLASS(UserManager);
                 //请求失败
                 msg = [datadic objectForKey:@"msg"];
             }else{
+                NSMutableArray *mas = [[datadic objectForKey:@"data"] objectForKey:@"master"];
+                NSString* master_id = @"";
+                NSDictionary* master = [NSDictionary new];
+                if (mas.count > 0) {
+                    master = [[datadic objectForKey:@"data"] objectForKey:@"master"][0];
+                    master_id = [master objectForKey:@"master_id"];
+                }else{
+                    master_id = @"0";
+                }
+                NSDictionary* user_info = [[datadic objectForKey:@"data"] objectForKey:@"user"];
+                //本地存储用户名以及相关数据
+                NSString* user_id = [user_info objectForKey:@"userid"];
+                NSString* user_token = [user_info objectForKey:@"token"];
+                SET_USERDEFAULT(USER_ID, user_id);
+                SET_USERDEFAULT(USER_TOKEN, user_token);
+                SET_USERDEFAULT(USER_INFO, user_info);
+                SET_USERDEFAULT(MASTER_ID, master_id);
+                SET_USERDEFAULT(MASTER, mas);
+                USERDEFAULT_SYN();
+                
                 isSuccess = YES;
                 msg = [datadic objectForKey:@"msg"];
                 self.curUserInfo = [UserInfo modelWithDictionary:data];
@@ -189,6 +209,7 @@ SINGLETON_FOR_CLASS(UserManager);
     }
     return NO;
 }
+
 #pragma mark ————— 被踢下线 —————
 -(void)onKick{
     [self logout:nil];
@@ -213,7 +234,17 @@ SINGLETON_FOR_CLASS(UserManager);
             completion(YES,nil);
         }
     }];
-    
+    [self clearAllUserDefaultsData];
     KPostNotification(KNotificationLoginStateChange, @NO);
+}
+
+/*清除所有的存储本地的数据*/
+-(void)clearAllUserDefaultsData{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userDefaults dictionaryRepresentation];
+    for (id  key in dic) {
+        [userDefaults removeObjectForKey:key];
+    }
+    [userDefaults synchronize];
 }
 @end

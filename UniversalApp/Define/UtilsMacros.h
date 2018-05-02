@@ -105,15 +105,29 @@
 
 //获取一段时间间隔
 #define kStartTime CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-#define kEndTime  NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start)
+#define kEndTime  NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start);
 //打印当前方法名
 #define ITTDPRINTMETHODNAME() ITTDPRINT(@"%s", __PRETTY_FUNCTION__)
 
 //发送通知
 #define KPostNotification(name,obj) [[NSNotificationCenter defaultCenter] postNotificationName:name object:obj];
 
-//MD5
-#define MD5(input) const char *cStr = [input UTF8String];unsigned char digest[CC_MD5_DIGEST_LENGTH];CC_MD5( cStr, strlen(cStr), digest );NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)[output appendFormat:@"%02x", digest[i]];return  output;
+//用户编号
+#define USER_ID @"user_id"
+//用户信息
+#define USER_INFO @"user_info"
+//主机信息
+#define MASTER @"master"
+//主机编号
+#define MASTER_ID @"master_id"
+//用户登录的token
+#define USER_TOKEN @"user_token"
+//从本地list获取设置key值
+#define SET_USERDEFAULT(KEY,VALUE) [[NSUserDefaults standardUserDefaults] setObject:VALUE forKey:KEY]
+//直接存储
+#define USERDEFAULT_SYN() [[NSUserDefaults standardUserDefaults] synchronize]
+//从本地list获取设置对象
+#define GET_USERDEFAULT(KEY)  [[NSUserDefaults standardUserDefaults] objectForKey:KEY]
 
 //单例化一个类
 #define SINGLETON_FOR_HEADER(className) \

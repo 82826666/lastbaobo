@@ -9,4 +9,7 @@ pod 'Masonry'
 pod 'YTKNetwork'
 pod 'SDWebImage', '~>3.8'
 pod 'IQKeyboardManager', '3.3.7' #iOS7
+pod 'SGQRCode', '~> 2.2.0' #二维码
+pod 'JMDropMenu', '~> 0.1.1' #首页下拉
+pod 'MMPopupView' #弹出框
 end

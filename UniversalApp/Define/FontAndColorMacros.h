@@ -17,6 +17,7 @@
 #define KNormalSpace 12.0f
 
 #pragma mark -  颜色区
+#define RGBA(r,g,b,a)  [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 //主题色 导航栏颜色
 #define CNavBgColor  [UIColor colorWithHexString:@"00AE68"]
 //#define CNavBgColor  [Ulor colorWithHexString:@"ffffff"]
@@ -33,6 +34,9 @@
 
 //再次级字色
 #define CFontColor2 [UIColor colorWithHexString:@"5c5c5c"]
+
+//底部导航栏选中颜色
+#define tabarColor RGBA(243, 135, 78, 1.0)
 
 
 #pragma mark -  字体区

@@ -19,6 +19,7 @@
 #import "DraggingCardViewController.h"
 #import "UITabBar+CustomBadge.h"
 #import "XYTabBar.h"
+#import "UsualViewController.h"
 
 @interface MainTabBarController ()<UITabBarControllerDelegate>
 
@@ -59,21 +60,24 @@
     _VCS = @[].mutableCopy;
 //    HomeViewController *homeVC = [[HomeViewController alloc]init];
 //    WaterFallListViewController *homeVC = [WaterFallListViewController new];
-    PersonListViewController *homeVC = [[PersonListViewController alloc]init];
-    [self setupChildViewController:homeVC title:@"首页" imageName:@"icon_tabbar_homepage" seleceImageName:@"icon_tabbar_homepage_selected"];
+//    PersonListViewController *homeVC = [[PersonListViewController alloc]init];
+//    [self setupChildViewController:homeVC title:@"首页" imageName:@"icon_tabbar_homepage" seleceImageName:@"icon_tabbar_homepage_selected"];
+    UsualViewController *homeVC = [[UsualViewController alloc]init];
+    [self setupChildViewController:homeVC title:@"首页" imageName:@"in_bottom_menu_star" seleceImageName:@"in_bottom_menu_staract"];
     
 //    MakeFriendsViewController *makeFriendVC = [[MakeFriendsViewController alloc]init];
     ToolDemoViewController *makeFriendVC = [[ToolDemoViewController alloc]init];
-    [self setupChildViewController:makeFriendVC title:@"Demo" imageName:@"icon_tabbar_onsite" seleceImageName:@"icon_tabbar_onsite_selected"];
+//    [self setupChildViewController:makeFriendVC title:@"Demo" imageName:@"icon_tabbar_onsite" seleceImageName:@"icon_tabbar_onsite_selected"];
+    [self setupChildViewController:makeFriendVC title:@"家居" imageName:@"in_bottom_menu_home" seleceImageName:@"in_bottom_menu_homeact"];
     
 //    MsgViewController *msgVC = [[MsgViewController alloc]init];
     DraggingCardViewController *msgVC = [DraggingCardViewController new];
-    [self setupChildViewController:msgVC title:@"消息" imageName:@"icon_tabbar_merchant_normal" seleceImageName:@"icon_tabbar_merchant_selected"];
-    
+//    [self setupChildViewController:msgVC title:@"消息" imageName:@"icon_tabbar_merchant_normal" seleceImageName:@"icon_tabbar_merchant_selected"];
+    [self setupChildViewController:msgVC title:@"情景" imageName:@"in_bottom_menu_scene" seleceImageName:@"in_bottom_menu_sceneact"];
     
     MineViewController *mineVC = [[MineViewController alloc]init];
-    [self setupChildViewController:mineVC title:@"我的" imageName:@"icon_tabbar_mine" seleceImageName:@"icon_tabbar_mine_selected"];
-    
+//    [self setupChildViewController:mineVC title:@"我的" imageName:@"icon_tabbar_mine" seleceImageName:@"icon_tabbar_mine_selected"];
+    [self setupChildViewController:mineVC title:@"设置" imageName:@"in_bottom_menu_my" seleceImageName:@"in_bottom_menu_myact"];
     self.viewControllers = _VCS;
 }
 
@@ -82,11 +86,12 @@
     controller.tabBarItem.title = title;//跟上面一样效果
     controller.tabBarItem.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     controller.tabBarItem.selectedImage = [[UIImage imageNamed:selectImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    controller.tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, 5, 0);//UITabBarItem 更改图像的高度和宽度
     //未选中字体颜色
-    [controller.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:KBlackColor,NSFontAttributeName:SYSTEMFONT(10.0f)} forState:UIControlStateNormal];
+    [controller.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:CFontColor2,NSFontAttributeName:SYSTEMFONT(10.0f)} forState:UIControlStateNormal];
     
     //选中字体颜色
-    [controller.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:CNavBgColor,NSFontAttributeName:SYSTEMFONT(10.0f)} forState:UIControlStateSelected];
+    [controller.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:tabarColor,NSFontAttributeName:SYSTEMFONT(10.0f)} forState:UIControlStateSelected];
     //包装导航控制器
     RootNavigationController *nav = [[RootNavigationController alloc]initWithRootViewController:controller];
     

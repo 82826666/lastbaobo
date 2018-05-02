@@ -41,8 +41,7 @@
     
     //广告页
 //    [AppManager appStart];
-    
-    
+//    DLog(@"test");
     return YES;
 }
 
