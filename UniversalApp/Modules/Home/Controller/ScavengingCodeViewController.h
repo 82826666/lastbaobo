@@ -1,5 +1,5 @@
 //
-//  CodeScanningViewController.h
+//  ScavengingCodeViewController.h
 //  UniversalApp
 //
 //  Created by wjy on 2018/5/3.
@@ -8,6 +8,6 @@
 
 #import "RootViewController.h"
 
-@interface CodeScanningViewController : RootViewController
+@interface ScavengingCodeViewController : RootViewController
 
 @end

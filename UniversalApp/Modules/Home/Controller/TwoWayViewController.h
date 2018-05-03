@@ -1,5 +1,5 @@
 //
-//  CodeScanningViewController.h
+//  TwoWayViewController.h
 //  UniversalApp
 //
 //  Created by wjy on 2018/5/3.
@@ -8,6 +8,6 @@
 
 #import "RootViewController.h"
 
-@interface CodeScanningViewController : RootViewController
+@interface TwoWayViewController : RootViewController
 
 @end

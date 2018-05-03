@@ -27,12 +27,12 @@
 -(void)setupUI{
     UIImageView *imageView = [UIImageView new];
     imageView.frame = CGRectMake(0, KScreenHeight/5, 105, 105);
-    imageView.image = [UIImage imageNamed:@"in_login_newlogo.png"];
+    imageView.image = [UIImage imageNamed:@"in_login_newlogo"];
     imageView.centerX = self.view.centerX;
     
     UIImageView *people = [UIImageView new];
     people.frame = CGRectMake(20, imageView.bottom + 20, 21, 25);
-    people.image = [UIImage imageNamed:@"in_login_people.png"];
+    people.image = [UIImage imageNamed:@"in_login_people"];
     UITextField *peopleField = [UITextField new];
     peopleField.frame =CGRectMake(people.right + 5, imageView.bottom + 20, KScreenWidth - people.right - 2*20, 25);
     peopleField.placeholder = @"请输入注册的手机号";
@@ -42,7 +42,7 @@
     
     UIImageView *lock = [UIImageView new];
     lock.frame = CGRectMake(20, line1.bottom + 10, 21, 25);
-    lock.image = [UIImage imageNamed:@"in_login_lock.png"];
+    lock.image = [UIImage imageNamed:@"in_login_lock"];
     UITextField *lockField = [UITextField new];
     lockField.placeholder = @"请输入注册时的密码";
     lockField.frame =CGRectMake(lock.right + 5, line1.bottom + 10, KScreenWidth - lock.right - 2*20, 25);
@@ -71,10 +71,7 @@
     snowBtn2.textTapAction = ^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
         RegisterViewController * reg = [RegisterViewController new];
         reg.setType = Register;
-        RootNavigationController *Navi =[[RootNavigationController alloc] initWithRootViewController:reg];
-        [self presentViewController:Navi animated:YES completion:nil];
-        //        [MBProgressHUD showTopTipMessage:NSStringFormat(@"%@马上开始",str) isWindow:YES];
-        //        [weakself QQLogin];
+        [self pushViewController:reg];
     };
     
     YYLabel *snowBtn3 = [[YYLabel alloc] initWithFrame:CGRectMake(snowBtn.right - 80, snowBtn.bottom, 80, 40)];
@@ -85,10 +82,7 @@
     snowBtn3.textTapAction = ^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
         RegisterViewController * forget = [RegisterViewController new];
         forget.setType = Forget;
-        RootNavigationController *Navi =[[RootNavigationController alloc] initWithRootViewController:forget];
-        [self presentViewController:Navi animated:YES completion:nil];
-        //        [MBProgressHUD showTopTipMessage:NSStringFormat(@"%@马上开始",str) isWindow:YES];
-        //        [weakself QQLogin];
+        [self pushViewController:forget];
     };
     
     YYLabel *snowBtn4 = [[YYLabel alloc] initWithFrame:CGRectMake(20, snowBtn3.bottom + 50, KScreenWidth - 2*20, 40)];

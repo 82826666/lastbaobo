@@ -9,6 +9,7 @@
 #import "AppDelegate+AppService.h"
 #import <UMSocialCore/UMSocialCore.h>
 #import "LoginViewController.h"
+#import "AccountLoginViewController.h"
 #import "OpenUDID.h"
 #import <YTKNetwork.h>
 
@@ -102,7 +103,8 @@
     }else {//登陆失败加载登陆页面控制器
         
         self.mainTabBar = nil;
-        RootNavigationController *loginNavi =[[RootNavigationController alloc] initWithRootViewController:[LoginViewController new]];
+//        RootNavigationController *loginNavi =[[RootNavigationController alloc] initWithRootViewController:[LoginViewController new]];
+        RootNavigationController *loginNavi =[[RootNavigationController alloc] initWithRootViewController:[AccountLoginViewController new]];
         
         CATransition *anima = [CATransition animation];
         anima.type = @"fade";//设置动画的类型

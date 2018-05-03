@@ -8,8 +8,13 @@
 
 #import "UsualViewController.h"
 #import <JMDropMenu.h>
+#import <MJExtension.h>
 #import "CodeGenerateViewController.h"
 #import <MMAlertView.h>
+//#import "AlertView.h"
+#import "ScavengingCodeViewController.h"
+#import "WifiConfigViewController.h"
+#import "TwoWayViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 NS_ENUM(NSInteger,cellState){
@@ -50,6 +55,14 @@ NS_ENUM(NSInteger,cellState){
     self.isHidenNaviBar = YES;
     [self setupUI];
     // Do any additional setup after loading the view.
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [self loadData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 #pragma mark ————— 初始化页面 —————
@@ -405,65 +418,43 @@ NS_ENUM(NSInteger,cellState){
         [self.navigationController pushViewController:vc animated:YES];
     }else if (index == 1){
         MMPopupItemHandler block = ^(NSInteger index){
-            NSLog(@"clickd %@ button",@(index));
+            if(index == 0){
+                ScavengingCodeViewController *vc = [ScavengingCodeViewController new];
+                [self pushViewController:vc];
+            }else if (index == 1){
+                WifiConfigViewController *vc = [WifiConfigViewController new];
+                [self pushViewController:vc];
+            }
         };
         NSArray *items =
         @[MMItemMake(@"智能zigbee主机", MMItemTypeNormal, block),
           MMItemMake(@"智能RF主机", MMItemTypeNormal, block),
-          MMItemMake(@"智能搜索", MMItemTypeNormal, block)];
-        MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"系统更新"
+          MMItemMake(@"取消", MMItemTypeNormal, block)];
+        MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"添加主机"
                                                              detail:@""
                                                               items:items];
-//        alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+        alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
+        [alertView show];
+    }else if (index == 2){
+        MMPopupItemHandler block = ^(NSInteger index){
+            if(index == 0){
+                TwoWayViewController *vc = [TwoWayViewController new];
+                [self pushViewController:vc];
+            }else if (index == 1){
+                WifiConfigViewController *vc = [WifiConfigViewController new];
+                [self pushViewController:vc];
+            }
+        };
+        NSArray *items =
+        @[MMItemMake(@"智能搜索", MMItemTypeNormal, block),
+          MMItemMake(@"WIFI搜索", MMItemTypeNormal, block),
+          MMItemMake(@"取消", MMItemTypeNormal, block)];
+        MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"设备选择"
+                                                             detail:@""
+                                                              items:items];
         alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
         [alertView show];
     }
-//    else if(index ==1){
-//        CKAlertViewController *alertVC = [CKAlertViewController alertControllerWithTitle:@"" message:@"" ];
-//
-//        CKAlertAction *cancel = [CKAlertAction actionWithTitle:@"智能zigbee主机" handler:^(CKAlertAction *action) {
-//            WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
-//            [self QRCodeScanVC:WCVC];
-//            //            [self.navigationController pushViewController:[[TwoWayViewController alloc]init] animated:YES];
-//        }];
-//
-//        CKAlertAction *updateNow = [CKAlertAction actionWithTitle:@"智能RF主机" handler:^(CKAlertAction *action) {
-//            //添加主机
-//            WifiConfigViewController *wificonfig =[WifiConfigViewController shareInstance];
-//            [self.navigationController pushViewController:wificonfig animated:YES];
-//            //            [self.navigationController pushViewController:[SelectEquipmentViewController shareInstance] animated:YES];
-//            //            NSLog(@"点击了 %@ 按钮",action.title);
-//        }];
-//
-//        CKAlertAction *updateLater = [CKAlertAction actionWithTitle:@"" handler:^(CKAlertAction *action) {
-//
-//        }];
-//        [alertVC addAction:cancel];
-//        [alertVC addAction:updateNow];
-//        [alertVC addAction:updateLater];
-//        [self presentViewController:alertVC animated:NO completion:nil];
-//    }
-//    else if(index ==2){
-//        CKAlertViewController *alertVC = [CKAlertViewController alertControllerWithTitle:@"系统更新" message:@"" ];
-//
-//        CKAlertAction *cancel = [CKAlertAction actionWithTitle:@"智能搜索" handler:^(CKAlertAction *action) {
-//            [self.navigationController pushViewController:[[TwoWayViewController alloc]init] animated:YES];
-//        }];
-//
-//        CKAlertAction *updateNow = [CKAlertAction actionWithTitle:@"RF添加" handler:^(CKAlertAction *action) {
-//            //添加设备
-//            [self.navigationController pushViewController:[SelectEquipmentViewController shareInstance] animated:YES];
-//            //            NSLog(@"点击了 %@ 按钮",action.title);
-//        }];
-//
-//        CKAlertAction *updateLater = [CKAlertAction actionWithTitle:@"WIFI搜索" handler:^(CKAlertAction *action) {
-//            [self.navigationController pushViewController:[WifiConfigViewController shareInstance] animated:YES];
-//            //            NSLog(@"点击了 %@ 按钮",action.title);
-//        }];
-//        [alertVC addAction:cancel];
-//        [alertVC addAction:updateNow];
-//        [self presentViewController:alertVC animated:NO completion:nil];
-//    }
 }
 #pragma mark ————— 懒加载 —————
 -(NSMutableArray*)hostsArray{
@@ -533,19 +524,159 @@ NS_ENUM(NSInteger,cellState){
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)loadData{
+    if (GET_USERDEFAULT(MASTER_ID) > 0) {
+        [self getWeather];
+        [self getSensor];
+        [self getDevice];
+        if (GET_USERDEFAULT(MASTER) != nil) {
+            if([GET_USERDEFAULT(MASTER) isKindOfClass:[NSArray class]])
+            {
+                NSMutableArray *master = GET_USERDEFAULT(MASTER);
+                for (int i = 0; i < master.count; i++) {
+                    NSDictionary *dic = master[i];
+                    if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
+                        _currentHostLabel.text = [dic objectForKey:@"master_name"];
+                    }
+                    [self.hostsArray addObject:[dic objectForKey:@"master_name"]];
+                    //            _hostsArray = [NSMutableArray arrayWithArray:@[[dic objectForKey:@"master_name"]];
+                }
+            }else{
+                NSDictionary *dic = GET_USERDEFAULT(MASTER);
+                if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
+                    _currentHostLabel.text = [dic objectForKey:@"master_name"];
+                }
+                [self.hostsArray addObject:[dic objectForKey:@"master_name"]];
+                
+            }
+        }
+    }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//获取天气
+-(void) getWeather{
+    NSString* master_id = GET_USERDEFAULT(MASTER_ID);
+    if(master_id != nil){
+        [[APIManager sharedManager] deviceWeatherWithParameters:@{@"masterId": master_id} success:^(id data) {
+            NSDictionary *datadic = [data objectForKey:@"data"];
+            UsualViewController *user = [UsualViewController mj_objectWithKeyValues:datadic];
+            NSDictionary* result = user.result;
+            NSDictionary* api = [result objectForKey:@"aqi"];
+            _cityBtn.text = [result objectForKey:@"city"];
+            _temperatureBtn.text = [NSString stringWithFormat:@"%@℃",[result objectForKey:@"temp"]];
+            _weatherBtn.text = [[NSString alloc] initWithFormat:@"%@ | 空气%@",[result objectForKey:@"weather"],[api objectForKey:@"quality"]];
+            _bar1Btn.text = [result objectForKey:@"winddirect"];
+            _bar11Btn.text = [result objectForKey:@"windpower"];
+            _bar22Btn.text = [[NSString alloc] initWithFormat:@"%@%@",[result objectForKey:@"humidity"],@"%"];
+            _bar33Btn.text = [api objectForKey:@"ipm2_5"];
+            //            NSLog(@"%@",[api objectForKey:@"ipm2_5"]);
+        } failure:^(NSError *error) {
+            //请求数据失败，网络错误
+            [MBProgressHUD showErrorMessage:@"请求失败"];
+        }];
+    }
 }
-*/
 
+-(void)getSensor{
+    [[APIManager sharedManager]deviceGetSceneShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
+        NSMutableArray *arr = [data objectForKey:@"data"];
+        if ([arr isKindOfClass:[NSArray class]]) {
+            self.sensorArr = arr;
+        }else{
+            self.sensorArr = [[NSMutableArray alloc]init];
+        }
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
+    } failure:^(NSError *error) {
+        
+    }];
+    //    [[APIManager sharedManager]deviceGetSceneListsWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
+    //        NSMutableArray *arr = [data objectForKey:@"data"];
+    //        if ([arr isKindOfClass:[NSArray class]]) {
+    //            self.sensorArr = arr;
+    //        }else{
+    //            self.sensorArr = [[NSMutableArray alloc]init];
+    //        }
+    //        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
+    //    } failure:^(NSError *error) {
+    //
+    //    }];
+}
+
+
+-(void)getDevice{
+    [[APIManager sharedManager]deviceGetDeviceShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
+        NSMutableArray *arr = [data objectForKey:@"data"];
+        //        NSLog(@"arr:%@",arr);
+        if ([arr isKindOfClass:[NSArray class]]) {
+            self.deviceArr = arr;
+        }else{
+            self.deviceArr = [[NSMutableArray alloc]init];
+        }
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+-(void)changeHost{
+//    [SelectAlert showWithTitle:@"切换当前主机" titles:_hostsArray TitleLabColor:RGBA(0,228,255,1.0) RightImg:[UIImage imageNamed:@"in_arrow_right"] BottomBtnTitle:@"添加新主机" CellHeight:50 selectIndex:^(NSInteger selectIndex) {
+//        NSArray *master = GET_USERDEFAULT(MASTER);
+//        NSDictionary *dic = [master objectAtIndex:selectIndex];
+//        SET_USERDEFAULT(MASTER_ID, [dic objectForKey:@"master_id"]);
+//        _currentHostLabel.text = [dic objectForKey:@"master_name"];
+//        //切换主机
+//    } selectValue:^(NSString *selectValue) {
+//        //不做操作
+//    } CloseActionBlock:^{
+//        //添加主机
+//        [self.navigationController pushViewController:[WifiConfigViewController shareInstance] animated:YES];
+//    } showCloseButton:YES];
+}
+
+-(void)delBtnClick:(UIButton*)sender{
+    NSInteger section = [sender.accessibilityIdentifier integerValue];
+    NSInteger row = [sender.accessibilityLabel integerValue];
+    NSString *shortcut_id;
+    NSDictionary *dic;
+    NSLog(@"section:%ld",section);
+    if (section == 1) {
+        dic = [self.sensorArr objectAtIndex:row];
+        shortcut_id = [dic objectForKey:@"id"];
+    }else if (section == 2){
+        dic = [self.deviceArr objectAtIndex:row];
+        NSLog(@"dic:%@",dic);
+        shortcut_id = [dic objectForKey:@"shortcut_id"];
+    }
+    NSLog(@"sensor:%@",self.sensorArr);
+    NSLog(@"dic:%@",dic);
+    NSDictionary *params = @{
+                             @"shortcut_id":shortcut_id
+                             };
+    if (section == 1) {
+        [[APIManager sharedManager]deviceDeleteSceneShortcutWithParameters:params success:^(id data) {
+            //请求数据成功
+            NSDictionary *datadic = data;
+//            [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
+            if ([[datadic objectForKey:@"code"] intValue] == 200) {
+                [self loadData];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    }else if (section == 2){
+        [[APIManager sharedManager]deviceDeleteDeviceShortcutWithParameters:params success:^(id data) {
+            //请求数据成功
+            NSDictionary *datadic = data;
+            
+//            [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
+            if ([[datadic objectForKey:@"code"] intValue] == 200) {
+                [self loadData];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+    //    NSLog(@"%@",sender.accessibilityIdentifier);
+    //    NSLog(@"%@",sender.accessibilityLabel);
+}
 @end

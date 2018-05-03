@@ -18,6 +18,7 @@ PODS:
   - JMDropMenu (0.1.1)
   - Masonry (1.1.0)
   - MBProgressHUD (1.0.0)
+  - MJExtension (3.0.13)
   - MJRefresh (3.1.13)
   - MMPopupView (1.7.2):
     - Masonry
@@ -37,6 +38,7 @@ DEPENDENCIES:
   - JMDropMenu (~> 0.1.1)
   - Masonry
   - MBProgressHUD (~> 1.0.0)
+  - MJExtension
   - MJRefresh
   - MMPopupView
   - SDWebImage (~> 3.8)
@@ -50,6 +52,7 @@ SPEC CHECKSUMS:
   JMDropMenu: 91bc440a85a7a9aa546283b4d16a0134d9fe261c
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: 56a28aa628c9895e97a518dabaecf70b18f92f32
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -57,6 +60,6 @@ SPEC CHECKSUMS:
   YTKNetwork: df8a7a5597bda1664a4efaa7ef871a818a887fe0
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 009a1d7062496c81c7543fc999d21c06022c0ab0
+PODFILE CHECKSUM: 5057ac1ab90d2a0bac67cce3cf3c92c1efbc005e
 
 COCOAPODS: 1.4.0

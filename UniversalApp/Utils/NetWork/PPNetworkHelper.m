@@ -124,7 +124,6 @@ static AFHTTPSessionManager *_sessionManager;
     //设置Header
     if(GET_USERDEFAULT(USER_TOKEN) != nil){
         [manager.requestSerializer setValue:GET_USERDEFAULT(USER_TOKEN) forHTTPHeaderField:@"token"];
-        DLog(@"token:%@",GET_USERDEFAULT(USER_TOKEN));
     }
     
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"text/plain", nil];

@@ -80,7 +80,7 @@ static int vertifyTime=60;
     regBtn.textVerticalAlignment = YYTextVerticalAlignmentCenter;
     regBtn.centerX = KScreenWidth/2;
     regBtn.textTapAction = ^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-        [self doReg:mobileField.text password:passwordField.text confirmPassword:confirmPasswordField.text code:codeField.text];
+        [weakself doReg:mobileField.text password:passwordField.text confirmPassword:confirmPasswordField.text code:codeField.text];
     };
     
     [self.view addSubview:mobileField];
