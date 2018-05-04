@@ -45,6 +45,7 @@
     lock.image = [UIImage imageNamed:@"in_login_lock"];
     UITextField *lockField = [UITextField new];
     lockField.placeholder = @"请输入注册时的密码";
+    lockField.secureTextEntry = YES;
     lockField.frame =CGRectMake(lock.right + 5, line1.bottom + 10, KScreenWidth - lock.right - 2*20, 25);
     UIView *line2 = [self getLine:CGRectMake(20, lock.bottom + 5, KScreenWidth - 2*20, 0.5)];
     

@@ -19,8 +19,9 @@
 #pragma mark -  颜色区
 #define RGBA(r,g,b,a)  [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 //主题色 导航栏颜色
-#define CNavBgColor  [UIColor colorWithHexString:@"00AE68"]
+//#define CNavBgColor  [UIColor colorWithHexString:@"00AE68"]
 //#define CNavBgColor  [Ulor colorWithHexString:@"ffffff"]
+#define CNavBgColor RGBA(58,190,216,1.0)
 #define CNavBgFontColor  [UIColor colorWithHexString:@"ffffff"]
 
 //默认页面背景色

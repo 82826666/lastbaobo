@@ -7,7 +7,7 @@
 //
 
 #import "RegisterViewController.h"
-#import "LoginViewController.h"
+#import "AccountLoginViewController.h"
 
 @interface RegisterViewController ()
 @property (strong,nonatomic) NSTimer *verityTimer;
@@ -162,7 +162,7 @@ static int vertifyTime=60;
         [MBProgressHUD showErrorMessage:@"两次密码不一致！"];
         return ;
     }
-    NSDictionary *parameters = @{@"mobile": mobile, @"password": [[function sharedManager]md5:password], @"code":code, @"repassword":confirmPassword};
+    NSDictionary *parameters = @{@"mobile": mobile, @"password": [[function sharedManager]md5:password], @"code":code, @"repassword":[[function sharedManager]md5:confirmPassword]};
     if(_setType == Forget){//忘记密码
         //等待网络请求
         [[APIManager sharedManager] forgetpwdWithParameters:parameters success:^(id data) {
@@ -175,6 +175,7 @@ static int vertifyTime=60;
             }else{
                 //请求成功
                 [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                [self pushViewController:[AccountLoginViewController new]];
             }
         } failure:^(NSError *error) {
             //请求数据失败，网络错误
@@ -192,6 +193,7 @@ static int vertifyTime=60;
             }else{
                 //请求成功
                 [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                [self pushViewController:[AccountLoginViewController new]];
             }
         } failure:^(NSError *error) {
             //请求数据失败，网络错误

@@ -11,7 +11,7 @@
 #import <MJExtension.h>
 #import "CodeGenerateViewController.h"
 #import <MMAlertView.h>
-//#import "AlertView.h"
+#import "AlertView.h"
 #import "ScavengingCodeViewController.h"
 #import "WifiConfigViewController.h"
 #import "TwoWayViewController.h"
@@ -44,8 +44,6 @@ NS_ENUM(NSInteger,cellState){
 @property (strong,nonatomic) NSMutableArray *moreEquipmentTitleArray;
 //添加更多设备图片数组
 @property (strong,nonatomic) NSMutableArray *moreEquipmentImgArray;
-//主机名称数据
-@property (strong,nonatomic) NSMutableArray *hostsArray;
 @end
 
 @implementation UsualViewController
@@ -104,19 +102,15 @@ NS_ENUM(NSInteger,cellState){
     [cell.contentView removeAllSubviews];
     if (indexPath.section == 0) {
         UIColor *color = [UIColor colorWithRed:47.0f/255.0f green:190.0f/255.0f blue:221.0f/255.0f alpha:1];
-        
-//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, 00)];
-//        view.backgroundColor = color;
-//        [cell.contentView addSubview:view];
+        kWeakSelf(self);
         CGFloat fontSize = 12;
         UIColor *textColor = [UIColor whiteColor];
-        
         _currentHostLabel = [[YYLabel alloc] initWithFrame:CGRectMake(10, 25, 150, 30)];
-        _currentHostLabel.text = @"主机";
+        _currentHostLabel.text = [weakself getCurrentHost];
         _currentHostLabel.font = [UIFont systemFontOfSize:fontSize];
         _currentHostLabel.textColor = textColor;
         _currentHostLabel.textTapAction = ^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-//            [self changeHost];
+            [weakself changeHost];
         };
         
         UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -216,7 +210,6 @@ NS_ENUM(NSInteger,cellState){
         nameText = [dic objectForKey:@"name"];
     }else if (indexPath.section == 2){
         dic = [self.deviceArr objectAtIndex:indexPath.row];
-        //        NSLog(@"devicearr:%@",self.deviceArr);
         imageName = [dic objectForKey:@"icon"];
         nameText = [dic objectForKey:@"name"];
         supText = [[dic objectForKey:@"status"] integerValue] == 1 ? @"开" : @"关";
@@ -457,13 +450,6 @@ NS_ENUM(NSInteger,cellState){
     }
 }
 #pragma mark ————— 懒加载 —————
--(NSMutableArray*)hostsArray{
-    if (_hostsArray == nil) {
-        _hostsArray = [NSMutableArray new];
-    }
-    return _hostsArray;
-}
-
 -(NSMutableArray*)moreEquipmentTitleArray{
     if (_moreEquipmentImgArray == nil) {
         _moreEquipmentImgArray = [NSMutableArray new];
@@ -529,27 +515,6 @@ NS_ENUM(NSInteger,cellState){
         [self getWeather];
         [self getSensor];
         [self getDevice];
-        if (GET_USERDEFAULT(MASTER) != nil) {
-            if([GET_USERDEFAULT(MASTER) isKindOfClass:[NSArray class]])
-            {
-                NSMutableArray *master = GET_USERDEFAULT(MASTER);
-                for (int i = 0; i < master.count; i++) {
-                    NSDictionary *dic = master[i];
-                    if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
-                        _currentHostLabel.text = [dic objectForKey:@"master_name"];
-                    }
-                    [self.hostsArray addObject:[dic objectForKey:@"master_name"]];
-                    //            _hostsArray = [NSMutableArray arrayWithArray:@[[dic objectForKey:@"master_name"]];
-                }
-            }else{
-                NSDictionary *dic = GET_USERDEFAULT(MASTER);
-                if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
-                    _currentHostLabel.text = [dic objectForKey:@"master_name"];
-                }
-                [self.hostsArray addObject:[dic objectForKey:@"master_name"]];
-                
-            }
-        }
     }
 }
 
@@ -576,6 +541,30 @@ NS_ENUM(NSInteger,cellState){
         }];
     }
 }
+//设置当前的主机号
+-(NSString*)getCurrentHost{
+    NSString *str = @"";
+    NSArray *master = GET_USERDEFAULT(MASTER);
+    if (master.count > 0) {
+        if([GET_USERDEFAULT(MASTER) isKindOfClass:[NSArray class]])
+        {
+            NSMutableArray *master = GET_USERDEFAULT(MASTER);
+            for (int i = 0; i < master.count; i++) {
+                NSDictionary *dic = master[i];
+                
+                if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
+                    str = [dic objectForKey:@"master_name"];
+                }
+            }
+        }else{
+            NSDictionary *dic = GET_USERDEFAULT(MASTER);
+            if ([[dic objectForKey:@"master_id"] integerValue] == [GET_USERDEFAULT(MASTER_ID) integerValue]) {
+                str = [dic objectForKey:@"master_name"];
+            }
+        }
+    }
+    return str;
+}
 
 -(void)getSensor{
     [[APIManager sharedManager]deviceGetSceneShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
@@ -589,24 +578,12 @@ NS_ENUM(NSInteger,cellState){
     } failure:^(NSError *error) {
         
     }];
-    //    [[APIManager sharedManager]deviceGetSceneListsWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
-    //        NSMutableArray *arr = [data objectForKey:@"data"];
-    //        if ([arr isKindOfClass:[NSArray class]]) {
-    //            self.sensorArr = arr;
-    //        }else{
-    //            self.sensorArr = [[NSMutableArray alloc]init];
-    //        }
-    //        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
-    //    } failure:^(NSError *error) {
-    //
-    //    }];
 }
 
 
 -(void)getDevice{
     [[APIManager sharedManager]deviceGetDeviceShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSMutableArray *arr = [data objectForKey:@"data"];
-        //        NSLog(@"arr:%@",arr);
         if ([arr isKindOfClass:[NSArray class]]) {
             self.deviceArr = arr;
         }else{
@@ -619,18 +596,31 @@ NS_ENUM(NSInteger,cellState){
 }
 
 -(void)changeHost{
-//    [SelectAlert showWithTitle:@"切换当前主机" titles:_hostsArray TitleLabColor:RGBA(0,228,255,1.0) RightImg:[UIImage imageNamed:@"in_arrow_right"] BottomBtnTitle:@"添加新主机" CellHeight:50 selectIndex:^(NSInteger selectIndex) {
-//        NSArray *master = GET_USERDEFAULT(MASTER);
-//        NSDictionary *dic = [master objectAtIndex:selectIndex];
-//        SET_USERDEFAULT(MASTER_ID, [dic objectForKey:@"master_id"]);
-//        _currentHostLabel.text = [dic objectForKey:@"master_name"];
-//        //切换主机
-//    } selectValue:^(NSString *selectValue) {
-//        //不做操作
-//    } CloseActionBlock:^{
-//        //添加主机
-//        [self.navigationController pushViewController:[WifiConfigViewController shareInstance] animated:YES];
-//    } showCloseButton:YES];
+    MMPopupItemHandler block = ^(NSInteger index){
+        NSArray *master = GET_USERDEFAULT(MASTER);
+        NSDictionary *dic = [master objectAtIndex:index];
+        SET_USERDEFAULT(MASTER_ID, [dic objectForKey:@"master_id"]);
+        USERDEFAULT_SYN();
+        _currentHostLabel.text = [dic objectForKey:@"master_name"];
+        [self loadData];
+    };
+    MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
+        
+    };
+    NSArray *master = GET_USERDEFAULT(MASTER);
+    if (master.count > 0) {
+        NSMutableArray *item = [NSMutableArray new];
+        for (int i = 0; i < master.count; i++) {
+            NSDictionary *dic = [master objectAtIndex:i];
+            [item addObject:MMItemMake([dic objectForKey:@"master_name"], MMItemTypeNormal, block)];
+        }
+        NSArray *items = item;
+        AlertView *sheetView = [[AlertView alloc] initWithTitle:@"点击切换主机"
+                                                          items:items];
+        sheetView.attachedView = self.view;
+        sheetView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+        [sheetView showWithBlock:completeBlock];
+    }
 }
 
 -(void)delBtnClick:(UIButton*)sender{
@@ -638,17 +628,13 @@ NS_ENUM(NSInteger,cellState){
     NSInteger row = [sender.accessibilityLabel integerValue];
     NSString *shortcut_id;
     NSDictionary *dic;
-    NSLog(@"section:%ld",section);
     if (section == 1) {
         dic = [self.sensorArr objectAtIndex:row];
         shortcut_id = [dic objectForKey:@"id"];
     }else if (section == 2){
         dic = [self.deviceArr objectAtIndex:row];
-        NSLog(@"dic:%@",dic);
         shortcut_id = [dic objectForKey:@"shortcut_id"];
     }
-    NSLog(@"sensor:%@",self.sensorArr);
-    NSLog(@"dic:%@",dic);
     NSDictionary *params = @{
                              @"shortcut_id":shortcut_id
                              };
@@ -656,7 +642,6 @@ NS_ENUM(NSInteger,cellState){
         [[APIManager sharedManager]deviceDeleteSceneShortcutWithParameters:params success:^(id data) {
             //请求数据成功
             NSDictionary *datadic = data;
-//            [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
             if ([[datadic objectForKey:@"code"] intValue] == 200) {
                 [self loadData];
             }
@@ -667,8 +652,6 @@ NS_ENUM(NSInteger,cellState){
         [[APIManager sharedManager]deviceDeleteDeviceShortcutWithParameters:params success:^(id data) {
             //请求数据成功
             NSDictionary *datadic = data;
-            
-//            [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
             if ([[datadic objectForKey:@"code"] intValue] == 200) {
                 [self loadData];
             }
@@ -676,7 +659,5 @@ NS_ENUM(NSInteger,cellState){
             
         }];
     }
-    //    NSLog(@"%@",sender.accessibilityIdentifier);
-    //    NSLog(@"%@",sender.accessibilityLabel);
 }
 @end

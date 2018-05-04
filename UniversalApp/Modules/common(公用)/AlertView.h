@@ -1,13 +1,12 @@
 //
 //  AlertView.h
-//  UniversalApp
+//  MMPopupView
 //
-//  Created by wjy on 2018/5/3.
-//  Copyright © 2018年 徐阳. All rights reserved.
+//  Created by wjy on 2018/5/4.
+//  Copyright © 2018年 LJC. All rights reserved.
 //
 
 #import "MMPopupView.h"
-
 @interface AlertView : MMPopupView
-
+- (instancetype)initWithTitle:(NSString *)title items:(NSArray *)items;
 @end
