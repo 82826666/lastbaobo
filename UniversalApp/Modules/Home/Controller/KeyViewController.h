@@ -17,4 +17,5 @@ typedef NS_ENUM(NSUInteger, setNum) {
 @property (nonatomic) setNum setNum;
 @property (nonatomic,strong) NSDictionary *dataDic;
 @property (nonatomic,strong) NSString *mac;
+@property (nonatomic,strong) NSString *title;
 @end

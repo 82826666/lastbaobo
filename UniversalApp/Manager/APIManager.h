@@ -110,4 +110,32 @@
 - (void)deviceDeviceGetRfDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 #pragma mark 获取红外转发器的设备列表
 - (void)deviceDeviceDeleteRfDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 5.5添加主机房间
+- (void)deviceAddMasterRoomWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 5.6修改主机房间
+- (void)deviceEditMasterRoomWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 5.7删除主机房间
+- (void)deviceDeleteMasterRoomWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 5.8获取app更新版本
+- (void)userGetAppVersionWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 5.9添加门锁设备
+- (void)deviceAddWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.0删除门锁设备
+- (void)deviceDeleteWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.1报警设置
+- (void)deviceSetWarningWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.2生成来宾密码
+- (void)deviceGetTempPwdWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.3取消来宾密码
+- (void)deviceCancelTempPwdWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.4门锁进入学习状态
+- (void)devicenEterLearnWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.5门锁退出学习状态
+- (void)devicenOutLearnWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.6切换用户主机权限
+- (void)userSwapMasterAuthWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.7通过手机号添加主机用户
+- (void)userAddMasterAuthWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 6.8请求主机创建门锁用户
+- (void)deviceCreateUserWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 @end

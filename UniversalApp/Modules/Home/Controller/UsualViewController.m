@@ -12,19 +12,26 @@
 #import "CodeGenerateViewController.h"
 #import <MMAlertView.h>
 #import "AlertView.h"
+#import "AlertRoomView.h"
 #import "ScavengingCodeViewController.h"
 #import "WifiConfigViewController.h"
 #import "TwoWayViewController.h"
+#import "getSensorViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
-NS_ENUM(NSInteger,cellState){
-    
+NS_ENUM(NSInteger,sceneState){
     //右上角编辑按钮的两种状态；
     //正常的状态，按钮显示“编辑”;
-    NormalState,
+    NormalScene,
     //正在删除时候的状态，按钮显示“完成”；
-    DeleteState
-    
+    DeleteScene
+};
+NS_ENUM(NSInteger,deviceState){
+    //右上角编辑按钮的两种状态；
+    //正常的状态，按钮显示“编辑”;
+    NormalDevice,
+    //正在删除时候的状态，按钮显示“完成”；
+    DeleteDevice
 };
 @interface UsualViewController ()<JMDropMenuDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
 @property (assign, nonatomic) NSDictionary* result;
@@ -37,7 +44,8 @@ NS_ENUM(NSInteger,cellState){
 @property (nonatomic, strong) YYLabel *bar11Btn;
 @property (nonatomic, strong) YYLabel *bar1Btn;
 @property (nonatomic, strong) YYLabel *currentHostLabel;
-@property(nonatomic,assign) enum cellState;
+@property(nonatomic,assign) enum sceneState;//情景删除状态
+@property(nonatomic,assign) enum deviceState;//设备删除状态
 @property(nonatomic, strong) NSMutableArray *sensorArr;//情景
 @property(nonatomic, strong) NSMutableArray *deviceArr;//设备
 //添加更多设备标题数组
@@ -52,6 +60,7 @@ NS_ENUM(NSInteger,cellState){
     [super viewDidLoad];
     self.isHidenNaviBar = YES;
     [self setupUI];
+//    DLog(@"%@",GET_USERDEFAULT(USER_TOKEN));
     // Do any additional setup after loading the view.
 }
 
@@ -101,7 +110,7 @@ NS_ENUM(NSInteger,cellState){
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
     if (indexPath.section == 0) {
-        UIColor *color = [UIColor colorWithRed:47.0f/255.0f green:190.0f/255.0f blue:221.0f/255.0f alpha:1];
+        UIColor *color = RGBA(47, 190, 221, 1.0);
         kWeakSelf(self);
         CGFloat fontSize = 12;
         UIColor *textColor = [UIColor whiteColor];
@@ -206,11 +215,13 @@ NS_ENUM(NSInteger,cellState){
     NSDictionary *dic;
     if (indexPath.section == 1) {
         dic = [self.sensorArr objectAtIndex:indexPath.row];
-        imageName = @"in_scene_select_hand";//[dic objectForKey:@"icon"]
+        imageName = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon"]];
+//        imageName = @"in_scene_select_hand";//[dic objectForKey:@"icon"]
         nameText = [dic objectForKey:@"name"];
     }else if (indexPath.section == 2){
         dic = [self.deviceArr objectAtIndex:indexPath.row];
         imageName = [dic objectForKey:@"icon"];
+        imageName = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon"]];
         nameText = [dic objectForKey:@"name"];
         supText = [[dic objectForKey:@"status"] integerValue] == 1 ? @"开" : @"关";
     }
@@ -220,20 +231,26 @@ NS_ENUM(NSInteger,cellState){
     imageView.centerX = cell.contentView.centerX;
     
     UIButton *delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    delBtn.tag = 500500;
+//    delBtn.tag = 500500;
     delBtn.frame = CGRectMake(imageView.left -5, 2, 20, 20);
     [delBtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     delBtn.accessibilityIdentifier = [NSString stringWithFormat:@"%ld",indexPath.section];
     delBtn.accessibilityLabel = [NSString stringWithFormat:@"%ld",indexPath.row];
     [delBtn addTarget:self action:@selector(delBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [cell.contentView addSubview:delBtn];
-//    UIButton *btn = (UIButton*)[cell.contentView subviewsWithTag:500500];
-//    if (cellState == NormalState) {
-//        btn.hidden = YES;
-//    }else{
-//        btn.hidden = NO;
-//    }
-    
+    if (indexPath.section == 1) {
+        if(sceneState == NormalScene){
+            delBtn.hidden = YES;
+        }else{
+            delBtn.hidden = NO;
+        }
+    }else if (indexPath.section == 2){
+        if(deviceState == NormalDevice){
+            delBtn.hidden = YES;
+        }else{
+            delBtn.hidden = NO;
+        }
+    }
     UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
     sup.text = supText;
     sup.accessibilityIdentifier = [dic objectForKey:@"type"];
@@ -315,10 +332,9 @@ NS_ENUM(NSInteger,cellState){
         CGFloat tag = view.tag;
         if (tag == 2330) {
             label = (UILabel*)view;
+            break;
         }
-        NSLog(@"tag:%f",tag);
     }
-//    UILabel *label = (UILabel*)[cell.contentView subviewsWithTag:2330];
     CGFloat value = [label.accessibilityValue integerValue];
     if (value == 1) {
         return ;
@@ -330,14 +346,11 @@ NS_ENUM(NSInteger,cellState){
     NSDictionary *dic;
     if (section == 1) {
         dic = [self.sensorArr objectAtIndex:row];
-        NSLog(@"dic:%@",dic);
         NSDictionary *params = @{@"master_id":GET_USERDEFAULT(MASTER_ID),@"scene_id":[dic objectForKey:@"scene_id"]};
         [[APIManager sharedManager]deviceTriggerSceneWithParameters:params success:^(id data) {
             NSDictionary *datadic = data;
             label.accessibilityValue = @"0";
-            //            NSLog(@"data:%@",data);
             if([[datadic objectForKey:@"code"] intValue] == 200){
-
                 label.text = [label.text isEqualToString:@"开"] ?  @"关" : @"开";
             }else{
 
@@ -488,25 +501,25 @@ NS_ENUM(NSInteger,cellState){
         CGRect btnRectInwindow = [sender.superview convertRect:sender.frame toView:self.view];
         [JMDropMenu showDropMenuFrame:CGRectMake(self.view.frame.size.width - 128, btnRectInwindow.origin.y+btnRectInwindow.size.height, 120, 128) ArrowOffset:90.f TitleArr:_moreEquipmentTitleArray ImageArr:_moreEquipmentImgArray Type:JMDropMenuTypeQQ LayoutType:JMDropMenuLayoutTypeNormal RowHeight:40.f Delegate:self];
     }else if(sender.tag == 1000){
-//        getSensorViewController *control = [[getSensorViewController alloc] init];
-//        [self.navigationController pushViewController:control animated:YES];
+        getSensorViewController *control = [[getSensorViewController alloc] init];
+        [self.navigationController pushViewController:control animated:YES];
     }else if (sender.tag == 1001){
-//        if (cellState == DeleteState) {
-//            cellState = NormalState;
-//        }else{
-//            cellState = DeleteState;
-//        }
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
+        if (sceneState == DeleteScene) {
+            sceneState = NormalScene;
+        }else{
+            sceneState = DeleteScene;
+        }
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     }else if(sender.tag == 1002){
 //        GetDeviceViewController *control = [[GetDeviceViewController alloc] init];
 //        [self.navigationController pushViewController:control animated:YES];
     }else if (sender.tag == 1003){
-//        if (cellState == DeleteState) {
-//            cellState = NormalState;
-//        }else{
-//            cellState = DeleteState;
-//        }
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
+        if (deviceState == DeleteDevice) {
+            deviceState = NormalDevice;
+        }else{
+            deviceState = DeleteDevice;
+        }
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
     }
 }
 

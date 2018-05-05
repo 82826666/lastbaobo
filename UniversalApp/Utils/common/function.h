@@ -14,4 +14,6 @@
 - (NSString *) md5:(NSString *) input;
 #pragma 手机号验证
 - (BOOL)validateMobile:(NSString *)mobileNum;
+#pragma 字符串转字典
+- (NSArray *)stringToJSON:(NSString *)jsonStr;
 @end

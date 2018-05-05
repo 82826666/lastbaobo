@@ -9,21 +9,25 @@
 #import <Foundation/Foundation.h>
 
 @interface Picture : NSObject
--(NSString*)geticonTostr:(NSString *)type;
+
++ (Picture *)sharedPicture;
+
+-(NSString*)geticonTostr:(NSString *)type1;
+
 /**
  * 根据设备类型 获取该类型的图标
  *
- * @param type
+ * @param type1
  *            设备类型
  * @return 设备类型图标
  */
--(NSString *)getDeviceIconForType:(NSString *)type;
+-(NSString *)getDeviceIconForType:(NSString *)type1;
 /**
  * 根据设备类型 获取该类型的名称
  *
- * @param type
+ * @param type1
  *            设备类型
  * @return 设备名称
  */
--(NSString*)getDeviceNameForType:(NSString *)type;
+-(NSString*)getDeviceNameForType:(NSString *)type1;
 @end

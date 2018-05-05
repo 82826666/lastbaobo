@@ -8,7 +8,7 @@
 
 #import "AlertView.h"
 #import "MMPopupItem.h"
-#import <Masonry/Masonry.h>
+//#import <Masonry/Masonry.h>
 @interface AlertView()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView      *backView;
@@ -25,7 +25,11 @@
         self.type = MMPopupTypeCustom;
         
         [self mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(280, 300));
+            CGFloat height = 300;
+            if (items.count < 5) {
+                height = (items.count + 1) * 50;
+            }
+            make.size.mas_equalTo(CGSizeMake(280, height));
         }];
         
         self.backView = [UIView new];
@@ -59,7 +63,7 @@
         self.tableView = [UITableView new];
         [self addSubview:self.tableView];
         [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self).insets(UIEdgeInsetsMake(52, 19, 0, 19));
+            make.edges.equalTo(self).insets(UIEdgeInsetsMake(52, 0, 0, 0));
         }];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -73,13 +77,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    [cell.contentView removeAllSubviews];
+    //分割线补全
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]){
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
     
     UILabel *label = [UILabel new];
-    label.frame = CGRectMake(30, 0, 100, 40);
+    label.frame = CGRectMake(20, 0, 100, 40);
     MMPopupItem *item = self.actionItems[indexPath.row];
     label.text = item.title;
     
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(220, 10, 10, 20)];
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(240 - 30, 10, 10, 20)];
     imageView.image = [UIImage imageNamed:@"in_arrow_right"];
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:label];

@@ -63,6 +63,7 @@
 #import "UIButton+XYButton.h"
 #import "APIManager.h"
 #import "function.h"
+#import "Picture.h"
 
 //第三方
 #import <YYKit.h>

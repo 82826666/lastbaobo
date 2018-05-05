@@ -7,6 +7,7 @@
 //
 
 #import "TwoWayViewController.h"
+#import "KeyViewController.h"
 static NSString *identifier = @"cellID";
 @interface TwoWayViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>{
     
@@ -19,6 +20,8 @@ static NSString *identifier = @"cellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"智能搜索";
+    [self setupUI];
     // Do any additional setup after loading the view.
 }
 
@@ -29,8 +32,6 @@ static NSString *identifier = @"cellID";
 
 -(void)viewWillAppear:(BOOL)animated{
     [self loadData];
-    self.title = @"智能搜索";
-    [self setupUI];
 }
 
 #pragma mark ————— 初始化页面 —————
@@ -43,7 +44,8 @@ static NSString *identifier = @"cellID";
     self.collectionView.collectionViewLayout = flow;
     //注册cell
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:identifier];
-    
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
     [self.view addSubview:self.collectionView];
 }
 
@@ -70,7 +72,7 @@ static NSString *identifier = @"cellID";
     
     UILabel *name = [[UILabel alloc]initWithFrame:CGRectMake(0, imageView.bottom, KScreenWidth/4, 30)];
     name.textAlignment = NSTextAlignmentCenter;
-    //    name.text = [dic objectForKey:@"title"];
+    name.text = [dic objectForKey:@"title"];
     
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:name];
@@ -84,12 +86,13 @@ static NSString *identifier = @"cellID";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dic = [self.dataSource objectAtIndex:indexPath.row];
     CGFloat type = [[dic objectForKey:@"type"]integerValue];
-//    if (type == 20141) {
-//        KeyViewController *controller = [[KeyViewController alloc]init];
-//        controller.mac = [dic objectForKey:@"mac"];
-//        controller.setNum = 4;
-//        [self.navigationController pushViewController:controller animated:YES];
-//    }
+    if (type == 20141) {
+        KeyViewController *controller = [[KeyViewController alloc]init];
+        controller.mac = [dic objectForKey:@"mac"];
+        controller.setNum = 4;
+        controller.title = [dic objectForKey:@"title"];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -111,7 +114,6 @@ static NSString *identifier = @"cellID";
 
 #pragma mark ————— 方法 —————
 -(void)loadData{
-    NSLog(@"master_id:%@",GET_USERDEFAULT(USER_ID));
     [[APIManager sharedManager]deviceGetMasterDevicesWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID),@"type":@"0"} success:^(id data) {
         NSDictionary *dic = data;
         if([[dic objectForKey:@"code"] integerValue] == 0){
@@ -122,10 +124,11 @@ static NSString *identifier = @"cellID";
                 NSMutableDictionary *one = [arr objectAtIndex:i];
                 CGFloat type = [[one objectForKey:@"type"] integerValue];
                 if(type < 65535){
+                    NSString *type = [one objectForKey:@"type"];
                     NSDictionary *oneTemp = @{
-                                              @"img":@"20141",
-                                              @"title":@"sijian",
-                                              @"type":[one objectForKey:@"type"],
+                                              @"img":[[Picture sharedPicture]getDeviceIconForType:type],
+                                              @"title":[[Picture sharedPicture]getDeviceNameForType:type],
+                                              @"type":type,
                                               @"mac":[one objectForKey:@"mac"]
                                               };
                     [self.dataSource addObject:oneTemp];
@@ -135,17 +138,8 @@ static NSString *identifier = @"cellID";
         }
         
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD showErrorMessage:@"服务器异常"];
     }];
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
