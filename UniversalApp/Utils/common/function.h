@@ -16,4 +16,6 @@
 - (BOOL)validateMobile:(NSString *)mobileNum;
 #pragma 字符串转字典
 - (NSArray *)stringToJSON:(NSString *)jsonStr;
+#pragma 格式化数据为json数据
+-(NSString*)formatToJson:(id)datas;
 @end

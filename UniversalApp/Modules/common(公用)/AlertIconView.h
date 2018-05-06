@@ -13,7 +13,7 @@
 
 @end
 @interface AlertIconView : MMPopupView
-- (instancetype)initWithTitle:(NSString *)title items:(NSMutableArray *)items;
+- (instancetype)initWithTitle:(NSString *)title items:(NSArray *)items;
 /** 代理 */
 @property (nonatomic, weak) id <AlertIconViewDelegate>delegate;
 @end

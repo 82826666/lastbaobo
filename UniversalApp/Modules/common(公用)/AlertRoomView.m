@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UILabel     *lblStatus;
 @property (nonatomic, strong) NSMutableArray     *actionItems;
 @property (nonatomic, strong) UIButton    *btnClose;
+@property(nonatomic, strong) NSString *saveStatus;
 @end
 
 @implementation AlertRoomView
@@ -21,7 +22,7 @@
 - (instancetype)init
 {
     self = [super init];
-    
+    self.saveStatus = @"0";
     if ( self )
     {
         self.type = MMPopupTypeCustom;
@@ -142,10 +143,14 @@
     MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
 //        NSLog(@"animation complete");
     };
+    if ([self.saveStatus isEqualToString:@"1"]) {
+        return ;
+    }
+    self.saveStatus = @"1";
     MMAlertView *alertView = [[MMAlertView alloc] initWithInputTitle:@"区域名称" detail:@"" placeholder:@"请输入区域名称" handler:^(NSString *text) {
 //        DLog(@"test:%@",text);
         if ([text isEqualToString:@""]) {
-            
+            self.saveStatus = @"0";
         }else{
             NSDictionary *params = @{
                                      @"master_id":GET_USERDEFAULT(MASTER_ID),
@@ -156,15 +161,30 @@
             [[APIManager sharedManager]deviceAddMasterRoomWithParameters:params success:^(id data) {
 //                DLog(@"data:%@",data);
                 if ([[data objectForKey:@"code"] integerValue] == 200) {
-                    [MBProgressHUD showTopTipMessage:[data objectForKey:@"msg"] isWindow:YES];
+                    self.saveStatus = @"0";
+                    MMAlertView *alertView = [[MMAlertView alloc] initWithConfirmTitle:@"温馨提示" detail:[data objectForKey:@"msg"]];
+//                    alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+                    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                    [alertView showWithBlock:completeBlock];
+//                    [MBProgressHUD showTopTipMessage:[data objectForKey:@"msg"] isWindow:YES];
                     [self loadData];
                 }else{
+                    self.saveStatus = @"0";
+                    MMAlertView *alertView = [[MMAlertView alloc] initWithConfirmTitle:@"温馨提示" detail:[data objectForKey:@"msg"]];
+                    //                    alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+                    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                    [alertView showWithBlock:completeBlock];
 //                    DLog(@"msg:%@",[data objectForKey:@"msg"]);
-                    [MBProgressHUD showTopTipMessage:[data objectForKey:@"msg"] isWindow:YES];
+//                    [MBProgressHUD showTopTipMessage:[data objectForKey:@"msg"] isWindow:YES];
 //                    [MBProgressHUD showErrorMessage:[data objectForKey:@"msg"]];
                 }
             } failure:^(NSError *error) {
-                [MBProgressHUD showErrorMessage:@"服务器异常"];
+                self.saveStatus = @"0";
+                MMAlertView *alertView = [[MMAlertView alloc] initWithConfirmTitle:@"温馨提示" detail:@"服务器异常"];
+                //                    alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                [alertView showWithBlock:completeBlock];
+//                [MBProgressHUD showErrorMessage:@"服务器异常"];
             }];
         }
     }];

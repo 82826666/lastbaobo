@@ -13,13 +13,13 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIView      *backView;
 @property (nonatomic, strong) UILabel     *lblStatus;
-@property (nonatomic, strong) NSMutableArray     *actionItems;
+@property (nonatomic, strong) NSArray     *actionItems;
 @property (nonatomic, strong) UIButton    *btnClose;
 @end
 static NSString *identifier = @"cellID";
 @implementation AlertIconView
 
-- (instancetype)initWithTitle:(NSString *)title items:(NSMutableArray *)items
+- (instancetype)initWithTitle:(NSString *)title items:(NSArray *)items
 {
     self = [super init];
     
@@ -142,9 +142,9 @@ static NSString *identifier = @"cellID";
     return CGSizeMake(itemW, 100);
 }
 
--(NSMutableArray*)actionItems{
+-(NSArray*)actionItems{
     if (_actionItems == nil) {
-        _actionItems = [NSMutableArray new];
+        _actionItems = [NSArray new];
     }
     return _actionItems;
 }

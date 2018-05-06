@@ -106,4 +106,18 @@
         return nil;
     }
 }
+
+#pragma 格式化数据为json数据
+-(NSString*)formatToJson:(id)datas{
+    //    return [[[datas componentsJoinedByString:@","] stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:datas options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *jsonTemp = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSString *jsonResult = [jsonTemp stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    return jsonResult;
+    //    NSData *data=[NSJSONSerialization dataWithJSONObject:datas options:NSJSONWritingPrettyPrinted error:nil];
+    //    NSString *jsonStr=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    //    return jsonStr;
+}
 @end

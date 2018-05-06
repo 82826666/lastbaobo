@@ -26,6 +26,7 @@ static NSString *identifier = @"cellID";
 @property(nonatomic, strong) YYLabel *swichKeyLabel;
 @property (nonatomic, strong) NSArray* cacheRoom;
 @property (nonatomic, strong) NSMutableDictionary* room;
+@property (nonatomic, strong) NSString *saveStatus;
 @end
 
 @implementation KeyViewController
@@ -34,6 +35,8 @@ static NSString *identifier = @"cellID";
     [super viewDidLoad];
     self.title = self.title;
     [self setupUI];
+    [self loadData];
+    self.saveStatus = @"0";
     // Do any additional setup after loading the view.
 }
 
@@ -61,10 +64,104 @@ static NSString *identifier = @"cellID";
 }
 
 -(void)naviBtnClick:(UIButton *)btn{
+    if (_swichZoneLabel.text == nil) {
+        [MBProgressHUD showErrorMessage:@"请选择所属区域"];
+        return ;
+    }
+    if ([self.saveStatus isEqualToString:@"1"]) {
+        [MBProgressHUD showWarnMessage:@"数据正在提交中"];
+    }
+    self.saveStatus = @"1";
+    NSMutableArray *setting = [NSMutableArray new];
     
-//    RootViewController *v = [RootViewController new];
-//    v.isHidenNaviBar = YES;
-//    [self.navigationController pushViewController:v animated:YES];
+    int i = 0;
+    for (UIView *view in self.collectionView.subviews) {
+        UIImageView *imageView;
+        UILabel *label;
+        for (UIView *con in view.subviews) {
+            if (con.subviews.count > 0) {
+                for (UIView *view in con.subviews) {
+                    CGFloat tag = view.tag;
+                    if (tag == 1001) {
+                        imageView = (UIImageView *)view;
+                    }else if (tag == 1002){
+                        label = (UILabel *)view;
+                    }
+                }
+                i++;
+                NSDictionary *dic = @{
+                                      @"icon":imageView.image.accessibilityIdentifier,
+                                      @"name":label.text,
+                                      @"ch":[NSString stringWithFormat:@"%d",i],
+                                      @"status":@"0",
+                                      @"order":@"0"
+                                      };
+                [setting addObject:dic];
+            }else{
+                continue;
+            }
+        }
+        if (i == 4) {
+            break;
+        }
+    }
+    NSString *type = @"";
+    if (_setNum == 1) {
+        type = @"20111";
+    }else if (_setNum == 2){
+        type = @"20121";
+    }else if (_setNum == 3){
+        type = @"20131";
+    }else if (_setNum == 4){
+        type = @"20141";
+    }
+    [self.room enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([obj isEqualToString: _swichZoneLabel.text]) {
+            if (_dataDic != nil) {
+                NSDictionary *params = @{
+                                         @"device_id":[_dataDic objectForKey:@"id"],
+                                         @"name":_swichNameLabel.text,
+                                         @"room_id":key,
+                                         @"setting":[[function sharedManager]formatToJson:setting],
+                                         @"icon":type,//[CommonCode getImageType:@"in_equipment_switch_one"]
+                                         };
+                [[APIManager sharedManager]deviceDeviceEditWithParameters:params success:^(id data) {
+                    NSDictionary *datadic = data;
+                    if([[datadic objectForKey:@"code"] intValue] == 200){
+                        self.saveStatus = @"0";
+                        [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                    }else{
+                        self.saveStatus = @"0";
+                        [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
+                    }
+                } failure:^(NSError *error) {
+                    self.saveStatus = @"0";
+                }];
+            }else{
+                NSDictionary *params = @{
+                                         @"master_id":GET_USERDEFAULT(MASTER_ID),
+                                         @"name":_swichNameLabel.text,
+                                         @"type":type,
+                                         @"room_id":key,
+                                         @"setting":[[function sharedManager]formatToJson:setting],
+                                         @"icon":type,//[CommonCode getImageType:@"in_equipment_switch_one"]
+                                         @"mac":_mac
+                                         };
+                [[APIManager sharedManager]deviceDeviceAddWithParameters:params success:^(id data) {
+                    NSDictionary *datadic = data;
+                    self.saveStatus = @"0";
+                    if([[datadic objectForKey:@"code"] intValue] == 200){
+                        [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                    }else{
+                        [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
+                    }
+                } failure:^(NSError *error) {
+                    self.saveStatus = @"0";
+                    [MBProgressHUD showErrorMessage:@"服务器异常"];
+                }];
+            }
+        }
+    }];
 }
 
 #pragma mark ————— datasouce代理方法 —————
@@ -86,18 +183,19 @@ static NSString *identifier = @"cellID";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if (indexPath.section == 0) {
         CGFloat row = indexPath.row + 1;
-        NSString *imageName = [self.imgArr objectAtIndex:row];
+        NSString *imageName = [[Picture sharedPicture] geticonTostr:[self.imgArr objectAtIndex:row]];
         NSString *nameStr = [self.nameArr objectAtIndex:row];
+        NSDictionary *dic;
         if (_dataDic != nil) {
             NSArray *arr = [[function sharedManager] stringToJSON:[_dataDic objectForKey:@"setting"]];
-            NSDictionary *dic = [arr objectAtIndex:indexPath.row];
+            dic = [arr objectAtIndex:indexPath.row];
             imageName = [dic objectForKey:@"icon"];
             nameStr = [dic objectForKey:@"name"];
         }
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.tag = 10000;
         [imageView setImage:[UIImage imageNamed:imageName]];
-        imageView.image.accessibilityIdentifier = imageName;
+        imageView.image.accessibilityIdentifier = _dataDic != nil ? [dic objectForKey:@"icon"] : [self.imgArr objectAtIndex:row];
         imageView.frame = CGRectMake(0, 15, 50, 50);
         imageView.centerX = cell.contentView.centerX;
         imageView.tag = 1001;
@@ -166,7 +264,6 @@ static NSString *identifier = @"cellID";
     if (indexPath.section == 0) {
         _currentView = [collectionView cellForItemAtIndexPath:indexPath].contentView;
     }
-    DLog(@"%ld",indexPath.section);
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -211,14 +308,12 @@ static NSString *identifier = @"cellID";
 }
 //房间delegate
 -(void)iconDidSelect:(NSDictionary *)dic{
-    DLog(@"dic:%@",dic);
     //按钮的返回事件
     UIImageView *imageView;
     for (UIView *view in [_currentView subviews]) {
         CGFloat tag = view.tag;
         if (tag == 1001) {
             imageView = (UIImageView*)view;
-            DLog(@"te");
             break;
         }
     }
@@ -244,7 +339,7 @@ static NSString *identifier = @"cellID";
 
 -(NSArray *)imgArr{
     if (_imgArr == nil) {
-        _imgArr = [[NSArray alloc]initWithObjects:@"",[[Picture sharedPicture] getDeviceIconForType:@"20111"],[[Picture sharedPicture] getDeviceIconForType:@"20121"],[[Picture sharedPicture] getDeviceIconForType:@"20131"],[[Picture sharedPicture] getDeviceIconForType:@"20141"], nil];
+        _imgArr = [[NSArray alloc]initWithObjects:@"",@"1001",@"1001",@"1001",@"1001", nil];
     }
     return _imgArr;
 }
@@ -294,30 +389,9 @@ static NSString *identifier = @"cellID";
         if (_currentView == nil) {
             [MBProgressHUD showWarnMessage:@"请选择按键"];
         }else{
-            AlertIconView *sheetView = [[AlertIconView alloc]initWithTitle:@"test" items:@[@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"},@{@"icon":@"1004"}]];
+            AlertIconView *sheetView = [[AlertIconView alloc]initWithTitle:@"test" items:@[@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"}]];
             sheetView.delegate = self;
             [sheetView showWithBlock:completeBlock];
-//            MMPopupItemHandler block = ^(NSInteger index){
-//                        NSLog(@"clickd %@ button",@(index));
-//            };
-//            NSArray *items =
-//            @[MMItemMake(@"Done", MMItemTypeNormal, block),
-//              MMItemMake(@"Save", MMItemTypeHighlight, block),
-//              MMItemMake(@"Cancel", MMItemTypeNormal, block)];
-//            AlertView *sheetView = [[AlertView alloc] initWithTitle:@"点击切换主机"
-//                                                              items:items];
-//            sheetView.attachedView = self.view;
-//            sheetView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-//            [sheetView showWithBlock:completeBlock];
-//            SwitchIconSelectViewController *switchIcon = [SwitchIconSelectViewController sharePopupView:ALERTVIEWSTORYBOARD andPopupViewName:SWITCHICONSELECTVIEWCONTROLLER];
-//            [switchIcon setImgArray:@[@"20111",@"20121",@"20131",@"20141"] titleArray:@[@"一键",@"二建",@"三键",@"四键"] LabelTitle:@"灯具图标设置" ClickBlock:^(int index,NSString *imagestr,NSString *title) {
-//                //按钮的返回事件
-//                UIImageView *imageView = (UIImageView*)[_currentView subviewsWithTag:1001];
-//                [imageView setImage:[UIImage imageNamed:imagestr]];
-//                imageView.image.accessibilityIdentifier = imagestr;
-//            }] ;
-//            [switchIcon showWithParentViewController:nil];
-//            [switchIcon showPopupview];
         }
     }else if (tag == 3000){
         if (_currentButton == nil) {
@@ -329,7 +403,6 @@ static NSString *identifier = @"cellID";
                 }
             }];
             alertView.attachedView = self.view;
-            //        alertView.attachedView.mm_dimBackgroundBlurEnabled = YES;
             alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleExtraLight;
             [alertView showWithBlock:completeBlock];
         }
@@ -339,87 +412,6 @@ static NSString *identifier = @"cellID";
         [sheetView showWithBlock:completeBlock];
     }
 }
-#pragma mark - 数据保存
--(void)saveData{
-//    if (_swichZoneLabel.text == nil) {
-//        [MBProgressHUD showErrorMessage:@"请选择所属区域"];
-//        return ;
-//    }
-//    NSMutableArray *setting = [NSMutableArray new];
-//    int i = 0;
-//    for (UIView *view in self.collectionView.subviews) {
-//        for (UIView *con in view.subviews) {
-//            if ([con subviewsWithTag:1001] != nil) {
-//                i++;
-//                UIImageView *imageView = (UIImageView *)[con subviewsWithTag:1001];
-//                UILabel *label = (UILabel *)[con subviewsWithTag:1002];
-//                NSDictionary *dic = @{
-//                                      @"icon":imageView.image.accessibilityIdentifier,
-//                                      @"name":label.text,
-//                                      @"ch":[NSString stringWithFormat:@"%d",i],
-//                                      @"status":@"0",
-//                                      @"order":@"0"
-//                                      };
-//                [setting addObject:dic];
-//            }
-//        }
-//    }
-//    NSString *type = @"";
-//    if (_setNum == 1) {
-//        type = @"20111";
-//    }else if (_setNum == 2){
-//        type = @"20121";
-//    }else if (_setNum == 3){
-//        type = @"20131";
-//    }else if (_setNum == 4){
-//        type = @"20141";
-//    }
-//    [self.room enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-//        if ([obj isEqualToString: _swichZoneLabel.text]) {
-//            if (_dataDic != nil) {
-//                NSDictionary *params = @{
-//                                         @"device_id":[_dataDic objectForKey:@"id"],
-//                                         @"name":_swichNameLabel.text,
-//                                         @"room_id":key,
-//                                         @"setting":[CommonCode formatToJson:setting],
-//                                         @"icon":type,//[CommonCode getImageType:@"in_equipment_switch_one"]
-//                                         };
-//                [[APIManager sharedManager]deviceDeviceEditWithParameters:params success:^(id data) {
-//                    NSDictionary *datadic = data;
-//                    if([[datadic objectForKey:@"code"] intValue] == 200){
-//                        [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
-//                    }else{
-//                        [[AlertManager alertManager] showError:3.0 string:[datadic objectForKey:@"msg"]];
-//                    }
-//                } failure:^(NSError *error) {
-//                }];
-//            }else{
-//                NSDictionary *params = @{
-//                                         @"master_id":GET_USERDEFAULT(MASTER_ID),
-//                                         @"name":_swichNameLabel.text,
-//                                         @"type":type,
-//                                         @"room_id":key,
-//                                         @"setting":[CommonCode formatToJson:setting],
-//                                         @"icon":type,//[CommonCode getImageType:@"in_equipment_switch_one"]
-//                                         @"mac":_mac
-//                                         };
-//                [[APIManager sharedManager]deviceDeviceAddWithParameters:params success:^(id data) {
-//                    NSDictionary *datadic = data;
-//
-//                    if([[datadic objectForKey:@"code"] intValue] == 200){
-//                        [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
-//                    }else{
-//                        [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
-//                    }
-//                } failure:^(NSError *error) {
-//
-//                }];
-//            }
-//        }
-//    }];
-    
-}
-
 #pragma mark - 数据加载
 -(void)loadData{
     [[APIManager sharedManager]deviceGetMasterRoomWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
