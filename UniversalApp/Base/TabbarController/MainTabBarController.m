@@ -20,6 +20,8 @@
 #import "UITabBar+CustomBadge.h"
 #import "XYTabBar.h"
 #import "UsualViewController.h"
+#import "HouseViewController.h"
+#import "DetailViewController.h"
 
 @interface MainTabBarController ()<UITabBarControllerDelegate>
 
@@ -66,13 +68,15 @@
     [self setupChildViewController:homeVC title:@"首页" imageName:@"in_bottom_menu_star" seleceImageName:@"in_bottom_menu_staract"];
     
 //    MakeFriendsViewController *makeFriendVC = [[MakeFriendsViewController alloc]init];
-    ToolDemoViewController *makeFriendVC = [[ToolDemoViewController alloc]init];
+//    ToolDemoViewController *makeFriendVC = [[ToolDemoViewController alloc]init];
 //    [self setupChildViewController:makeFriendVC title:@"Demo" imageName:@"icon_tabbar_onsite" seleceImageName:@"icon_tabbar_onsite_selected"];
+    HouseViewController *makeFriendVC = [[HouseViewController alloc]init];
     [self setupChildViewController:makeFriendVC title:@"家居" imageName:@"in_bottom_menu_home" seleceImageName:@"in_bottom_menu_homeact"];
     
 //    MsgViewController *msgVC = [[MsgViewController alloc]init];
-    DraggingCardViewController *msgVC = [DraggingCardViewController new];
+//    DraggingCardViewController *msgVC = [DraggingCardViewController new];
 //    [self setupChildViewController:msgVC title:@"消息" imageName:@"icon_tabbar_merchant_normal" seleceImageName:@"icon_tabbar_merchant_selected"];
+    DetailViewController *msgVC = [DetailViewController new];
     [self setupChildViewController:msgVC title:@"情景" imageName:@"in_bottom_menu_scene" seleceImageName:@"in_bottom_menu_sceneact"];
     
     MineViewController *mineVC = [[MineViewController alloc]init];

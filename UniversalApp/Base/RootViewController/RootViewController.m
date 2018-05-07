@@ -317,8 +317,9 @@
         }
     }
     if(isEeist == 0){
-        RootNavigationController *Navi =[[RootNavigationController alloc] initWithRootViewController:viewController];
-        [self presentViewController:Navi animated:YES completion:nil];
+        [self.navigationController pushViewController:viewController animated:YES];
+//        RootNavigationController *Navi =[[RootNavigationController alloc] initWithRootViewController:viewController];
+//        [self presentViewController:Navi animated:YES completion:nil];
     }
 }
 /*

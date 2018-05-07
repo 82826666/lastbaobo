@@ -72,7 +72,9 @@
         DeviceIcon = @"lamp8";
     } else if ([type isEqualToString:@"1002"]) {// 灯类 吊灯1
         DeviceIcon = @"lamp1";
-    } else if ([type isEqualToString:@"1008"]) {// 灯类 白炽灯
+    } else if ([type isEqualToString:@"1006"]) {// 灯类 白炽灯
+        DeviceIcon = @"lamp11";
+    }else if ([type isEqualToString:@"1008"]) {// 灯类 白炽灯
         DeviceIcon = @"lamp11";
     } else if ([type isEqualToString:@"3001"]) {// 情景图标
         DeviceIcon = @"sceneicon";

@@ -8,6 +8,7 @@
 
 #import "KeyViewController.h"
 #import <MMAlertView.h>
+#import "HouseViewController.h"
 #import "AlertView.h"
 #import "AlertRoomView.h"
 #import "AlertIconView.h"
@@ -89,20 +90,13 @@ static NSString *identifier = @"cellID";
                     }
                 }
                 i++;
-                NSDictionary *dic = @{
-                                      @"icon":imageView.image.accessibilityIdentifier,
-                                      @"name":label.text,
-                                      @"ch":[NSString stringWithFormat:@"%d",i],
-                                      @"status":@"0",
-                                      @"order":@"0"
-                                      };
-                [setting addObject:dic];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:imageView.image.accessibilityIdentifier,@"icon",label.text,@"name",[NSString stringWithFormat:@"%d",i],@"ch",@"0",@"status",@"0",@"order", nil];
+                if (i < 5) {
+                    [setting addObject:dic];
+                }
             }else{
                 continue;
             }
-        }
-        if (i == 4) {
-            break;
         }
     }
     NSString *type = @"";
@@ -130,6 +124,7 @@ static NSString *identifier = @"cellID";
                     if([[datadic objectForKey:@"code"] intValue] == 200){
                         self.saveStatus = @"0";
                         [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                        [self backBtnClicked];
                     }else{
                         self.saveStatus = @"0";
                         [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
@@ -152,6 +147,7 @@ static NSString *identifier = @"cellID";
                     self.saveStatus = @"0";
                     if([[datadic objectForKey:@"code"] intValue] == 200){
                         [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
+                        [self backBtnClicked];
                     }else{
                         [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
                     }
@@ -189,11 +185,11 @@ static NSString *identifier = @"cellID";
         if (_dataDic != nil) {
             NSArray *arr = [[function sharedManager] stringToJSON:[_dataDic objectForKey:@"setting"]];
             dic = [arr objectAtIndex:indexPath.row];
-            imageName = [dic objectForKey:@"icon"];
+            imageName = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon"]];
             nameStr = [dic objectForKey:@"name"];
         }
         UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.tag = 10000;
+//        imageView.tag = 10000;
         [imageView setImage:[UIImage imageNamed:imageName]];
         imageView.image.accessibilityIdentifier = _dataDic != nil ? [dic objectForKey:@"icon"] : [self.imgArr objectAtIndex:row];
         imageView.frame = CGRectMake(0, 15, 50, 50);

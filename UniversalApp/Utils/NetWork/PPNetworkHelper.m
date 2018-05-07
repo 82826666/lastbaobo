@@ -12,6 +12,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AESCipher.h"
 #import "HeaderModel.h"
+#import <MMAlertView.h>
 
 #ifdef DEBUG
 #define PPLog(...) printf("[%s] %s [第%d行]: %s\n", __TIME__ ,__PRETTY_FUNCTION__ ,__LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
@@ -133,6 +134,15 @@ static AFHTTPSessionManager *_sessionManager;
     [manager POST:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([[responseObject objectForKey:@"msg"]isEqualToString:@"账号或者token无效，请重新登入"]) {
+            MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
+                [userManager logout:nil];
+            };
+            MMAlertView *alertView = [[MMAlertView alloc] initWithConfirmTitle:@"AlertView" detail:@"您还没登陆,或者被别人登陆，您被迫下线"];
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            [alertView showWithBlock:completeBlock];
+            return ;
+        }
         if (success) {
             success(responseObject);
         }
