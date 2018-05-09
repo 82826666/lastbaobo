@@ -80,7 +80,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     [cell.contentView removeAllSubviews];
     
     UIImageView *imageView = [[UIImageView alloc] init];
-    [imageView setImage:[UIImage imageNamed:[dic objectForKey:@"icon"]]];
+    [imageView setImage:[UIImage imageNamed:[[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]]]];
     imageView.frame = CGRectMake(0, 15, 50, 50);
     imageView.centerX = cell.contentView.centerX;
     

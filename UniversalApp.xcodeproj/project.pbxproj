@@ -370,6 +370,7 @@
 		5760DCC020970801009F0C2E /* in_login_people.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBC20970801009F0C2E /* in_login_people.png */; };
 		5760DCC120970801009F0C2E /* in_login_lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBD20970801009F0C2E /* in_login_lock.png */; };
 		5760DCC220970801009F0C2E /* in_login_newlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBE20970801009F0C2E /* in_login_newlogo.png */; };
+		57AD8C2220A1E33F007F5669 /* GetDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */; };
 		57D1A5B220A06A3600E56DE6 /* HouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B120A06A3600E56DE6 /* HouseViewController.m */; };
 		57D1A5B520A07FDE00E56DE6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B420A07FDE00E56DE6 /* DetailViewController.m */; };
 		57D1A5B820A0844200E56DE6 /* AddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B720A0844200E56DE6 /* AddSceneViewController.m */; };
@@ -884,6 +885,8 @@
 		5760DCBC20970801009F0C2E /* in_login_people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_people.png; path = UniversalApp/Modules/Login/Resource/in_login_people.png; sourceTree = SOURCE_ROOT; };
 		5760DCBD20970801009F0C2E /* in_login_lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_lock.png; path = UniversalApp/Modules/Login/Resource/in_login_lock.png; sourceTree = SOURCE_ROOT; };
 		5760DCBE20970801009F0C2E /* in_login_newlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_newlogo.png; path = UniversalApp/Modules/Login/Resource/in_login_newlogo.png; sourceTree = SOURCE_ROOT; };
+		57AD8C2020A1E33F007F5669 /* GetDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetDeviceViewController.h; sourceTree = "<group>"; };
+		57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetDeviceViewController.m; sourceTree = "<group>"; };
 		57D1A5B020A06A3600E56DE6 /* HouseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HouseViewController.h; sourceTree = "<group>"; };
 		57D1A5B120A06A3600E56DE6 /* HouseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HouseViewController.m; sourceTree = "<group>"; };
 		57D1A5B320A07FDE00E56DE6 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -1263,6 +1266,8 @@
 				57126FF1209B559C00FEAE59 /* KeyViewController.m */,
 				5709F95D209D484500CD935B /* getSensorViewController.h */,
 				5709F95E209D484500CD935B /* getSensorViewController.m */,
+				57AD8C2020A1E33F007F5669 /* GetDeviceViewController.h */,
+				57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2802,6 +2807,7 @@
 				571D775D209875260066AC9A /* function.m in Sources */,
 				293D46111ECDAEED007C64A9 /* MineViewController.m in Sources */,
 				29530FB01F60F10700D24E05 /* YSLDraggableCardContainer.m in Sources */,
+				57AD8C2220A1E33F007F5669 /* GetDeviceViewController.m in Sources */,
 				57126FEF209B541100FEAE59 /* TwoWayViewController.m in Sources */,
 				29FEE7681ECEC27900C81B60 /* MBProgressHUD+XY.m in Sources */,
 				2917D2171EE02F9C00E76185 /* ShareManager.m in Sources */,
@@ -2978,6 +2984,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baobo.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/UniversalApp/Define";
@@ -3010,6 +3017,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baobo.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/UniversalApp/Define";

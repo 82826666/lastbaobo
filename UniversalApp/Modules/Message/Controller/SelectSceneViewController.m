@@ -10,7 +10,6 @@
 #import <MMAlertView.h>
 #import "KeyViewController.h"
 #import "AddSceneViewController.h"
-#import <YYKit.h>
 static NSString *identifier = @"cellID";
 @interface SelectSceneViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 {
@@ -84,8 +83,8 @@ static NSString *identifier = @"cellID";
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[AddSceneViewController class]]) {
             AddSceneViewController *con1 = (AddSceneViewController*)controller;
-            [self.navigationController popToViewController:con1 animated:YES];
             [con1 setThenDic:dic];
+            [self pushViewController:con1];
         }
     }
     //    NSLog(@"%ld-%ld",indexPath.section,indexPath.row);
@@ -114,7 +113,6 @@ static NSString *identifier = @"cellID";
 
 #pragma mark - 数据加载
 -(void)loadData{
-    NSLog(@"test");
     NSDictionary *params = @{@"master_id":GET_USERDEFAULT(MASTER_ID)};
     [[APIManager sharedManager]deviceGetDevidWithParameters:params success:^(id data) {
         NSDictionary *dic = data;
@@ -127,7 +125,7 @@ static NSString *identifier = @"cellID";
                                   @"devid":[dic objectForKey:@"data"][0]
                                   };
             [self.dataSource addObject:one];
-            [[APIManager sharedManager]deviceGetSceneListsWithParameters:params success:^(id data) {
+            [[APIManager sharedManager]deviceGetSceneListsWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
                 NSDictionary *dicd = data;
                 if ([[dicd objectForKey:@"code"]integerValue] == 200){
                     NSArray *arr = [dicd objectForKey:@"data"];
@@ -136,15 +134,29 @@ static NSString *identifier = @"cellID";
                         [self.dataSource addObject:dicOne];
                     }
                 }else{
-                    
+                    [MBProgressHUD showErrorMessage:[dicd objectForKey:@"msg"]];
                 }
-                NSLog(@"datasource:%@",self.dataSource);
                 [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
             } failure:^(NSError *error) {
                 
             }];
+//            [[APIManager sharedManager]deviceGetSceneListsWithParameters:params success:^(id data) {
+//                NSDictionary *dicd = data;
+//                DLog(@"pag:%@",self.dataSource);
+//                if ([[dicd objectForKey:@"code"]integerValue] == 200){
+//                    NSArray *arr = [dicd objectForKey:@"data"];
+//                    for (int i = 0; i < arr.count; i ++) {
+//                        NSDictionary *dicOne = [arr objectAtIndex:i];
+//                        [self.dataSource addObject:dicOne];
+//                    }
+//                }else{
+//                    [MBProgressHUD showErrorMessage:[dicd objectForKey:@"msg"]];
+//                }
+//                [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+//            } failure:^(NSError *error) {
+//                DLog(@"dsfa")
+//            }];
         }else{
-            NSLog(@"msg:%@",[dic objectForKey:@"msg"]);
         }
     } failure:^(NSError *error) {
         

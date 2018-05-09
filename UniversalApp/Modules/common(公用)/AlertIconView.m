@@ -69,7 +69,7 @@ static NSString *identifier = @"cellID";
         }];
         self.lblStatus.textColor = MMHexColor(0x333333FF);
         self.lblStatus.font = [UIFont boldSystemFontOfSize:17];
-        self.lblStatus.text = @"房间选择";
+        self.lblStatus.text = title;
         self.lblStatus.textAlignment = NSTextAlignmentCenter;
         
         //注册cell

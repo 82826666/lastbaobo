@@ -107,6 +107,7 @@
     //    }
 }
 - (void)QRCodeAlbumManagerDidReadQRCodeFailure:(SGQRCodeAlbumManager *)albumManager {
+    DLog(@"t");
     [MBProgressHUD showErrorMessage:@"暂未识别出二维码"];
     self.isSelectedFlashlightBtn = NO;
     self.flashlightBtn.selected = NO;
@@ -121,9 +122,10 @@
         [[APIManager sharedManager]deviceBindZigbeeUserWithParameters:@{@"qrcode":qrcode} success:^(id data) {
             NSDictionary *dic = data;
             if ([[dic objectForKey:@"code"] integerValue] == 200) {
-                [MBProgressHUD showSuccessMessage:@"暂未识别出二维码"];
+                [MBProgressHUD showSuccessMessage:[dic objectForKey:@"msg"]];
+                [self backBtnClicked];
             }else{
-                [MBProgressHUD showErrorMessage:@"暂未识别出二维码"];
+                [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
             }
             self.isSelectedFlashlightBtn = NO;
             self.flashlightBtn.selected = NO;
@@ -144,9 +146,10 @@
         [[APIManager sharedManager]deviceShareMasterWithParameters:@{@"code":code} success:^(id data) {
             NSDictionary *dic = data;
             if ([[dic objectForKey:@"code"] integerValue] == 200) {
-                [MBProgressHUD showSuccessMessage:@"暂未识别出二维码"];
+                [MBProgressHUD showSuccessMessage:[dic objectForKey:@"msg"]];
+                [self backBtnClicked];
             }else{
-                [MBProgressHUD showErrorMessage:@"暂未识别出二维码"];
+                [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
             }
             self.isSelectedFlashlightBtn = NO;
             self.flashlightBtn.selected = NO;

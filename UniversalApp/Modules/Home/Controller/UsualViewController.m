@@ -9,6 +9,7 @@
 #import "UsualViewController.h"
 #import <JMDropMenu.h>
 #import <MJExtension.h>
+#import "GetDeviceViewController.h"
 #import "CodeGenerateViewController.h"
 #import <MMAlertView.h>
 #import "AlertView.h"
@@ -380,15 +381,16 @@ NS_ENUM(NSInteger,deviceState){
             NSDictionary *datadic = data;
             label.accessibilityValue = @"0";
             if([[datadic objectForKey:@"code"] intValue] == 200 ){
+                [MBProgressHUD showSuccessMessage:[datadic objectForKey:@"msg"]];
                 if ([[[datadic objectForKey:@"data"] objectForKey:@"status"] integerValue] >= 0) {
 
                     label.text = [label.text isEqualToString:@"开"] ?  @"关" : @"开";
                 }
             }else{
-
+                [MBProgressHUD showErrorMessage:[datadic objectForKey:@"msg"]];
             }
         } failure:^(NSError *error) {
-
+            [MBProgressHUD showErrorMessage:@"服务器异常"];
         }];
     }
 }
@@ -511,7 +513,8 @@ NS_ENUM(NSInteger,deviceState){
         }
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     }else if(sender.tag == 1002){
-//        GetDeviceViewController *control = [[GetDeviceViewController alloc] init];
+        GetDeviceViewController *control = [[GetDeviceViewController alloc] init];
+        [self pushViewController:control];
 //        [self.navigationController pushViewController:control animated:YES];
     }else if (sender.tag == 1003){
         if (deviceState == DeleteDevice) {

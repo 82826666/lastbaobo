@@ -80,7 +80,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     [cell.contentView removeAllSubviews];
     
     UIImageView *imageView = [[UIImageView alloc] init];
-    [imageView setImage:[UIImage imageNamed:[dic objectForKey:@"icon1"]]];
+    [imageView setImage:[UIImage imageNamed:[[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]]]];
     imageView.frame = CGRectMake(0, 15, 50, 50);
     imageView.centerX = cell.contentView.centerX;
     
@@ -139,54 +139,44 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
     NSMutableDictionary*dic = [arr objectAtIndex:indexPath.row];
-//    CKAlertViewController *alertVC = [CKAlertViewController alertControllerWithTitle:@"操作" message:@"" ];
-//
-//    CKAlertAction *cancel = [CKAlertAction actionWithTitle:@"关" handler:^(CKAlertAction *action) {
-//        for (UIViewController *controller in self.navigationController.viewControllers) {
-//            if ([controller isKindOfClass:[AddScene2ViewController class]]) {
-//                AddScene2ViewController *con = (AddScene2ViewController*)controller;
-//                if (_tempDic == nil) {
-//                    _row = -1;
-//                }
-//                NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
-//                [a setObject:@"0" forKey:@"status1"];
-//                [con setThenDic:a row:_row];
-//                [self.navigationController popToViewController:con animated:YES];
-//            }
-//        }
-//        //        [self.navigationController pushViewController:[[TwoWayViewController alloc]init] animated:YES];
-//    }];
-//
-//    CKAlertAction *updateNow = [CKAlertAction actionWithTitle:@"开" handler:^(CKAlertAction *action) {
-//        for (UIViewController *controller in self.navigationController.viewControllers) {
-//            if ([controller isKindOfClass:[AddScene2ViewController class]]) {
-//                AddScene2ViewController *con = (AddScene2ViewController*)controller;
-//                if (_tempDic == nil) {
-//                    _row = -1;
-//                }
-//                NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
-//                [a setObject:@"1" forKey:@"status1"];
-//                [con setThenDic:a row:_row];
-//                [self.navigationController popToViewController:con animated:YES];
-//            }
-//        }
-//        //添加设备
-//        //        [self.navigationController pushViewController:[SelectEquipmentViewController shareInstance] animated:YES];
-//        //            NSLog(@"点击了 %@ 按钮",action.title);
-//    }];
-//
-//    CKAlertAction *updateLater = [CKAlertAction actionWithTitle:@"" handler:^(CKAlertAction *action) {
-//        //        [self.navigationController pushViewController:[WifiConfigViewController shareInstance] animated:YES];
-//        //            NSLog(@"点击了 %@ 按钮",action.title);
-//    }];
-//
-//    [alertVC addAction:cancel];
-//    [alertVC addAction:updateNow];
-//    [alertVC addAction:updateLater];
-//
-//    [self presentViewController:alertVC animated:NO completion:nil];
-    
-    //    NSLog(@"%ld-%ld",indexPath.section,indexPath.row);
+    MMPopupItemHandler block = ^(NSInteger index){
+        if(index == 0){
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[AddSceneViewController class]]) {
+                    AddSceneViewController *con = (AddSceneViewController*)controller;
+                    if (_tempDic == nil) {
+                        _row = -1;
+                    }
+                    NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
+                    [a setObject:@"0" forKey:@"status1"];
+                    [con setThenDic:a row:_row];
+                    [self pushViewController:con];
+                }
+            }
+        }else if (index == 1){
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[AddSceneViewController class]]) {
+                    AddSceneViewController *con = (AddSceneViewController*)controller;
+                    if (_tempDic == nil) {
+                        _row = -1;
+                    }
+                    NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
+                    [a setObject:@"1" forKey:@"status1"];
+                    [con setThenDic:a row:_row];
+                    [self pushViewController:con];
+                }
+            }
+        }
+    };
+    NSArray *items =
+    @[MMItemMake(@"关", MMItemTypeNormal, block),
+      MMItemMake(@"开", MMItemTypeNormal, block),
+      MMItemMake(@"取消", MMItemTypeNormal, block)];
+    MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"操作"
+                                                         detail:@""
+                                                          items:items];
+    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
+    [alertView show];
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -245,7 +235,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     //将长按手势添加到需要实现长按操作的视图里
     [self.collectionView addGestureRecognizer:longPress];
 }
-#pragma mark - cell的长按处理事件
+#pragma mark - sectionHeader的长按处理事件
 - (void) cellLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer {
     CGPoint pointTouch = [gestureRecognizer locationInView:self.collectionView];
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
@@ -256,46 +246,46 @@ static NSString *headerReuseIdentifier = @"hearderID";
         }else{
             NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
             NSDictionary *rowDic = [arr objectAtIndex:indexPath.row];
-//            CKAlertViewController *alertVC = [CKAlertViewController alertControllerWithTitle:@"操作" message:@"" ];
-//
-//            CKAlertAction *edit = [CKAlertAction actionWithTitle:@"修改设备" handler:^(CKAlertAction *action) {
-//                KeyViewController *con = [KeyViewController new];
-//                if ([[rowDic objectForKey:@"type"] integerValue] == 20111) {
-//                    con.setNum = setNumOne;
-//                    con.dataDic = rowDic;
-//                }else if([[rowDic objectForKey:@"type"] integerValue] == 20121) {
-//                    con.setNum = setNumTwo;
-//                    con.dataDic = rowDic;
-//                }else if([[rowDic objectForKey:@"type"] integerValue] == 20131) {
-//                    con.setNum = setNumThree;
-//                    con.dataDic = rowDic;
-//                }else if([[rowDic objectForKey:@"type"] integerValue] == 20141) {
-//                    con.setNum = setNumFour;
-//                    con.dataDic = rowDic;
-//                }
-//                [self.navigationController pushViewController:con animated:YES];
-//            }];
-//
-//            CKAlertAction *delete = [CKAlertAction actionWithTitle:@"删除设备" handler:^(CKAlertAction *action) {
-//                [[APIManager sharedManager]deviceDeleteTwowaySwitchWithParameters:@{@"device_id":[rowDic objectForKey:@"id"]} success:^(id data) {
-//                    NSDictionary *dic = data;
-//                    [[AlertManager alertManager] showError:3.0 string:[dic objectForKey:@"msg"]];
-//                    if ([[dic objectForKey:@"code"] integerValue] == 200) {
-//                        [self loadData];
-//                    }
-//                } failure:^(NSError *error) {
-//                    [[AlertManager alertManager] showError:3.0 string:@"服务器异常"];
-//                }];
-//            }];
-//
-//            CKAlertAction *updateLater = [CKAlertAction actionWithTitle:@"" handler:^(CKAlertAction *action) {
-//
-//            }];
-//
-//            [alertVC addAction:edit];
-//            [alertVC addAction:delete];
-//            [alertVC addAction:updateLater];
-//            [self presentViewController:alertVC animated:NO completion:nil];
+            MMPopupItemHandler block = ^(NSInteger index){
+                if(index == 0){
+                    KeyViewController *con = [KeyViewController new];
+                    if ([[rowDic objectForKey:@"type"] integerValue] == 20111) {
+                        con.setNum = setNumOne;
+                        con.dataDic = rowDic;
+                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20121) {
+                        con.setNum = setNumTwo;
+                        con.dataDic = rowDic;
+                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20131) {
+                        con.setNum = setNumThree;
+                        con.dataDic = rowDic;
+                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20141) {
+                        con.setNum = setNumFour;
+                        con.dataDic = rowDic;
+                    }
+                    [self pushViewController:con];
+                }else if (index == 1){
+                    [[APIManager sharedManager]deviceDeviceDeleteTwowaySwitchWithParameters:@{@"device_id":[rowDic objectForKey:@"id"]} success:^(id data) {
+                        NSDictionary *dic = data;
+                        if ([[dic objectForKey:@"code"] integerValue] == 200) {
+                            [MBProgressHUD showSuccessMessage:[dic objectForKey:@"msg"]];
+                            [self loadData];
+                        }else{
+                            [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
+                        }
+                    } failure:^(NSError *error) {
+                        [MBProgressHUD showErrorMessage:@"服务器异常"];
+                    }];
+                }
+            };
+            NSArray *items =
+            @[MMItemMake(@"修改设备", MMItemTypeNormal, block),
+              MMItemMake(@"删除设备", MMItemTypeNormal, block),
+              MMItemMake(@"取消", MMItemTypeNormal, block)];
+            MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"操作"
+                                                                 detail:@""
+                                                                  items:items];
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
+            [alertView show];
         }
     }
     if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -305,7 +295,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
         NSLog(@"长按手势结束");
     }
 }
-#pragma mark - sectionHeader的长按处理事件
 - (void) sectionHeaderLongPressed:(UILongPressGestureRecognizer *)gestureRecognizer{
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         //所有的分区都是闭合

@@ -1,19 +1,17 @@
 //
-//  HouseViewController.m
+//  GetDeviceViewController.m
 //  baobozhineng
 //
-//  Created by wjy on 2018/2/1.
+//  Created by wjy on 2018/3/17.
 //  Copyright © 2018年 吴建阳. All rights reserved.
 //
 
-#import "SelectDeviceViewController.h"
+#import "GetDeviceViewController.h"
 #import <MMAlertView.h>
 #import "KeyViewController.h"
-#import "AddSceneViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
-@interface SelectDeviceViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
-{
+@interface GetDeviceViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>{
     
 }
 @property (nonatomic, strong) NSMutableDictionary* room;
@@ -22,7 +20,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 @property (nonatomic, strong) NSMutableArray* stateArray;
 @end
 
-@implementation SelectDeviceViewController
+@implementation GetDeviceViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,16 +29,15 @@ static NSString *headerReuseIdentifier = @"hearderID";
 }
 
 -(void)setupUI{
-
-    self.title = @"设备选择";
-    
+    self.title = @"情景选择";
     //创建布局，苹果给我们提供的流布局
     UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc]init];
     //设置顶部高度
     flow.headerReferenceSize = CGSizeMake(0, 50);
+    
+    //创建网格对象
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    //创建网格对象
     self.collectionView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight - kTabBarHeight);
     self.collectionView.collectionViewLayout = flow;
     //注册cell
@@ -50,6 +47,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     
     [self.view addSubview:self.collectionView];
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [self createLongPressGesture];
     [self loadData];
@@ -85,11 +83,11 @@ static NSString *headerReuseIdentifier = @"hearderID";
     imageView.centerX = cell.contentView.centerX;
     
     UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
-    sup.text = [dic objectForKey:@"status"] == NULL ? @"关" : @"开";
+    sup.text = [[dic objectForKey:@"status1"]integerValue] == 0 ? @"关" : @"开";
     
     UILabel *name = [[UILabel alloc]initWithFrame:CGRectMake(0, imageView.bottom, KScreenWidth/4, 30)];
     name.textAlignment = NSTextAlignmentCenter;
-    name.text = [dic objectForKey:@"name"];
+    name.text = [dic objectForKey:@"name1"];
     
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:sup];
@@ -111,8 +109,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
         
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, line1.bottom + 10, KScreenHeight, 30)];
         label.text = [self.sectionArray objectAtIndex:indexPath.section];
-        //        NSLog(@"sec:%ld",indexPath.section);
-        //        NSLog(@"text:%@",[self.sectionArray objectAtIndex:indexPath.section]);
         
         UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, label.bottom + 10, KScreenHeight, 0.5)];
         line2.backgroundColor = [UIColor lightGrayColor];
@@ -139,45 +135,28 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
     NSDictionary *dic = [arr objectAtIndex:indexPath.row];
-    MMPopupItemHandler block = ^(NSInteger index){
-        if(index == 0){
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[AddSceneViewController class]]) {
-                    AddSceneViewController *con = (AddSceneViewController*)controller;
-                    if (_tempDic == nil) {
-                        _row = -1;
-                    }
-                    NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
-                    [a setObject:@"0" forKey:@"status1"];
-                    [con setIfDic:a row:_row];
-                    [self pushViewController:con];
-                }
-            }
-        }else if (index == 1){
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[AddSceneViewController class]]) {
-                    AddSceneViewController *con = (AddSceneViewController*)controller;
-                    if (_tempDic == nil) {
-                        _row = -1;
-                    }
-                    NSMutableDictionary * a  = [NSMutableDictionary dictionaryWithDictionary:dic];
-                    [a setObject:@"1" forKey:@"status1"];
-                    [con setIfDic:a row:_row];
-                    [self pushViewController:con];
-                }
-            }
+    CGFloat type = [[dic objectForKey:@"type"] integerValue];
+    CGFloat idd = [[dic objectForKey:@"id"] integerValue];
+    CGFloat ch = [[dic objectForKey:@"ch1"] integerValue];
+    NSDictionary *params = @{
+                             //                             @"master_id":GET_USERDEFAULT(MASTER_ID),
+                             @"device_id":@(idd),
+                             @"ch":@(ch),
+                             @"type":@(type),
+                             //                             @"devid":[dic objectForKey:@"devid"],
+                             @"order":@(0)
+                             };
+    [[APIManager sharedManager]deviceAddDeviceShortcutWithParameters:params success:^(id data) {
+        NSDictionary *dic = data;
+        if ([[dic objectForKey:@"code"] integerValue] == 200) {
+            [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
+            [self backBtnClicked];
+        }else{
+            [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
         }
-    };
-    NSArray *items =
-    @[MMItemMake(@"关", MMItemTypeNormal, block),
-      MMItemMake(@"开", MMItemTypeNormal, block),
-      MMItemMake(@"取消", MMItemTypeNormal, block)];
-    MMAlertView *alertView = [[MMAlertView alloc] initWithTitle:@"操作"
-                                                         detail:@""
-                                                          items:items];
-    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleLight;
-    [alertView show];
-    //    NSLog(@"%ld-%ld",indexPath.section,indexPath.row);
+    } failure:^(NSError *error) {
+        
+    }];
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -346,8 +325,13 @@ static NSString *headerReuseIdentifier = @"hearderID";
                     for (int k=0; k < resultArray.count; k++) {
                         NSArray *deviceOne = [resultArray objectAtIndex:k];
                         NSDictionary *dic = deviceOne[0];
+                        //                        NSInteger type = [[dic objectForKey:@"type"] integerValue];
+                        //                        if (type == 10111) {
+                        //
+                        //                        }
                         [self.sectionArray addObject:[self.room objectForKey:[NSString stringWithFormat:@"%@",[dic objectForKey:@"room_id"]]]];
                         [self.dataSource addObject:deviceOne];
+                        NSLog(@"da:%@",self.dataSource);
                     }
                     for (int i = 0; i < self.dataSource.count; i++)
                     {
@@ -367,8 +351,5 @@ static NSString *headerReuseIdentifier = @"hearderID";
     } failure:^(NSError *error) {
         
     }];
-    
 }
-
 @end
-

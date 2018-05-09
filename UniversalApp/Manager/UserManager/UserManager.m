@@ -140,14 +140,14 @@ SINGLETON_FOR_CLASS(UserManager);
 
 #pragma mark ————— 自动登录到服务器 —————
 -(void)autoLoginToServer:(loginBlock)completion{
-    [PPNetworkHelper POST:NSStringFormat(@"%/user/index/sendCode",URL_main) parameters:nil success:^(id responseObject) {
-        [self LoginSuccess:responseObject completion:completion];
-        
-    } failure:^(NSError *error) {
-        if (completion) {
-            completion(NO,error.localizedDescription);
-        }
-    }];
+//    [PPNetworkHelper POST:NSStringFormat(@"/user/index/sendCode",URL_main) parameters:nil success:^(id responseObject) {
+//        [self LoginSuccess:responseObject completion:completion];
+//
+//    } failure:^(NSError *error) {
+//        if (completion) {
+//            completion(NO,error.localizedDescription);
+//        }
+//    }];
 }
 
 #pragma mark ————— 登录成功处理 —————

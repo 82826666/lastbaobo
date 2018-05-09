@@ -11,6 +11,8 @@
 #import "AddConditionViewController.h"
 #import "DetailViewController.h"
 #import "TaskViewController.h"
+#import <MMAlertView.h>
+#import "AlertIconView.h"
 //#import "TextfieldAlertViewController.h"
 //#import "SwitchIconSelectViewController.h"
 static NSString *identifier = @"cellID";
@@ -39,7 +41,7 @@ NS_ENUM(NSInteger, enableState){
     //没有使能
     noenable
 };
-@interface AddSceneViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>{
+@interface AddSceneViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,AlertIconViewDelegate>{
     
 }
 //@property(nonatomic, strong) UICollectionView *collectionView;
@@ -143,7 +145,7 @@ NS_ENUM(NSInteger, enableState){
         detailText = [NSString stringWithFormat:@"重复星期:%@",detailText];
         imageStr = [dic objectForKey:@"type"];
     }else if (type == 20111 || type == 20121 || type == 20131 || type == 20141){
-        imageStr = [dic objectForKey:@"icon1"];
+        imageStr = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]];
         titleText = [dic objectForKey:@"name1"];
         detailText = [[dic objectForKey:@"status1"] integerValue] == 0 ? @"关" : @"开";
     }else if (type == 33011){
@@ -151,7 +153,7 @@ NS_ENUM(NSInteger, enableState){
         titleText = [NSString stringWithFormat:@"延时: %@秒",[dic objectForKey:@"value"]];
         detailText = @"";
     }else if (type == 310110){
-        imageStr = [dic objectForKey:@"icon1"];
+        imageStr = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]];
         titleText = [dic objectForKey:@"name1"];
         detailText = @"开";
     }
@@ -221,16 +223,21 @@ NS_ENUM(NSInteger, enableState){
             _titleBtn.textAlignment = NSTextAlignmentCenter;
             _titleBtn.text = text;
             _titleBtn.textTapAction = ^(UIView * _Nonnull containerView, NSAttributedString * _Nonnull text, NSRange range, CGRect rect) {
-//                TextFieldAlertViewController *textalert = VIEW_SHAREINSRANCE(ALERTVIEWSTORYBOARD, TEXTFIELDALERTVIEWCONTROLLER);
-//                [textalert setTitle:@"添加情景名称" EnterBlock:^(NSString *text) {
-//                    if (text) {
-//                        _titleBtn.text = text;
-//                    }
-//                } Cancle:^(NSString *text) {
-//
-//                }];
-//                [textalert showWithParentViewController:nil];
-//                [textalert showPopupview];
+                MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
+                    //        NSLog(@"animation complete");
+                };
+                MMAlertView *alertView = [[MMAlertView alloc] initWithInputTitle:@"添加情景名称" detail:@"" placeholder:@"清输入情景名称" handler:^(NSString *text) {
+                    //        DLog(@"test:%@",text);
+                    if ([text isEqualToString:@""]) {
+                        
+                    }else{
+                        if (text) {
+                            _titleBtn.text = text;
+                        }
+                    }
+                }];
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleExtraLight;
+                [alertView showWithBlock:completeBlock];
             };
             [headerView addSubview:_titleBtn];
             
@@ -354,21 +361,41 @@ NS_ENUM(NSInteger, enableState){
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
     return CGSizeMake(0, 50);
 }
+//房间delegate
+-(void)iconDidSelect:(NSDictionary *)dic{
+    //按钮的返回事件
+    UIImageView *imageView;
+    for (UIView *view in _btn.subviews) {
+        CGFloat tag = view.tag;
+        if (tag == 331111) {
+            imageView = (UIImageView*)view;
+            break;
+        }
+    }
+    if (imageView != nil) {
+        [imageView setImage:[UIImage imageNamed:[[Picture sharedPicture] geticonTostr:[dic objectForKey:@"icon"]]]];
+        imageView.image.accessibilityIdentifier = [dic objectForKey:@"icon"];
+    }
+}
 #pragma mark ————— 方法 —————
 -(void)setIfDic:(NSDictionary *)ifDic row:(CGFloat)row{
+//    DLog(@"ifDic:%@",ifDic);
     if (row < 0) {
         [self.ifArr addObject:ifDic];
     }else{
         [self.ifArr replaceObjectAtIndex:row withObject:ifDic];
     }
+    DLog(@"%@",self.ifArr);
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
 }
 -(void)setThenDic:(NSDictionary *)thenDic row:(CGFloat)row{
+//    DLog(@"thenDic:%@",thenDic);
     if (row < 0) {
         [self.thenArr addObject:thenDic];
     }else{
         [self.thenArr replaceObjectAtIndex:row withObject:thenDic];
     }
+    DLog(@"%@",self.thenArr);
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
 }
 -(void)setThenDic:(NSDictionary *)thenDic{
@@ -405,6 +432,12 @@ NS_ENUM(NSInteger, enableState){
 //        [self.navigationController pushViewController:con animated:YES];
         return ;
     }else if (tag == 33111){
+        MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
+            //        NSLog(@"animation complete");
+        };
+        AlertIconView *sheetView = [[AlertIconView alloc]initWithTitle:@"情景按键选择" items:@[@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"}]];
+        sheetView.delegate = self;
+        [sheetView showWithBlock:completeBlock];
 //        SwitchIconSelectViewController *switchIcon = [SwitchIconSelectViewController sharePopupView:ALERTVIEWSTORYBOARD andPopupViewName:SWITCHICONSELECTVIEWCONTROLLER];
 //        [switchIcon setImgArray:@[@"20111",@"20121"] titleArray:@[@"一键开关",@"二键开关"] LabelTitle:@"灯具图标设置" ClickBlock:^(int index,NSString *imagestr,NSString *title) {
 //            //按钮的返回事件
@@ -475,12 +508,12 @@ NS_ENUM(NSInteger, enableState){
 }
 - (void) save{
     if (self.ifArr.count <= 0) {
-//        [[AlertManager alertManager] showError:3.0 string:@"请添加条件"];
-//        return ;
+        [MBProgressHUD showWarnMessage:@"请添加条件"];
+        return ;
     }
     if (self.thenArr.count <= 0) {
-//        [[AlertManager alertManager] showError:3.0 string:@"请选择执行"];
-//        return ;
+        [MBProgressHUD showWarnMessage:@"请选择执行"];
+        return ;
     }
     NSString *devid = @"";
     NSString *name = _titleBtn.text;
@@ -528,7 +561,6 @@ NS_ENUM(NSInteger, enableState){
         }
         [ifArr addObject:params];
     }
-    //    NSLog(@"thenarr:%@",self.thenArr);
     for (int i = 0; i < self.thenArr.count; i++) {
         NSDictionary *dic = [self.thenArr objectAtIndex:i];
         CGFloat type = [[dic objectForKey:@"type"] integerValue];
@@ -584,23 +616,20 @@ NS_ENUM(NSInteger, enableState){
                              @"enable":enable,
                              @"scene_devices":[[function sharedManager] formatToJson:devceid]
                              };
-    //    NSLog(@"params:%@",params);
     [[APIManager sharedManager]deviceAddSceneWithParameters:params success:^(id data) {
         NSDictionary *dic = data;
         NSInteger code = [[dic objectForKey:@"code"] integerValue];
         if (code == 0) {
-            NSLog(@"msg:%@",[data objectForKey:@"msg"]);
+            [MBProgressHUD showErrorMessage:[data objectForKey:@"msg"]];
         }else{
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[DetailViewController class]]) {
-                    [self.navigationController popToViewController:controller animated:YES];
-                }
-            }
-            DetailViewController *controller = [[DetailViewController alloc]init];
-            [self.navigationController pushViewController:controller animated:YES];
+            
+            [MBProgressHUD showSuccessMessage:[data objectForKey:@"msg"]];
+//            DetailViewController *controller = [[DetailViewController alloc]init];
+//            RootNavigationController *Navi =[[RootNavigationController alloc] initWithRootViewController:controller];
+//            [self presentViewController:Navi animated:YES completion:nil];
         }
     } failure:^(NSError *error) {
-        NSLog(@"saf:%@",error);
+        [MBProgressHUD showErrorMessage:@"系统错误"];
     }];
 }
 #pragma mark 返回

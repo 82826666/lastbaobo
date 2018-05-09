@@ -133,9 +133,9 @@
     } else if ([type isEqualToString:@"20211-close"]) {// 卷帘开关的 关图标
         DeviceIcon = @"in_curtain_down1";
     } else {
-        DeviceIcon = @"";
+        DeviceIcon = [[Picture sharedPicture]getDeviceIconForType:type];
     }
-    
+
     return DeviceIcon;
     
 }

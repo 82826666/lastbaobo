@@ -9,5 +9,6 @@
 #import "RootViewController.h"
 
 @interface SelectTaskDeviceViewController : RootViewController
-
+@property(nonatomic, strong) NSDictionary *tempDic;
+@property(nonatomic, assign) CGFloat row;
 @end

@@ -385,7 +385,7 @@ static NSString *identifier = @"cellID";
         if (_currentView == nil) {
             [MBProgressHUD showWarnMessage:@"请选择按键"];
         }else{
-            AlertIconView *sheetView = [[AlertIconView alloc]initWithTitle:@"test" items:@[@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"}]];
+            AlertIconView *sheetView = [[AlertIconView alloc]initWithTitle:@"按键图标选择" items:@[@{@"icon":@"1001"},@{@"icon":@"1004"},@{@"icon":@"1001"}]];
             sheetView.delegate = self;
             [sheetView showWithBlock:completeBlock];
         }
