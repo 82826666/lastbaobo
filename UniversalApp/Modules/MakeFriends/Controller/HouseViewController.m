@@ -9,6 +9,7 @@
 #import "HouseViewController.h"
 #import <MMAlertView.h>
 #import "KeyViewController.h"
+#import "OperateSensorViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 @interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -26,7 +27,8 @@ static NSString *headerReuseIdentifier = @"hearderID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    // Do any additional setup after loading the view.
+    DLog(@"toten:%@",GET_USERDEFAULT(USER_TOKEN));
+//    Do any additional setup after loading the view.
 }
 
 -(void)setupUI{
@@ -155,44 +157,47 @@ static NSString *headerReuseIdentifier = @"hearderID";
     NSDictionary *dic = [arr objectAtIndex:row];
     CGFloat type = [label.accessibilityIdentifier integerValue];
     CGFloat ch;
-    if(type == 22111){
-        return;
-    }
-    CGFloat value = [label.accessibilityValue integerValue];
-    if (value == 1) {
-        return ;
-    }else{
-        label.accessibilityValue = @"1";
+    if(type == 20511 || type == 20311){
+        OperateSensorViewController *vc = [OperateSensorViewController new];
+        [self pushViewController:vc];
+    }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
+        CGFloat value = [label.accessibilityValue integerValue];
+        if (value == 1) {
+            return ;
+        }else{
+            label.accessibilityValue = @"1";
+        }
+        
+        ch = [[dic objectForKey:@"ch1"] integerValue];
+        NSDictionary *cmd = @{
+                              @"cmd":@"edit",
+                              @"type":[dic objectForKey:@"type"],
+                              @"devid":[dic objectForKey:@"devid"],
+                              @"value":[label.text isEqualToString:@"开"] ? @(0) : @(1),
+                              @"ch":@(ch)
+                              };
+        NSDictionary *params = @{
+                                 @"master_id":GET_USERDEFAULT(MASTER_ID),
+                                 @"device_type":[dic objectForKey:@"type"],
+                                 @"cmd":[cmd jsonStringEncoded]
+                                 };
+        [[APIManager sharedManager]deviceZigbeeCmdsWithParameters:params success:^(id data) {
+            label.accessibilityValue = @"0";
+            NSDictionary *datadic = data;
+            if([[datadic objectForKey:@"code"] intValue] == 200 ){
+                if ([[[datadic objectForKey:@"data"] objectForKey:@"status"] integerValue] >= 0) {
+                    label.text = [label.text isEqualToString:@"开"] ?  @"关" : @"开";
+                    [MBProgressHUD showSuccessMessage:@"发送cmd命令成功"];
+                }
+            }else{
+                [MBProgressHUD showErrorMessage:@"发送cmd命令失败"];
+            }
+        } failure:^(NSError *error) {
+            [MBProgressHUD showErrorMessage:@"系统发生错误"];
+        }];
     }
     
-    ch = [[dic objectForKey:@"ch1"] integerValue];
-    NSDictionary *cmd = @{
-                          @"cmd":@"edit",
-                          @"type":[dic objectForKey:@"type"],
-                          @"devid":[dic objectForKey:@"devid"],
-                          @"value":[label.text isEqualToString:@"开"] ? @(0) : @(1),
-                          @"ch":@(ch)
-                          };
-    NSDictionary *params = @{
-                             @"master_id":GET_USERDEFAULT(MASTER_ID),
-                             @"device_type":[dic objectForKey:@"type"],
-                             @"cmd":[cmd jsonStringEncoded]
-                             };
-    //    NSLog(@"params:%@",params);
-    [[APIManager sharedManager]deviceZigbeeCmdsWithParameters:params success:^(id data) {
-        label.accessibilityValue = @"0";
-        NSDictionary *datadic = data;
-        if([[datadic objectForKey:@"code"] intValue] == 200 ){
-            if ([[[datadic objectForKey:@"data"] objectForKey:@"status"] integerValue] >= 0) {
-                label.text = [label.text isEqualToString:@"开"] ?  @"关" : @"开";
-                [MBProgressHUD showSuccessMessage:@"发送cmd命令成功"];
-            }
-        }else{
-            [MBProgressHUD showErrorMessage:@"发送cmd命令失败"];
-        }
-    } failure:^(NSError *error) {
-        [MBProgressHUD showErrorMessage:@"系统发生错误"];
-    }];
+    
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -330,6 +335,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(void)loadData{
     [[APIManager sharedManager]deviceGetMasterRoomWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSDictionary *dic = data;
+        DLog(@"room:%@",dic);
         if ([[dic objectForKey:@"code"]integerValue] == 200) {
             [self.room removeAllObjects];
             NSArray *room = [dic objectForKey:@"data"];
@@ -337,8 +343,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
                 NSDictionary *roomOne = [room objectAtIndex:i];
                 [self.room setValue:[roomOne objectForKey:@"name"] forKey:[NSString stringWithFormat:@"%@",[roomOne objectForKey:@"id"]]];
             }
+            
             [[APIManager sharedManager]deviceGetDeviceInfoWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
                 NSDictionary *dic = data;
+                DLog(@"device;%@",dic);
                 if ([[dic objectForKey:@"code"]integerValue] == 200) {
                     NSArray *testArray = [dic objectForKey:@"data"];
                     // 获取array中所有index值
@@ -361,6 +369,11 @@ static NSString *headerReuseIdentifier = @"hearderID";
                     for (int k=0; k < resultArray.count; k++) {
                         NSArray *deviceOne = [resultArray objectAtIndex:k];
                         NSDictionary *dic = deviceOne[0];
+                        DLog("room:%@",self.room);
+                        DLog(@"dfs:%@",dic);
+                        if ([[dic objectForKey:@"room_id"] integerValue] <= 0) {
+                            continue;
+                        }
                         [self.sectionArray addObject:[self.room objectForKey:[NSString stringWithFormat:@"%@",[dic objectForKey:@"room_id"]]]];
                         [self.dataSource addObject:deviceOne];
                     }

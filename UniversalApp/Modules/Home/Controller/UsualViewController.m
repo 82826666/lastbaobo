@@ -61,7 +61,7 @@ NS_ENUM(NSInteger,deviceState){
     [super viewDidLoad];
     self.isHidenNaviBar = YES;
     [self setupUI];
-//    DLog(@"%@",GET_USERDEFAULT(USER_TOKEN));
+    DLog(@"%@",GET_USERDEFAULT(USER_TOKEN));
     // Do any additional setup after loading the view.
 }
 
@@ -214,6 +214,7 @@ NS_ENUM(NSInteger,deviceState){
     NSString *supText = @"";
     NSString *nameText = @"";
     NSDictionary *dic;
+
     if (indexPath.section == 1) {
         dic = [self.sensorArr objectAtIndex:indexPath.row];
         imageName = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon"]];
@@ -226,6 +227,7 @@ NS_ENUM(NSInteger,deviceState){
         nameText = [dic objectForKey:@"name"];
         supText = [[dic objectForKey:@"status"] integerValue] == 1 ? @"开" : @"关";
     }
+        DLog(@"dic:%@",dic);
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:imageName]];
     imageView.frame = CGRectMake(0, 15, 50, 50);
@@ -529,8 +531,8 @@ NS_ENUM(NSInteger,deviceState){
 -(void)loadData{
     if (GET_USERDEFAULT(MASTER_ID) > 0) {
         [self getWeather];
-        [self getSensor];
-        [self getDevice];
+//        [self getSensor];
+//        [self getDevice];
     }
 }
 
@@ -585,11 +587,13 @@ NS_ENUM(NSInteger,deviceState){
 -(void)getSensor{
     [[APIManager sharedManager]deviceGetSceneShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSMutableArray *arr = [data objectForKey:@"data"];
+        DLog(@"sensor:%@",data);
         if ([arr isKindOfClass:[NSArray class]]) {
             self.sensorArr = arr;
         }else{
             self.sensorArr = [[NSMutableArray alloc]init];
         }
+        DLog(@"sensorArr:%@",self.sensorArr);
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     } failure:^(NSError *error) {
         
@@ -605,6 +609,7 @@ NS_ENUM(NSInteger,deviceState){
         }else{
             self.deviceArr = [[NSMutableArray alloc]init];
         }
+        DLog(@"devicearr:%@",self.deviceArr);
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
     } failure:^(NSError *error) {
         

@@ -391,6 +391,21 @@
 		57D1A5E220A0A25300E56DE6 /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5E120A0A25300E56DE6 /* TaskViewController.m */; };
 		57D1A5E520A0A2BF00E56DE6 /* AddDelayedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5E420A0A2BF00E56DE6 /* AddDelayedViewController.m */; };
 		57D1A5E820A0A2EC00E56DE6 /* SelectTaskDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5E720A0A2EC00E56DE6 /* SelectTaskDeviceViewController.m */; };
+		57F1616020A31CC6007B579A /* hihonmeicon20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1615F20A31CC6007B579A /* hihonmeicon20@2x.png */; };
+		57F1616220A31D13007B579A /* hihonmeicon20@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616120A31D13007B579A /* hihonmeicon20@3x.png */; };
+		57F1616720A31E4C007B579A /* hihonmeicon40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616320A31E4C007B579A /* hihonmeicon40@2x.png */; };
+		57F1616820A31E4C007B579A /* hihonmeicon29@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616420A31E4C007B579A /* hihonmeicon29@3x.png */; };
+		57F1616920A31E4C007B579A /* hihonmeicon40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616520A31E4C007B579A /* hihonmeicon40@3x.png */; };
+		57F1616A20A31E4C007B579A /* hihonmeicon29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616620A31E4C007B579A /* hihonmeicon29@2x.png */; };
+		57F1616D20A31ECF007B579A /* hihonmeicon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616B20A31ECE007B579A /* hihonmeicon60@2x.png */; };
+		57F1616E20A31ECF007B579A /* hihonmeicon60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1616C20A31ECE007B579A /* hihonmeicon60@3x.png */; };
+		57F1617120A328A6007B579A /* OperateSensorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F1617020A328A6007B579A /* OperateSensorViewController.m */; };
+		57F1617820A32CE4007B579A /* in_curtain_close1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617220A32CE4007B579A /* in_curtain_close1@3x.png */; };
+		57F1617920A32CE4007B579A /* in_curtain_open1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617320A32CE4007B579A /* in_curtain_open1@3x.png */; };
+		57F1617A20A32CE4007B579A /* in_curtain_stop1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617420A32CE4007B579A /* in_curtain_stop1@2x.png */; };
+		57F1617B20A32CE4007B579A /* in_curtain_close1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617520A32CE4007B579A /* in_curtain_close1@2x.png */; };
+		57F1617C20A32CE4007B579A /* in_curtain_stop1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617620A32CE4007B579A /* in_curtain_stop1@3x.png */; };
+		57F1617D20A32CE4007B579A /* in_curtain_open1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F1617720A32CE4007B579A /* in_curtain_open1@2x.png */; };
 		5BC8C50C0BEF57AA0780D5DC /* libPods-UniversalApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E884624664B432D4FE5044F /* libPods-UniversalApp.a */; };
 /* End PBXBuildFile section */
 
@@ -923,6 +938,22 @@
 		57D1A5E420A0A2BF00E56DE6 /* AddDelayedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddDelayedViewController.m; sourceTree = "<group>"; };
 		57D1A5E620A0A2EC00E56DE6 /* SelectTaskDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectTaskDeviceViewController.h; sourceTree = "<group>"; };
 		57D1A5E720A0A2EC00E56DE6 /* SelectTaskDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectTaskDeviceViewController.m; sourceTree = "<group>"; };
+		57F1615F20A31CC6007B579A /* hihonmeicon20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon20@2x.png"; sourceTree = "<group>"; };
+		57F1616120A31D13007B579A /* hihonmeicon20@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon20@3x.png"; sourceTree = "<group>"; };
+		57F1616320A31E4C007B579A /* hihonmeicon40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon40@2x.png"; sourceTree = "<group>"; };
+		57F1616420A31E4C007B579A /* hihonmeicon29@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon29@3x.png"; sourceTree = "<group>"; };
+		57F1616520A31E4C007B579A /* hihonmeicon40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon40@3x.png"; sourceTree = "<group>"; };
+		57F1616620A31E4C007B579A /* hihonmeicon29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon29@2x.png"; sourceTree = "<group>"; };
+		57F1616B20A31ECE007B579A /* hihonmeicon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon60@2x.png"; sourceTree = "<group>"; };
+		57F1616C20A31ECE007B579A /* hihonmeicon60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon60@3x.png"; sourceTree = "<group>"; };
+		57F1616F20A328A6007B579A /* OperateSensorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperateSensorViewController.h; sourceTree = "<group>"; };
+		57F1617020A328A6007B579A /* OperateSensorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OperateSensorViewController.m; sourceTree = "<group>"; };
+		57F1617220A32CE4007B579A /* in_curtain_close1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_close1@3x.png"; sourceTree = "<group>"; };
+		57F1617320A32CE4007B579A /* in_curtain_open1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_open1@3x.png"; sourceTree = "<group>"; };
+		57F1617420A32CE4007B579A /* in_curtain_stop1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_stop1@2x.png"; sourceTree = "<group>"; };
+		57F1617520A32CE4007B579A /* in_curtain_close1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_close1@2x.png"; sourceTree = "<group>"; };
+		57F1617620A32CE4007B579A /* in_curtain_stop1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_stop1@3x.png"; sourceTree = "<group>"; };
+		57F1617720A32CE4007B579A /* in_curtain_open1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in_curtain_open1@2x.png"; sourceTree = "<group>"; };
 		9E884624664B432D4FE5044F /* libPods-UniversalApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UniversalApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51AB222BA7ACF202B5B1330 /* Pods-UniversalApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UniversalApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UniversalApp/Pods-UniversalApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1172,6 +1203,7 @@
 		293D45AB1ECD6926007C64A9 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				57F1615E20A31C07007B579A /* 应用图标 */,
 				5709F8B0209D45A900CD935B /* 图标 */,
 				57126FF6209B63D900FEAE59 /* 设备图标 */,
 				57126FA92099FD7A00FEAE59 /* 公共 */,
@@ -1268,6 +1300,8 @@
 				5709F95E209D484500CD935B /* getSensorViewController.m */,
 				57AD8C2020A1E33F007F5669 /* GetDeviceViewController.h */,
 				57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */,
+				57F1616F20A328A6007B579A /* OperateSensorViewController.h */,
+				57F1617020A328A6007B579A /* OperateSensorViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2128,6 +2162,12 @@
 		57126FAA209A042900FEAE59 /* 所需图标 */ = {
 			isa = PBXGroup;
 			children = (
+				57F1617520A32CE4007B579A /* in_curtain_close1@2x.png */,
+				57F1617220A32CE4007B579A /* in_curtain_close1@3x.png */,
+				57F1617720A32CE4007B579A /* in_curtain_open1@2x.png */,
+				57F1617320A32CE4007B579A /* in_curtain_open1@3x.png */,
+				57F1617420A32CE4007B579A /* in_curtain_stop1@2x.png */,
+				57F1617620A32CE4007B579A /* in_curtain_stop1@3x.png */,
 				57126FDE209B44B800FEAE59 /* masterlink@2x.png */,
 				57126FDD209B44B700FEAE59 /* masterlink@3x.png */,
 				57126FC1209A098900FEAE59 /* in_common_more_add@2x.png */,
@@ -2236,6 +2276,21 @@
 				57D1A5C720A089F300E56DE6 /* KMDatePickerDateModel.m */,
 			);
 			path = KMDatePicker;
+			sourceTree = "<group>";
+		};
+		57F1615E20A31C07007B579A /* 应用图标 */ = {
+			isa = PBXGroup;
+			children = (
+				57F1616B20A31ECE007B579A /* hihonmeicon60@2x.png */,
+				57F1616C20A31ECE007B579A /* hihonmeicon60@3x.png */,
+				57F1616620A31E4C007B579A /* hihonmeicon29@2x.png */,
+				57F1616420A31E4C007B579A /* hihonmeicon29@3x.png */,
+				57F1616320A31E4C007B579A /* hihonmeicon40@2x.png */,
+				57F1616520A31E4C007B579A /* hihonmeicon40@3x.png */,
+				57F1616120A31D13007B579A /* hihonmeicon20@3x.png */,
+				57F1615F20A31CC6007B579A /* hihonmeicon20@2x.png */,
+			);
+			path = "应用图标";
 			sourceTree = "<group>";
 		};
 		6C3D66AC810B3ABDE56945D5 /* Frameworks */ = {
@@ -2385,6 +2440,7 @@
 				290A97F61F4ABC02006BF882 /* woman@2x.png in Resources */,
 				29530FD61F60F1BB00D24E05 /* photo_sample_03.png in Resources */,
 				5712703C209B67A100FEAE59 /* in_equipment_curtain_blind@2x.png in Resources */,
+				57F1617920A32CE4007B579A /* in_curtain_open1@3x.png in Resources */,
 				293D46421ECDBB63007C64A9 /* icon_tabbar_homepage.png in Resources */,
 				5709F907209D461300CD935B /* in_select_switch_three@2x.png in Resources */,
 				57126FBE209A081E00FEAE59 /* in_common_head_more@3x.png in Resources */,
@@ -2395,6 +2451,7 @@
 				2996100C1ED7E81900BCED2A /* DazFire.png in Resources */,
 				290A97F51F4ABC02006BF882 /* man@2x.png in Resources */,
 				290A97E61F4AB24A006BF882 /* stepPk_win_colour8@2x.png in Resources */,
+				57F1617A20A32CE4007B579A /* in_curtain_stop1@2x.png in Resources */,
 				5712703B209B67A100FEAE59 /* in_equipment_switch_four@2x.png in Resources */,
 				29530FD41F60F1BB00D24E05 /* photo_sample_01.png in Resources */,
 				5709F82D209D335D00CD935B /* in_arrow_right@3x.png in Resources */,
@@ -2428,6 +2485,7 @@
 				57126F9D2099F72700FEAE59 /* in_bottom_menu_home@3x.png in Resources */,
 				5709F916209D461300CD935B /* in_select_switch_two@2x.png in Resources */,
 				5709F948209D461300CD935B /* lamp3@3x.png in Resources */,
+				57F1616D20A31ECF007B579A /* hihonmeicon60@2x.png in Resources */,
 				5709F927209D461300CD935B /* ic_in_dvd@3x.png in Resources */,
 				29530FDA1F60F1BB00D24E05 /* photo_sample_07.png in Resources */,
 				2917D2061EE007C300E76185 /* MBHUD_Success@3x.png in Resources */,
@@ -2448,6 +2506,7 @@
 				5709F915209D461300CD935B /* in_select_switch_one@2x.png in Resources */,
 				293D464A1ECDBB63007C64A9 /* icon_tabbar_mine.png in Resources */,
 				5712701F209B67A100FEAE59 /* in_device_list_aiming@3x.png in Resources */,
+				57F1616E20A31ECF007B579A /* hihonmeicon60@3x.png in Resources */,
 				57126FC8209A098A00FEAE59 /* in_common_more_equipment@3x.png in Resources */,
 				57127036209B67A100FEAE59 /* in_equipment_sensor_temperature@3x.png in Resources */,
 				5709F944209D461300CD935B /* in_scene_select_startsafety@2x.png in Resources */,
@@ -2456,6 +2515,7 @@
 				290A97F31F4ABC02006BF882 /* arrow_icon@2x.png in Resources */,
 				5709F957209D461300CD935B /* ic_in_air_rain@3x.png in Resources */,
 				57D1A5DE20A096A200E56DE6 /* 未选中勾@2x.png in Resources */,
+				57F1617D20A32CE4007B579A /* in_curtain_open1@2x.png in Resources */,
 				2917D2081EE007C300E76185 /* MBHUD_Info@3x.png in Resources */,
 				5709F921209D461300CD935B /* in_scene_select_getup@2x.png in Resources */,
 				5709F939209D461300CD935B /* in_camera_equipment_nightvision@2x.png in Resources */,
@@ -2481,6 +2541,7 @@
 				5709F92E209D461300CD935B /* in_camera_select_indoor@2x.png in Resources */,
 				5709F951209D461300CD935B /* lamp8@2x.png in Resources */,
 				57126FC5209A098A00FEAE59 /* in_common_more_add@3x.png in Resources */,
+				57F1617C20A32CE4007B579A /* in_curtain_stop1@3x.png in Resources */,
 				57127035209B67A100FEAE59 /* in_equipment_sensor_smoke@3x.png in Resources */,
 				5709F930209D461300CD935B /* in_light1@3x.png in Resources */,
 				5760DCBF20970801009F0C2E /* in_login_logo.png in Resources */,
@@ -2518,6 +2579,7 @@
 				5709F91E209D461300CD935B /* in_camera_equipment_indoor@2x.png in Resources */,
 				293D46471ECDBB63007C64A9 /* icon_tabbar_merchant_normal@2x.png in Resources */,
 				57126FB9209A04EE00FEAE59 /* in_common_menu_equipment@3x.png in Resources */,
+				57F1616220A31D13007B579A /* hihonmeicon20@3x.png in Resources */,
 				290A97DF1F4AB24A006BF882 /* stepPk_win_colour1@2x.png in Resources */,
 				5709F90E209D461300CD935B /* ic_in_air_rain@2x.png in Resources */,
 				57126FDF209B44B800FEAE59 /* masterlink@3x.png in Resources */,
@@ -2559,11 +2621,13 @@
 				293D45A21ECD6422007C64A9 /* LaunchScreen.storyboard in Resources */,
 				57127045209B67A100FEAE59 /* in_camera_select_nightvision@3x.png in Resources */,
 				293D45A31ECD6422007C64A9 /* Info.plist in Resources */,
+				57F1617820A32CE4007B579A /* in_curtain_close1@3x.png in Resources */,
 				57126FB7209A04EE00FEAE59 /* in_common_menu_common@2x.png in Resources */,
 				5709F91A209D461300CD935B /* in_curtain_down1@2x.png in Resources */,
 				5712702B209B67A100FEAE59 /* in_select_socket_default@3x.png in Resources */,
 				5709F940209D461300CD935B /* in_equipment_sensor_default@3x.png in Resources */,
 				293D464F1ECDBB63007C64A9 /* icon_tabbar_misc@2x.png in Resources */,
+				57F1616920A31E4C007B579A /* hihonmeicon40@3x.png in Resources */,
 				57127029209B67A100FEAE59 /* in_equipment_sensor_induction@3x.png in Resources */,
 				57127028209B67A100FEAE59 /* in_equipment_sensor_induction@2x.png in Resources */,
 				5709F93C209D461300CD935B /* in_camera_select_indoor@3x.png in Resources */,
@@ -2576,6 +2640,7 @@
 				5712703D209B67A100FEAE59 /* in_equipment_switch_three@2x.png in Resources */,
 				5709F922209D461300CD935B /* in_scene_select_gohome@3x.png in Resources */,
 				5712702C209B67A100FEAE59 /* in_equipment_switch_three@3x.png in Resources */,
+				57F1616A20A31E4C007B579A /* hihonmeicon29@2x.png in Resources */,
 				57126FA52099F72700FEAE59 /* in_bottom_menu_sceneact@2x.png in Resources */,
 				57126F9E2099F72700FEAE59 /* in_bottom_menu_staract@3x.png in Resources */,
 				57127024209B67A100FEAE59 /* in_equipment_sensor_gas@3x.png in Resources */,
@@ -2605,14 +2670,18 @@
 				5709F931209D461300CD935B /* in_select_switch_three@3x.png in Resources */,
 				57127026209B67A100FEAE59 /* in_equipment_sensor_infrared@2x.png in Resources */,
 				293D46491ECDBB63007C64A9 /* icon_tabbar_merchant_selected@2x.png in Resources */,
+				57F1616020A31CC6007B579A /* hihonmeicon20@2x.png in Resources */,
 				5709F90B209D461300CD935B /* in_scene_select_orther@3x.png in Resources */,
 				299610291ED84B5100BCED2A /* UMSocialSDKPromptResources.bundle in Resources */,
 				5760DCC120970801009F0C2E /* in_login_lock.png in Resources */,
+				57F1616820A31E4C007B579A /* hihonmeicon29@3x.png in Resources */,
 				5709F937209D461300CD935B /* in_curtain_down1@3x.png in Resources */,
 				5709F93B209D461300CD935B /* lamp1@3x.png in Resources */,
 				2996100D1ED7E81900BCED2A /* rain.png in Resources */,
 				293D46481ECDBB63007C64A9 /* icon_tabbar_merchant_selected.png in Resources */,
+				57F1616720A31E4C007B579A /* hihonmeicon40@2x.png in Resources */,
 				5709F935209D461300CD935B /* ic_in_cabletv@3x.png in Resources */,
+				57F1617B20A32CE4007B579A /* in_curtain_close1@2x.png in Resources */,
 				57126FB8209A04EE00FEAE59 /* in_common_menu_common@3x.png in Resources */,
 				5709F92D209D461300CD935B /* in_scene_select_hand@3x.png in Resources */,
 				296F9A311F04F39000909CDB /* 2.jpg in Resources */,
@@ -2768,6 +2837,7 @@
 				57D1A5E820A0A2EC00E56DE6 /* SelectTaskDeviceViewController.m in Sources */,
 				29CF332D1F14B5EA00DB7507 /* MsgLogic.m in Sources */,
 				2914E48A1F20A462001C01DB /* PersonModel.m in Sources */,
+				57F1617120A328A6007B579A /* OperateSensorViewController.m in Sources */,
 				29CD2C6E1F30229B00A0F5DC /* CellModel.m in Sources */,
 				2924783E1ED6857300BB097A /* AppDelegate+PushService.m in Sources */,
 				2940C5351F0A3EAB008BC29F /* WaterFallListLogic.m in Sources */,
@@ -2963,6 +3033,7 @@
 			baseConfigurationReference = A51AB222BA7ACF202B5B1330 /* Pods-UniversalApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4A6RMPCXH3;
@@ -2996,6 +3067,7 @@
 			baseConfigurationReference = 14ED69325E9FD4BDB1CA95F8 /* Pods-UniversalApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4A6RMPCXH3;
