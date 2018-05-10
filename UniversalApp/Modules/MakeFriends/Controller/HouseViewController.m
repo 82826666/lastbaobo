@@ -10,6 +10,7 @@
 #import <MMAlertView.h>
 #import "KeyViewController.h"
 #import "OperateSensorViewController.h"
+#import "SensorViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 @interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -77,6 +78,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
     NSDictionary *dic = [arr objectAtIndex:indexPath.row];
+    CGFloat type = [[dic objectForKey:@"type"] integerValue];
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
     
@@ -86,7 +88,9 @@ static NSString *headerReuseIdentifier = @"hearderID";
     imageView.centerX = cell.contentView.centerX;
     
     UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
-    sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
+    if(type != 20511){
+        sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
+    }
     sup.accessibilityIdentifier = [dic objectForKey:@"type"];
     sup.accessibilityValue = @"0";
     sup.tag = 2330;
@@ -159,6 +163,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     CGFloat ch;
     if(type == 20511 || type == 20311){
         OperateSensorViewController *vc = [OperateSensorViewController new];
+        vc.dic = dic;
         [self pushViewController:vc];
     }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
         CGFloat value = [label.accessibilityValue integerValue];
@@ -267,23 +272,30 @@ static NSString *headerReuseIdentifier = @"hearderID";
         }else{
             NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
             NSDictionary *rowDic = [arr objectAtIndex:indexPath.row];
+            CGFloat type = [[rowDic objectForKey:@"type"] integerValue];
             MMPopupItemHandler block = ^(NSInteger index){
                 if(index == 0){
-                    KeyViewController *con = [KeyViewController new];
-                    if ([[rowDic objectForKey:@"type"] integerValue] == 20111) {
-                        con.setNum = setNumOne;
-                        con.dataDic = rowDic;
-                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20121) {
-                        con.setNum = setNumTwo;
-                        con.dataDic = rowDic;
-                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20131) {
-                        con.setNum = setNumThree;
-                        con.dataDic = rowDic;
-                    }else if([[rowDic objectForKey:@"type"] integerValue] == 20141) {
-                        con.setNum = setNumFour;
-                        con.dataDic = rowDic;
+                    if (type == 20511) {
+                        SensorViewController *vc = [SensorViewController new];
+                        vc.dic = rowDic;
+                        [self pushViewController:vc];
+                    }else if(type == 20111 || type == 20121 || type == 20131 || type == 20141){
+                        KeyViewController *con = [KeyViewController new];
+                        if (type == 20111) {
+                            con.setNum = setNumOne;
+                            con.dataDic = rowDic;
+                        }else if(type == 20121) {
+                            con.setNum = setNumTwo;
+                            con.dataDic = rowDic;
+                        }else if(type == 20131) {
+                            con.setNum = setNumThree;
+                            con.dataDic = rowDic;
+                        }else if(type == 20141) {
+                            con.setNum = setNumFour;
+                            con.dataDic = rowDic;
+                        }
+                        [self pushViewController:con];
                     }
-                    [self pushViewController:con];
                 }else if (index == 1){
                     [[APIManager sharedManager]deviceDeviceDeleteTwowaySwitchWithParameters:@{@"device_id":[rowDic objectForKey:@"id"]} success:^(id data) {
                         NSDictionary *dic = data;
@@ -335,7 +347,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(void)loadData{
     [[APIManager sharedManager]deviceGetMasterRoomWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSDictionary *dic = data;
-        DLog(@"room:%@",dic);
+//        DLog(@"room:%@",dic);
         if ([[dic objectForKey:@"code"]integerValue] == 200) {
             [self.room removeAllObjects];
             NSArray *room = [dic objectForKey:@"data"];
@@ -346,7 +358,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
             
             [[APIManager sharedManager]deviceGetDeviceInfoWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
                 NSDictionary *dic = data;
-                DLog(@"device;%@",dic);
+//                DLog(@"device;%@",dic);
                 if ([[dic objectForKey:@"code"]integerValue] == 200) {
                     NSArray *testArray = [dic objectForKey:@"data"];
                     // 获取array中所有index值
@@ -369,8 +381,8 @@ static NSString *headerReuseIdentifier = @"hearderID";
                     for (int k=0; k < resultArray.count; k++) {
                         NSArray *deviceOne = [resultArray objectAtIndex:k];
                         NSDictionary *dic = deviceOne[0];
-                        DLog("room:%@",self.room);
-                        DLog(@"dfs:%@",dic);
+//                        DLog("room:%@",self.room);
+//                        DLog(@"dfs:%@",dic);
                         if ([[dic objectForKey:@"room_id"] integerValue] <= 0) {
                             continue;
                         }

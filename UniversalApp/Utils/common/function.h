@@ -18,4 +18,10 @@
 - (NSArray *)stringToJSON:(NSString *)jsonStr;
 #pragma 格式化数据为json数据
 -(NSString*)formatToJson:(id)datas;
+#pragma 获取imageView
+-(UIImageView *)getImageView:(CGRect)rect imageName:(NSString*)imageName;
+#pragma 获取label
+-(UILabel*)getLabel:(CGRect)rect text:(NSString*)text;
+#pragma 获取btn
+-(UIButton*)getBtn:(CGRect)rect;
 @end

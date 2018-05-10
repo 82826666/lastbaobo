@@ -120,4 +120,24 @@
     //    NSString *jsonStr=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     //    return jsonStr;
 }
+#pragma 获取imageView
+-(UIImageView *)getImageView:(CGRect)rect imageName:(NSString*)imageName{
+    UIImageView *imageView = [UIImageView new];
+    imageView.image = [UIImage imageNamed:imageName];
+    imageView.frame = rect;
+    return imageView;
+}
+#pragma 获取label
+-(UILabel*)getLabel:(CGRect)rect text:(NSString*)text{
+    UILabel *label = [UILabel new];
+    label.text = text;
+    label.frame = rect;
+    return label;
+}
+#pragma 获取btn
+-(UIButton*)getBtn:(CGRect)rect{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = rect;
+    return button;
+}
 @end

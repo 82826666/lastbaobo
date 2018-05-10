@@ -371,6 +371,7 @@
 		5760DCC120970801009F0C2E /* in_login_lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBD20970801009F0C2E /* in_login_lock.png */; };
 		5760DCC220970801009F0C2E /* in_login_newlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBE20970801009F0C2E /* in_login_newlogo.png */; };
 		57AD8C2220A1E33F007F5669 /* GetDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */; };
+		57B34F4C20A47AD300B58CAC /* SensorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B34F4B20A47AD300B58CAC /* SensorViewController.m */; };
 		57D1A5B220A06A3600E56DE6 /* HouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B120A06A3600E56DE6 /* HouseViewController.m */; };
 		57D1A5B520A07FDE00E56DE6 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B420A07FDE00E56DE6 /* DetailViewController.m */; };
 		57D1A5B820A0844200E56DE6 /* AddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A5B720A0844200E56DE6 /* AddSceneViewController.m */; };
@@ -902,6 +903,8 @@
 		5760DCBE20970801009F0C2E /* in_login_newlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_newlogo.png; path = UniversalApp/Modules/Login/Resource/in_login_newlogo.png; sourceTree = SOURCE_ROOT; };
 		57AD8C2020A1E33F007F5669 /* GetDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetDeviceViewController.h; sourceTree = "<group>"; };
 		57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetDeviceViewController.m; sourceTree = "<group>"; };
+		57B34F4A20A47AD300B58CAC /* SensorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorViewController.h; sourceTree = "<group>"; };
+		57B34F4B20A47AD300B58CAC /* SensorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SensorViewController.m; sourceTree = "<group>"; };
 		57D1A5B020A06A3600E56DE6 /* HouseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HouseViewController.h; sourceTree = "<group>"; };
 		57D1A5B120A06A3600E56DE6 /* HouseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HouseViewController.m; sourceTree = "<group>"; };
 		57D1A5B320A07FDE00E56DE6 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -1302,6 +1305,8 @@
 				57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */,
 				57F1616F20A328A6007B579A /* OperateSensorViewController.h */,
 				57F1617020A328A6007B579A /* OperateSensorViewController.m */,
+				57B34F4A20A47AD300B58CAC /* SensorViewController.h */,
+				57B34F4B20A47AD300B58CAC /* SensorViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2817,6 +2822,7 @@
 				290DE9261ED19B7F00A45FF6 /* AppManager.m in Sources */,
 				2914E4931F20A4F8001C01DB /* ProfileViewController.m in Sources */,
 				2973A81A1EDEE6BE002751F0 /* GameInfo.m in Sources */,
+				57B34F4C20A47AD300B58CAC /* SensorViewController.m in Sources */,
 				290A97DD1F4AB24A006BF882 /* TagsViewController.m in Sources */,
 				57D1A5D720A0915400E56DE6 /* SelectSensorViewController.m in Sources */,
 				296DEA711F5D50D100C6FD00 /* TADotView.m in Sources */,
