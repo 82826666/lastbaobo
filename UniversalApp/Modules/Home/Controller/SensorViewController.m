@@ -16,6 +16,7 @@
 @property(nonatomic, strong) NSString *devid;
 @property(nonatomic, strong) NSMutableDictionary *room;
 @property(nonatomic,strong) NSString *saveStatus;
+@property(nonatomic, strong) UISlider *slider;
 @end
 
 @implementation SensorViewController
@@ -41,20 +42,20 @@
     _topLabel = [[function sharedManager] getLabel:CGRectMake(KScreenWidth / 2, 80, 80, 30) text:@""];
     [self.view addSubview:_topLabel];
     
-    UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(50, 100, KScreenWidth - 2*50, 30)];
-    
-    [slider addTarget:self action:@selector(sliderMethod:) forControlEvents:UIControlEventValueChanged];
+    _slider = [[UISlider alloc] initWithFrame:CGRectMake(50, 100, KScreenWidth - 2*50, 30)];
+    [_slider setContinuous:YES];
+    [_slider addTarget:self action:@selector(sliderMethod:) forControlEvents:UIControlEventValueChanged];
 //    [slider addTarget:self action:@selector(cancle:) forControlEvents:UIControlEventTouchCancel];
-    [slider setMaximumValue:100];
-    [slider setMinimumValue:0];
-    [slider setMinimumTrackTintColor:[UIColor colorWithRed:255.0f/255.0f green:151.0f/255.0f blue:0/255.0f alpha:1]];
-    [self.view addSubview:slider];
+    [_slider setMaximumValue:100];
+    [_slider setMinimumValue:0];
+    [_slider setMinimumTrackTintColor:[UIColor colorWithRed:255.0f/255.0f green:151.0f/255.0f blue:0/255.0f alpha:1]];
+    [self.view addSubview:_slider];
     
     CGFloat width = KScreenWidth / 3;
     UIButton *openBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     openBtn.tag = 988;
     [openBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
-    openBtn.frame = CGRectMake(0, slider.bottom + 60, width, 60);
+    openBtn.frame = CGRectMake(0, _slider.bottom + 60, width, 60);
     UIImageView *openImageView = [[function sharedManager] getImageView:CGRectMake((width - 40)/2, 10, 40, 40) imageName:@"in_curtain_open1"];
     UILabel *openLabel = [[function sharedManager] getLabel:CGRectMake((openBtn.width - 40) / 2, openImageView.bottom + 10, 40, 20) text:@"开启"];
     [openBtn addSubview:openImageView];
@@ -63,7 +64,7 @@
     UIButton *stopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [stopBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
     stopBtn.tag = 989;
-    stopBtn.frame = CGRectMake(openBtn.right, slider.bottom + 60, width, 60);
+    stopBtn.frame = CGRectMake(openBtn.right, _slider.bottom + 60, width, 60);
     UIImageView *stopImageView = [[function sharedManager] getImageView:CGRectMake((width - 40)/2, 10, 40, 40) imageName:@"in_curtain_stop1"];
     UILabel *stopLabel = [[function sharedManager] getLabel:CGRectMake((stopBtn.width - 40) / 2, stopImageView.bottom + 10, 40, 20) text:@"暂停"];
     [stopBtn addSubview:stopImageView];
@@ -73,7 +74,7 @@
     [closeBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
     closeBtn.tag = 990;
     [closeBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
-    closeBtn.frame = CGRectMake(stopBtn.right, slider.bottom + 60, width, 60);
+    closeBtn.frame = CGRectMake(stopBtn.right, _slider.bottom + 60, width, 60);
     UIImageView *closeImageView = [[function sharedManager] getImageView:CGRectMake((width - 40)/2, 10, 40, 40) imageName:@"in_curtain_close1"];
     UILabel *closeLabel = [[function sharedManager] getLabel:CGRectMake((closeBtn.width - 40) / 2, closeImageView.bottom + 10, 40, 20) text:@"关闭"];
     [closeBtn addSubview:closeImageView];
@@ -93,16 +94,25 @@
     roomBtn.tag = 992;
     [roomBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
     UIView *line2 = [self getLine:CGRectMake(0, roomBtn.top, KScreenWidth, 0.5)];
-    UILabel *roomLabel = [[function sharedManager]getLabel:CGRectMake(20, roomBtn.top + 10, 80, 30) text:@"开关名称"];
+    UILabel *roomLabel = [[function sharedManager]getLabel:CGRectMake(20, roomBtn.top + 10, 80, 30) text:@"区域名称"];
     _roomDetailLabel = [[function sharedManager]getLabel:CGRectMake(100, roomBtn.top + 10, KScreenWidth - 100 - 40, 30) text:@""];
     _roomDetailLabel.textAlignment = NSTextAlignmentRight;
-//    if (_dic != nil) {
-//        _nameDetailLabel.text = [_dic objectForKey:@"name"];
-//        _roomDetailLabel.text = [self.room objectForKey:[_dic objectForKey:@"room_id"]];
-//        _roomDetailLabel.accessibilityLabel = [_dic objectForKey:@"room_id"];
-//    }
     UIImageView *line2ImageView = [[function sharedManager]getImageView:CGRectMake(KScreenWidth - 30, roomBtn.top + 15, 10, 20) imageName:@"in_arrow_right"];
     UIView *line3 = [self getLine:CGRectMake(0, roomBtn.bottom, KScreenWidth, 0.5)];
+    
+    if (_dic != nil) {
+        _nameDetailLabel.text = [_dic objectForKey:@"name"];
+        NSString *roomid = [_dic objectForKey:@"room_id"];
+        _roomDetailLabel.text = [self.room objectForKey:roomid];
+        _roomDetailLabel.accessibilityLabel = [_dic objectForKey:@"room_id"];
+        NSArray *setting = [[function sharedManager]stringToJSON:[_dic objectForKey:@"setting"]];
+        NSDictionary *dic = [setting objectAtIndex:0];
+        CGFloat level = [[dic objectForKey:@"level"] integerValue];
+        NSArray *arr = [[NSString stringWithFormat:@"%f",level] componentsSeparatedByString:@"."];
+        [_slider setValue:[[arr objectAtIndex:0]integerValue] / 10];
+        NSString *ext = @"%";
+        _topLabel.text = [NSString stringWithFormat:@"%ld%@",[[arr objectAtIndex:0]integerValue]/10,ext];
+    }
     
     [self.view addSubview:openBtn];
     [self.view addSubview:stopBtn];
@@ -151,14 +161,16 @@
                                  };
         [self sendCmd:params];
     }else if (btn.tag == 989){
+        NSArray *arr = [[NSString stringWithFormat:@"%f",_slider.value] componentsSeparatedByString:@"."];
+        CGFloat level = [[arr objectAtIndex:0]integerValue];
         if (_dic == nil) {
             type = 20511;
-            cmd = @{@"mac":_mac,@"type":@(20511),@"cmd":@"edit",@"value":@(1),@"ch":@(1),@"level":@(1000)};
+            cmd = @{@"mac":_mac,@"type":@(20511),@"cmd":@"edit",@"value":@(0),@"ch":@(1),@"level":@(level* 10)};
         }else{
             type = [[_dic objectForKey:@"type"] integerValue];
             CGFloat devid = [[_dic objectForKey:@"devid"] integerValue];
             CGFloat ch = [[_dic objectForKey:@"ch1"] integerValue];
-            cmd = @{@"devid":@(devid),@"type":@(type),@"cmd":@"edit",@"value":@(1),@"ch":@(ch),@"level":@(1000)};
+            cmd = @{@"devid":@(devid),@"type":@(type),@"cmd":@"edit",@"value":@(0),@"ch":@(ch),@"level":@(level * 10)};
         }
         NSDictionary *params = @{
                                  @"master_id":GET_USERDEFAULT(MASTER_ID),
@@ -169,12 +181,12 @@
     }else if (btn.tag == 990){
         if (_dic == nil) {
             type = 20511;
-            cmd = @{@"mac":_mac,@"type":@(20511),@"cmd":@"edit",@"value":@(1),@"ch":@(1),@"level":@(1000)};
+            cmd = @{@"mac":_mac,@"type":@(20511),@"cmd":@"edit",@"value":@(1),@"ch":@(1),@"level":@(0)};
         }else{
             type = [[_dic objectForKey:@"type"] integerValue];
             CGFloat devid = [[_dic objectForKey:@"devid"] integerValue];
             CGFloat ch = [[_dic objectForKey:@"ch1"] integerValue];
-            cmd = @{@"devid":@(devid),@"type":@(type),@"cmd":@"edit",@"value":@(1),@"ch":@(ch),@"level":@(1000)};
+            cmd = @{@"devid":@(devid),@"type":@(type),@"cmd":@"edit",@"value":@(1),@"ch":@(ch),@"level":@(0)};
         }
         NSDictionary *params = @{
                                  @"master_id":GET_USERDEFAULT(MASTER_ID),
@@ -196,11 +208,13 @@
         sheetView.delegate = self;
         [sheetView showWithBlock:completeBlock];
     }else if (tag == 1000){
-
         NSMutableArray *setting = [NSMutableArray new];
-        NSDictionary *dic = @{@"ch":@(1),@"name":_nameDetailLabel.text,@"icon":@(20511),@"status":@(0),@"order":@(1)};
+        NSArray *arr = [[NSString stringWithFormat:@"%f",_slider.value] componentsSeparatedByString:@"."];
+        NSDictionary *dic = @{@"ch":@(1),@"name":_nameDetailLabel.text,@"icon":@(20511),@"status":@(0),@"order":@(1),@"level":@([[arr objectAtIndex:0] integerValue] * 10)};
         [setting addObject:dic];
         if (_dic != nil) {
+//            DLog(@"name:%@",_nameDetailLabel.text);
+//            DLog(@"room_id:%@",_roomDetailLabel.accessibilityLabel);
             NSDictionary *params = @{
                                      @"device_id":[_dic objectForKey:@"id"],
                                      @"name":_nameDetailLabel.text,
@@ -208,6 +222,7 @@
                                      @"setting":[[function sharedManager]formatToJson:setting],
                                      @"icon":@(20511),//[CommonCode getImageType:@"in_equipment_switch_one"]
                                      };
+            DLog(@"params:%@",params);
             [[APIManager sharedManager]deviceDeviceEditWithParameters:params success:^(id data) {
                 NSDictionary *datadic = data;
                 if([[datadic objectForKey:@"code"] intValue] == 200){
@@ -250,10 +265,11 @@
 
 - (void)roomDidSelect:(NSDictionary*)dic{
     _roomDetailLabel.text = [dic objectForKey:@"name"];
-    _roomDetailLabel.accessibilityLabel = [dic objectForKey:@"room_id"];
+    _roomDetailLabel.accessibilityLabel = [dic objectForKey:@"id"];
 }
 
 -(void)sendCmd:(NSDictionary*)params{
+    DLog(@"params:%@",params);
     [[APIManager sharedManager]deviceZigbeeCmdsWithParameters:params success:^(id data) {
         NSDictionary *datadic = data;
         if([[datadic objectForKey:@"code"] intValue] == 200 ){
@@ -270,18 +286,19 @@
 
 
 -(void)loadData{
-    [[APIManager sharedManager]deviceGetDevidWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
-        if ([[data objectForKey:@"code"] integerValue] == 200) {
-            _devid = [data objectForKey:@"data"];
-        }else{
-            [MBProgressHUD showErrorMessage:@"信息获取错误"];
-        }
-    } failure:^(NSError *error) {
-        [MBProgressHUD showErrorMessage:@"服务器错误"];
-    }];
+    if (_dic == nil) {
+        [[APIManager sharedManager]deviceGetDevidWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
+            if ([[data objectForKey:@"code"] integerValue] == 200) {
+                _devid = [data objectForKey:@"data"];
+            }else{
+                [MBProgressHUD showErrorMessage:@"信息获取错误"];
+            }
+        } failure:^(NSError *error) {
+            [MBProgressHUD showErrorMessage:@"服务器错误"];
+        }];
+    }
     [[APIManager sharedManager]deviceGetMasterRoomWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSDictionary *dic = data;
-        //        DLog(@"room:%@",dic);
         if ([[dic objectForKey:@"code"]integerValue] == 200) {
             [self.room removeAllObjects];
             NSArray *room = [dic objectForKey:@"data"];

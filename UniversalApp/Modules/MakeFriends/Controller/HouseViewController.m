@@ -88,7 +88,15 @@ static NSString *headerReuseIdentifier = @"hearderID";
     imageView.centerX = cell.contentView.centerX;
     
     UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
-    if(type != 20511){
+    if(type == 25711){
+        sup.frame = CGRectMake(10, -5, cell.width, 30);
+        NSArray *setting = [[function sharedManager]stringToJSON:[dic objectForKey:@"setting"]];
+        CGFloat status1 = [[[setting objectAtIndex:0] objectForKey:@"status"] integerValue];
+        CGFloat status2 = [[[setting objectAtIndex:1] objectForKey:@"status"] integerValue];
+        NSString *ext = @"%";
+        sup.text = [NSString stringWithFormat:@"%.2f℃ %.2f%@",status1/100,status2/100,ext];
+        sup.font = SYSTEMFONT(8);
+    }else if(type != 20511){
         sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
     }
     sup.accessibilityIdentifier = [dic objectForKey:@"type"];
@@ -201,8 +209,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
             [MBProgressHUD showErrorMessage:@"系统发生错误"];
         }];
     }
-    
-    
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
