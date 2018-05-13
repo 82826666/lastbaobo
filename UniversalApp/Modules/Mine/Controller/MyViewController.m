@@ -38,11 +38,10 @@
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     static NSString *cellId = @"identifier";
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    [cell removeAllSubviews];
-    //如果队列中没有该类型cell，则会返回nil，这个时候就需要自己创建一个cell
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    if (!cell) {//这里判断Identifier所属队列里有没有cell，没有就创建cell，有就跳过不创建。这也是复用的关键步骤，这里会先创建tableview能显示的最大cell数。
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];//这里就是创建cell并且绑定Identifier，同时放入相应队列中去。
     }
+    
     NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
     NSDictionary *dic = [arr objectAtIndex:indexPath.row];
     if (indexPath.section != 3) {

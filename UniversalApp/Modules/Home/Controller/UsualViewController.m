@@ -259,6 +259,7 @@ NS_ENUM(NSInteger,deviceState){
     sup.accessibilityIdentifier = [dic objectForKey:@"type"];
     sup.accessibilityValue = @"0";
     sup.tag = 2330;
+    sup.font = SYSTEMFONT(15);
     
     UILabel *name = [[UILabel alloc]initWithFrame:CGRectMake(0, imageView.bottom, KScreenWidth/4, 30)];
     name.textAlignment = NSTextAlignmentCenter;
