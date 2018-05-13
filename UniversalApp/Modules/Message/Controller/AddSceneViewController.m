@@ -143,13 +143,13 @@ NS_ENUM(NSInteger, enableState){
             }
         }
         detailText = [NSString stringWithFormat:@"重复星期:%@",detailText];
-        imageStr = [dic objectForKey:@"type"];
+        imageStr = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"type"]];
     }else if (type == 20111 || type == 20121 || type == 20131 || type == 20141){
         imageStr = [[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]];
         titleText = [dic objectForKey:@"name1"];
         detailText = [[dic objectForKey:@"status1"] integerValue] == 0 ? @"关" : @"开";
     }else if (type == 33011){
-        imageStr = @"33011";
+        imageStr = [[Picture sharedPicture]geticonTostr:@"33011"];
         titleText = [NSString stringWithFormat:@"延时: %@秒",[dic objectForKey:@"value"]];
         detailText = @"";
     }else if (type == 310110){

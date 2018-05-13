@@ -85,10 +85,11 @@ static NSString *identifier = @"cellID";
     
     UISwitch *swt = [[UISwitch alloc]initWithFrame:CGRectMake(KScreenWidth - 51 - 20, 10, 51, 30)];
     if ([[dic objectForKey:@"enable"]integerValue] == 1) {
-        [swt setOn:YES animated:YES];
+        [swt setOn:YES animated:NO];
     }else{
-        [swt setOn:NO animated:YES];
+        [swt setOn:NO animated:NO];
     }
+    swt.tag = [[dic objectForKey:@"scene_id"]integerValue];
     [swt addTarget:self action:@selector(swtClick:) forControlEvents:UIControlEventValueChanged];
     
     
@@ -108,11 +109,11 @@ static NSString *identifier = @"cellID";
 //代理的优先级比属性高
 //点击时间监听
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    [self alertMsg:@"确定要退出？" cancelAction:^(UIAlertAction * _Nonnull action) {
-        
-    } successAction:^(UIAlertAction * _Nonnull action) {
-        
-    }];
+//    [self alertMsg:@"确定要退出？" cancelAction:^(UIAlertAction * _Nonnull action) {
+//
+//    } successAction:^(UIAlertAction * _Nonnull action) {
+//
+//    }];
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -152,7 +153,7 @@ static NSString *identifier = @"cellID";
     [[APIManager sharedManager]deviceGetSceneListsWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSDictionary *dic = data;
         self.dataSouce = [NSMutableArray new];
-        if ([[dic objectForKey:@"data"] count] > 0) {
+        if(ValidArray([dic objectForKey:@"data"])){
             NSArray *arr = [dic objectForKey:@"data"];
             for (int i = 0; i < arr.count; i++) {
                 [self.dataSouce addObject:[arr objectAtIndex:i]];
@@ -172,16 +173,17 @@ static NSString *identifier = @"cellID";
         [self alertMsg:@"确定要删除此情景吗？" cancelAction:^(UIAlertAction * _Nonnull action) {
             
         } successAction:^(UIAlertAction * _Nonnull action) {
-            [[APIManager sharedManager]deviceDeleteSceneWithParameters:@{@"scene_id":[dic objectForKey:@"id"]} success:^(id data) {
+            NSDictionary *params = @{@"scene_id":[dic objectForKey:@"id"]};
+            [[APIManager sharedManager]deviceDeleteSceneWithParameters:params success:^(id data) {
                 NSDictionary *dataDic = data;
                 if ([[dataDic objectForKey:@"code"] integerValue] == 200) {
-                    [MBProgressHUD showErrorMessage:[dic objectForKey:@"msg"]];
+                    [MBProgressHUD showErrorMessage:[dataDic objectForKey:@"msg"]];
                     [self loadData];
                 }else{
-                    
+                    [MBProgressHUD showErrorMessage:[dataDic objectForKey:@"msg"]];
                 }
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD showErrorMessage:@"服务器错误"];
             }];
         }];
     }
@@ -224,11 +226,42 @@ static NSString *identifier = @"cellID";
 }
 
 -(void)swtClick:(UISwitch*)swt{
+    CGFloat tag = swt.tag;
+    NSMutableDictionary *dic = [self.dataSouce objectAtIndex:tag];
+    NSString *enable = @"";
     if (swt.on == YES) {
+        enable = @"2";
         [swt setOn:NO animated:YES];
     }else{
+        enable = @"1";
         [swt setOn:YES animated:YES];
     }
+    NSDictionary *params = @{
+                             @"scene_id":[dic objectForKey:@"id"],
+                             @"name" : [dic objectForKey:@"name"],
+                             @"icon" : [dic objectForKey:@"icon"],
+                             @"condition" : [dic objectForKey:@"condition"],
+                             @"action" : [dic objectForKey:@"action"],
+                             @"message" : [dic objectForKey:@"message"],
+                             @"is_push" : [dic objectForKey:@"is_push"],
+                             @"enable" : enable
+                             };
+    [[APIManager sharedManager]deviceEditSceneWithParameters:params success:^(id data) {
+        if ([[data objectForKey:@"code"] integerValue] == 200) {
+            [MBProgressHUD showSuccessMessage:[data objectForKey:@"msg"]];
+        }else{
+            [MBProgressHUD showErrorMessage:[data objectForKey:@"msg"]];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD showErrorMessage:@"服务器异常"];
+    }];
+//    DLog(@"params:%@",params);
+//    [dic removeObjectForKey:@"enable"];
+//    DLog(@"dic:%@",dic);
+//    [dic setObject:enable forKey:@"enable"];
+//    DLog(@"dic:%@",dic);
+//    [dic setObject:enable forKey:@"enable"];
+//    DLog(@"dic:%@",dic);
 }
 -(void)naviBtnClick:(UIButton*)btn{
     CGFloat tag = btn.tag;

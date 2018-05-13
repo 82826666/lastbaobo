@@ -11,6 +11,7 @@
 #import "KeyViewController.h"
 #import "OperateSensorViewController.h"
 #import "SensorViewController.h"
+#import "humitureViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 @interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -33,7 +34,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 }
 
 -(void)setupUI{
-    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+//    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
     self.title = @"家居";
     //创建布局，苹果给我们提供的流布局
     UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc]init];
@@ -173,6 +174,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
         OperateSensorViewController *vc = [OperateSensorViewController new];
         vc.dic = dic;
         [self pushViewController:vc];
+    }else if(type == 25711){
+        humitureViewController *vc = [humitureViewController new];
+        vc.dic = dic;
+        [self pushViewController:vc];
     }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
         CGFloat value = [label.accessibilityValue integerValue];
         if (value == 1) {
@@ -221,6 +226,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     int itemW = (self.view.frame.size.width - 5*10) / 4;
     return CGSizeMake(itemW, itemW / 0.68);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    return 0;
 }
 
 #pragma mark ————— 懒加载 —————

@@ -22,6 +22,7 @@
 #import "UsualViewController.h"
 #import "HouseViewController.h"
 #import "DetailViewController.h"
+#import "MyViewController.h"
 
 @interface MainTabBarController ()<UITabBarControllerDelegate>
 
@@ -79,7 +80,8 @@
     DetailViewController *msgVC = [DetailViewController new];
     [self setupChildViewController:msgVC title:@"情景" imageName:@"in_bottom_menu_scene" seleceImageName:@"in_bottom_menu_sceneact"];
     
-    MineViewController *mineVC = [[MineViewController alloc]init];
+//    MineViewController *mineVC = [[MineViewController alloc]init];
+    MyViewController *mineVC = [[MyViewController alloc]init];
 //    [self setupChildViewController:mineVC title:@"我的" imageName:@"icon_tabbar_mine" seleceImageName:@"icon_tabbar_mine_selected"];
     [self setupChildViewController:mineVC title:@"设置" imageName:@"in_bottom_menu_my" seleceImageName:@"in_bottom_menu_myact"];
     self.viewControllers = _VCS;

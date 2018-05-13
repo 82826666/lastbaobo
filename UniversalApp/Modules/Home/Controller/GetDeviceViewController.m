@@ -331,7 +331,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
                         //                        }
                         [self.sectionArray addObject:[self.room objectForKey:[NSString stringWithFormat:@"%@",[dic objectForKey:@"room_id"]]]];
                         [self.dataSource addObject:deviceOne];
-                        NSLog(@"da:%@",self.dataSource);
+//                        NSLog(@"da:%@",self.dataSource);
                     }
                     for (int i = 0; i < self.dataSource.count; i++)
                     {

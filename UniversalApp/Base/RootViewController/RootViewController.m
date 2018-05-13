@@ -93,19 +93,19 @@
         _tableView.estimatedSectionFooterHeight = 0;
         
         //头部刷新
-        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
-        header.automaticallyChangeAlpha = YES;
-        header.lastUpdatedTimeLabel.hidden = YES;
-        _tableView.mj_header = header;
+//        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
+//        header.automaticallyChangeAlpha = YES;
+//        header.lastUpdatedTimeLabel.hidden = YES;
+//        _tableView.mj_header = header;
         
         //底部刷新
-        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
+//        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
 //        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
 //        _tableView.mj_footer.ignoredScrollViewContentInsetBottom = 30;
 
-        _tableView.backgroundColor=CViewBgColor;
-        _tableView.scrollsToTop = YES;
-        _tableView.tableFooterView = [[UIView alloc] init];
+//        _tableView.backgroundColor=CViewBgColor;
+//        _tableView.scrollsToTop = YES;
+//        _tableView.tableFooterView = [[UIView alloc] init];
     }
     return _tableView;
 }

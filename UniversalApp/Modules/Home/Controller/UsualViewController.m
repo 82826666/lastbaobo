@@ -227,7 +227,7 @@ NS_ENUM(NSInteger,deviceState){
         nameText = [dic objectForKey:@"name"];
         supText = [[dic objectForKey:@"status"] integerValue] == 1 ? @"开" : @"关";
     }
-        DLog(@"dic:%@",dic);
+//        DLog(@"dic:%@",dic);
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:imageName]];
     imageView.frame = CGRectMake(0, 15, 50, 50);
@@ -419,6 +419,11 @@ NS_ENUM(NSInteger,deviceState){
     return CGSizeMake(0, 50);
 }
 
+//两个cell之间的间距（同一行的cell的间距）
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    return 0;
+}
+
 //设备下拉菜单选择代理
 - (void)didSelectRowAtIndex:(NSInteger)index Title:(NSString *)title Image:(NSString *)image;
 {
@@ -531,8 +536,8 @@ NS_ENUM(NSInteger,deviceState){
 -(void)loadData{
     if (GET_USERDEFAULT(MASTER_ID) > 0) {
         [self getWeather];
-//        [self getSensor];
-//        [self getDevice];
+        [self getSensor];
+        [self getDevice];
     }
 }
 
@@ -587,13 +592,13 @@ NS_ENUM(NSInteger,deviceState){
 -(void)getSensor{
     [[APIManager sharedManager]deviceGetSceneShortcutWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSMutableArray *arr = [data objectForKey:@"data"];
-        DLog(@"sensor:%@",data);
+//        DLog(@"sensor:%@",data);
         if ([arr isKindOfClass:[NSArray class]]) {
             self.sensorArr = arr;
         }else{
             self.sensorArr = [[NSMutableArray alloc]init];
         }
-        DLog(@"sensorArr:%@",self.sensorArr);
+//        DLog(@"sensorArr:%@",self.sensorArr);
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     } failure:^(NSError *error) {
         
@@ -609,7 +614,7 @@ NS_ENUM(NSInteger,deviceState){
         }else{
             self.deviceArr = [[NSMutableArray alloc]init];
         }
-        DLog(@"devicearr:%@",self.deviceArr);
+//        DLog(@"devicearr:%@",self.deviceArr);
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];
     } failure:^(NSError *error) {
         
