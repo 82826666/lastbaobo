@@ -65,7 +65,10 @@ static NSString *identifier = @"cellID";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dic = [self.dataSouce objectAtIndex:indexPath.section];
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    [cell.contentView removeAllSubviews];
+//    if (cell == nil) {
+//        cell = [[UICollectionViewCell alloc]dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+//    }
+//    [cell.contentView removeAllSubviews];
     
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:[[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon"]]]];
@@ -230,22 +233,33 @@ static NSString *identifier = @"cellID";
     NSMutableDictionary *dic = [self.dataSouce objectAtIndex:tag];
     NSString *enable = @"";
     if (swt.on == YES) {
-        enable = @"2";
+        enable = @"0";
         [swt setOn:NO animated:YES];
     }else{
         enable = @"1";
         [swt setOn:YES animated:YES];
     }
+    NSArray *conArr = [dic objectForKey:@"condition"];
+    NSMutableArray *condition = [NSMutableArray new];
+    for (int i = 0; i<conArr.count; i++) {
+        [condition addObject:[conArr objectAtIndex:i]];
+    }
+    NSArray *actArr = [dic objectForKey:@"action"];
+    NSMutableArray *action = [NSMutableArray new];
+    for (int i = 0; i<actArr.count; i++) {
+        [action addObject:[actArr objectAtIndex:i]];
+    }
     NSDictionary *params = @{
                              @"scene_id":[dic objectForKey:@"id"],
                              @"name" : [dic objectForKey:@"name"],
                              @"icon" : [dic objectForKey:@"icon"],
-                             @"condition" : [dic objectForKey:@"condition"],
-                             @"action" : [dic objectForKey:@"action"],
+                             @"condition" :[[function sharedManager]formatToJson:condition],
+                             @"action" : [[function sharedManager]formatToJson:action],
                              @"message" : [dic objectForKey:@"message"],
                              @"is_push" : [dic objectForKey:@"is_push"],
                              @"enable" : enable
                              };
+    DLog(@"param:%@",params);
     [[APIManager sharedManager]deviceEditSceneWithParameters:params success:^(id data) {
         if ([[data objectForKey:@"code"] integerValue] == 200) {
             [MBProgressHUD showSuccessMessage:[data objectForKey:@"msg"]];

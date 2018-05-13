@@ -169,6 +169,7 @@
 }
 #pragma mark 修改情景
 - (void)deviceEditSceneWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure {
+//    DLog(@"param:%@",dic);
     NSString *path = [self getPathWithInterface:@"/device/scene/edit_scene"];
     [PPNetworkHelper postRequestWithUrl:path params:dic success:success failure:failure];
 }

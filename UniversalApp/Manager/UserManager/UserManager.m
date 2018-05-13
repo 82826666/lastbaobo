@@ -88,11 +88,17 @@ SINGLETON_FOR_CLASS(UserManager);
                 msg = [datadic objectForKey:@"msg"];
             }else{
                 NSMutableArray *mas = [[datadic objectForKey:@"data"] objectForKey:@"master"];
+//                DLog(@"master:%@",mas);
                 NSString* master_id = @"";
                 NSDictionary* master = [NSDictionary new];
-                if (mas.count > 0) {
-                    master = [[datadic objectForKey:@"data"] objectForKey:@"master"][0];
-                    master_id = [master objectForKey:@"master_id"];
+                if (ValidArray(mas)) {
+                    for (int i=0; i < mas.count; i++) {
+                        master = [mas objectAtIndex:i];
+                        if ([[master objectForKey:@"present"] integerValue] == 1) {
+                            master_id = [master objectForKey:@"master_id"];
+                            break;
+                        }
+                    }
                 }else{
                     master_id = @"0";
                 }

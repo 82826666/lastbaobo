@@ -42,7 +42,6 @@
     //如果队列中没有该类型cell，则会返回nil，这个时候就需要自己创建一个cell
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        
     }
     NSArray *arr = [self.dataSource objectAtIndex:indexPath.section];
     NSDictionary *dic = [arr objectAtIndex:indexPath.row];
