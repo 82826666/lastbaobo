@@ -61,6 +61,7 @@ NS_ENUM(NSInteger,deviceState){
     [super viewDidLoad];
     self.isHidenNaviBar = YES;
     [self setupUI];
+//    printf("rgb=%lu\n", rgb);
     DLog(@"%@",GET_USERDEFAULT(USER_TOKEN));
     // Do any additional setup after loading the view.
 }

@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    DLog(@"dic:%@",_dic);
+//    DLog(@"dic:%@",_dic);
     // Do any additional setup after loading the view.
 }
 
@@ -29,7 +29,7 @@
     UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(50, 100, KScreenWidth - 2*50, 30)];
     
     [slider addTarget:self action:@selector(sliderMethod:) forControlEvents:UIControlEventValueChanged];
-    [slider addTarget:self action:@selector(cancle:) forControlEvents:UIControlEventTouchCancel];
+//    [slider addTarget:self action:@selector(cancle:) forControlEvents:UIControlEventTouchCancel];
     [slider setMaximumValue:100];
     [slider setMinimumValue:0];
     [slider setMinimumTrackTintColor:[UIColor colorWithRed:255.0f/255.0f green:151.0f/255.0f blue:0/255.0f alpha:1]];
@@ -49,7 +49,7 @@
     [stopBtn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
     stopBtn.tag = 989;
     stopBtn.frame = CGRectMake(openBtn.right, slider.bottom + 60, width, 60);
-    UIImageView *stopImageView = [[function sharedManager] getImageView:CGRectMake((width - 40)/2, 10, 40, 40) imageName:@"in_curtain_stop1"];
+    UIImageView *stopImageView = [[function sharedManager] getImageView:CGRectMake((width - 40)/2, 10, 40, 40) imageName:@"color-close"];
     UILabel *stopLabel = [[function sharedManager] getLabel:CGRectMake((stopBtn.width - 40) / 2, stopImageView.bottom + 10, 40, 20) text:@"暂停"];
     [stopBtn addSubview:stopImageView];
     [stopBtn addSubview:stopLabel];

@@ -12,6 +12,7 @@
 #import "OperateSensorViewController.h"
 #import "SensorViewController.h"
 #import "humitureViewController.h"
+#import "AimingSwitchViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 @interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -29,7 +30,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    DLog(@"toten:%@",GET_USERDEFAULT(USER_TOKEN));
+//    DLog(@"toten:%@",GET_USERDEFAULT(USER_TOKEN));
 //    Do any additional setup after loading the view.
 }
 
@@ -97,6 +98,8 @@ static NSString *headerReuseIdentifier = @"hearderID";
         NSString *ext = @"%";
         sup.text = [NSString stringWithFormat:@"%.2f℃ %.2f%@",status1/100,status2/100,ext];
         sup.font = SYSTEMFONT(8);
+    }else if(type == 20211){
+        
     }else if(type != 20511){
         sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
     }
@@ -143,7 +146,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
                                                    initWithTarget:self
                                                    action:@selector(sectionHeaderLongPressed:)];
         longPress.minimumPressDuration = 0.001;
-        longPress.accessibilityValue = [NSString stringWithFormat:@"%ld",indexPath.section];
+        longPress.accessibilityValue = [NSString stringWithFormat:@"%ld",(long)indexPath.section];
         //将长按手势添加到需要实现长按操作的视图里
         [headerView addGestureRecognizer:longPress];
         return headerView;
@@ -170,12 +173,17 @@ static NSString *headerReuseIdentifier = @"hearderID";
     NSDictionary *dic = [arr objectAtIndex:row];
     CGFloat type = [label.accessibilityIdentifier integerValue];
     CGFloat ch;
+    DLog(@"type:%f",type);
     if(type == 20511 || type == 20311){
         OperateSensorViewController *vc = [OperateSensorViewController new];
         vc.dic = dic;
         [self pushViewController:vc];
     }else if(type == 25711){
         humitureViewController *vc = [humitureViewController new];
+        vc.dic = dic;
+        [self pushViewController:vc];
+    }else if(type == 20711){
+        AimingSwitchViewController *vc = [AimingSwitchViewController new];
         vc.dic = dic;
         [self pushViewController:vc];
     }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
@@ -409,6 +417,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
                         //所有的分区都是闭合
                         [self.stateArray addObject:@"1"];
                     }
+//                    DLog(@"datasouce:%@",self.dataSource);
                     [self.collectionView reloadData];
                 }else{
                     

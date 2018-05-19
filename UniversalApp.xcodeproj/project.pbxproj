@@ -365,11 +365,16 @@
 		571D775D209875260066AC9A /* function.m in Sources */ = {isa = PBXBuildFile; fileRef = 571D775C209875260066AC9A /* function.m */; };
 		571D7767209899760066AC9A /* AppDelegate+KeyBoardService.m in Sources */ = {isa = PBXBuildFile; fileRef = 571D7766209899760066AC9A /* AppDelegate+KeyBoardService.m */; };
 		571D776A2098B7A60066AC9A /* MasterInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 571D77692098B7A60066AC9A /* MasterInfo.m */; };
+		573FB89420A9C45000901F38 /* AimingSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 573FB89320A9C45000901F38 /* AimingSwitchViewController.m */; };
 		5760DCB620970326009F0C2E /* AccountLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5760DCB520970326009F0C2E /* AccountLoginViewController.m */; };
 		5760DCBF20970801009F0C2E /* in_login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBB20970801009F0C2E /* in_login_logo.png */; };
 		5760DCC020970801009F0C2E /* in_login_people.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBC20970801009F0C2E /* in_login_people.png */; };
 		5760DCC120970801009F0C2E /* in_login_lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBD20970801009F0C2E /* in_login_lock.png */; };
 		5760DCC220970801009F0C2E /* in_login_newlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5760DCBE20970801009F0C2E /* in_login_newlogo.png */; };
+		57781E7D20AFB72800AB7AEE /* hihonmeicon1024@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57781E7C20AFB72800AB7AEE /* hihonmeicon1024@1x.png */; };
+		57781E7F20AFBB2300AB7AEE /* hihonmeicon1024@1x.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 57781E7E20AFBB2300AB7AEE /* hihonmeicon1024@1x.jpeg */; };
+		57781E8A20AFCCA000AB7AEE /* color-close.png in Resources */ = {isa = PBXBuildFile; fileRef = 57781E8820AFCCA000AB7AEE /* color-close.png */; };
+		57781E8B20AFCCA000AB7AEE /* color-open.png in Resources */ = {isa = PBXBuildFile; fileRef = 57781E8920AFCCA000AB7AEE /* color-open.png */; };
 		57927D1320A69271002F5B6C /* humitureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57927D1220A69271002F5B6C /* humitureViewController.m */; };
 		57AD8C2220A1E33F007F5669 /* GetDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57AD8C2120A1E33F007F5669 /* GetDeviceViewController.m */; };
 		57B34F4C20A47AD300B58CAC /* SensorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B34F4B20A47AD300B58CAC /* SensorViewController.m */; };
@@ -911,12 +916,19 @@
 		571D7766209899760066AC9A /* AppDelegate+KeyBoardService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+KeyBoardService.m"; sourceTree = "<group>"; };
 		571D77682098B7A60066AC9A /* MasterInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterInfo.h; sourceTree = "<group>"; };
 		571D77692098B7A60066AC9A /* MasterInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterInfo.m; sourceTree = "<group>"; };
+		573FB89220A9C45000901F38 /* AimingSwitchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AimingSwitchViewController.h; sourceTree = "<group>"; };
+		573FB89320A9C45000901F38 /* AimingSwitchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AimingSwitchViewController.m; sourceTree = "<group>"; };
 		5760DCB420970326009F0C2E /* AccountLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountLoginViewController.h; sourceTree = "<group>"; };
 		5760DCB520970326009F0C2E /* AccountLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountLoginViewController.m; sourceTree = "<group>"; };
 		5760DCBB20970801009F0C2E /* in_login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_logo.png; path = UniversalApp/Modules/Login/Resource/in_login_logo.png; sourceTree = SOURCE_ROOT; };
 		5760DCBC20970801009F0C2E /* in_login_people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_people.png; path = UniversalApp/Modules/Login/Resource/in_login_people.png; sourceTree = SOURCE_ROOT; };
 		5760DCBD20970801009F0C2E /* in_login_lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_lock.png; path = UniversalApp/Modules/Login/Resource/in_login_lock.png; sourceTree = SOURCE_ROOT; };
 		5760DCBE20970801009F0C2E /* in_login_newlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = in_login_newlogo.png; path = UniversalApp/Modules/Login/Resource/in_login_newlogo.png; sourceTree = SOURCE_ROOT; };
+		57781E7B20AF2B3B00AB7AEE /* UniversalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UniversalApp.entitlements; sourceTree = "<group>"; };
+		57781E7C20AFB72800AB7AEE /* hihonmeicon1024@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hihonmeicon1024@1x.png"; sourceTree = "<group>"; };
+		57781E7E20AFBB2300AB7AEE /* hihonmeicon1024@1x.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "hihonmeicon1024@1x.jpeg"; sourceTree = "<group>"; };
+		57781E8820AFCCA000AB7AEE /* color-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "color-close.png"; sourceTree = "<group>"; };
+		57781E8920AFCCA000AB7AEE /* color-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "color-open.png"; sourceTree = "<group>"; };
 		57927D1120A69271002F5B6C /* humitureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = humitureViewController.h; sourceTree = "<group>"; };
 		57927D1220A69271002F5B6C /* humitureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = humitureViewController.m; sourceTree = "<group>"; };
 		57AD8C2020A1E33F007F5669 /* GetDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetDeviceViewController.h; sourceTree = "<group>"; };
@@ -1348,11 +1360,11 @@
 		293D45D31ECD7A4A007C64A9 /* MakeFriends(交友) */ = {
 			isa = PBXGroup;
 			children = (
+				573FB89520A9CFD200901F38 /* Resource */,
 				296F9A041F04F12E00909CDB /* Model */,
 				296F9A071F04F12E00909CDB /* View */,
 				293D45D91ECD7A91007C64A9 /* Controller */,
 				296F9A031F04F12E00909CDB /* Logic */,
-				296F9A051F04F12E00909CDB /* Resource */,
 				296F9A061F04F12E00909CDB /* Service */,
 			);
 			name = "MakeFriends(交友)";
@@ -1362,6 +1374,8 @@
 		293D45D91ECD7A91007C64A9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				573FB89220A9C45000901F38 /* AimingSwitchViewController.h */,
+				573FB89320A9C45000901F38 /* AimingSwitchViewController.m */,
 				29530FA41F60F0E800D24E05 /* DraggingCardViewController.h */,
 				29530FA51F60F0E800D24E05 /* DraggingCardViewController.m */,
 				293D46091ECDAEC6007C64A9 /* MakeFriendsViewController.h */,
@@ -1680,13 +1694,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		296F9A051F04F12E00909CDB /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resource;
-			sourceTree = "<group>";
-		};
 		296F9A061F04F12E00909CDB /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -1881,6 +1888,7 @@
 		296F9EBA1ECC64CE0063A255 /* UniversalApp */ = {
 			isa = PBXGroup;
 			children = (
+				57781E7B20AF2B3B00AB7AEE /* UniversalApp.entitlements */,
 				29AD6C5D1ED3E4D600B0879C /* AppDelegate */,
 				293D45A91ECD6926007C64A9 /* Modules */,
 				293D45A81ECD6926007C64A9 /* Manager */,
@@ -2320,6 +2328,15 @@
 			path = common;
 			sourceTree = "<group>";
 		};
+		573FB89520A9CFD200901F38 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				57781E8820AFCCA000AB7AEE /* color-close.png */,
+				57781E8920AFCCA000AB7AEE /* color-open.png */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		57D1A5BF20A089F300E56DE6 /* KMDatePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2338,6 +2355,8 @@
 		57F1615E20A31C07007B579A /* 应用图标 */ = {
 			isa = PBXGroup;
 			children = (
+				57781E7E20AFBB2300AB7AEE /* hihonmeicon1024@1x.jpeg */,
+				57781E7C20AFB72800AB7AEE /* hihonmeicon1024@1x.png */,
 				57F1616B20A31ECE007B579A /* hihonmeicon60@2x.png */,
 				57F1616C20A31ECE007B579A /* hihonmeicon60@3x.png */,
 				57F1616620A31E4C007B579A /* hihonmeicon29@2x.png */,
@@ -2434,9 +2453,12 @@
 					296F9EB71ECC64CE0063A255 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 4A6RMPCXH3;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -2530,8 +2552,10 @@
 				2917D2071EE007C300E76185 /* MBHUD_Success@2x.png in Resources */,
 				296F9A351F04F39000909CDB /* 6.jpg in Resources */,
 				293D46411ECDBB63007C64A9 /* icon_tabbar_discovery_selected.png in Resources */,
+				57781E8A20AFCCA000AB7AEE /* color-close.png in Resources */,
 				5709F938209D461300CD935B /* in_scene_select_closesafety@2x.png in Resources */,
 				57127020209B67A100FEAE59 /* in_equipment_curtain_blind@3x.png in Resources */,
+				57781E7F20AFBB2300AB7AEE /* hihonmeicon1024@1x.jpeg in Resources */,
 				5709F93D209D461300CD935B /* lamp7@3x.png in Resources */,
 				5709F95C209D461300CD935B /* in_select_switch_four@3x.png in Resources */,
 				57127037209B67A100FEAE59 /* in_equipment_switch_four@3x.png in Resources */,
@@ -2605,6 +2629,7 @@
 				57126FC5209A098A00FEAE59 /* in_common_more_add@3x.png in Resources */,
 				57F1617C20A32CE4007B579A /* in_curtain_stop1@3x.png in Resources */,
 				57127035209B67A100FEAE59 /* in_equipment_sensor_smoke@3x.png in Resources */,
+				57781E8B20AFCCA000AB7AEE /* color-open.png in Resources */,
 				5709F930209D461300CD935B /* in_light1@3x.png in Resources */,
 				5760DCBF20970801009F0C2E /* in_login_logo.png in Resources */,
 				5709F831209D33C200CD935B /* close@3x.png in Resources */,
@@ -2682,6 +2707,7 @@
 				57C516BC20A7FA6B00DF8E47 /* in_setup_host@2x.png in Resources */,
 				5709F92B209D461300CD935B /* in_scene_select_orther@2x.png in Resources */,
 				5712703F209B67A100FEAE59 /* in_equipment_sensor_co@3x.png in Resources */,
+				57781E7D20AFB72800AB7AEE /* hihonmeicon1024@1x.png in Resources */,
 				296F85081FED04EF005612D1 /* close_icon@3x.png in Resources */,
 				293D45A21ECD6422007C64A9 /* LaunchScreen.storyboard in Resources */,
 				57127045209B67A100FEAE59 /* in_camera_select_nightvision@3x.png in Resources */,
@@ -2860,6 +2886,7 @@
 				29AD6C621ED3E4D600B0879C /* AppDelegate+AppService.m in Sources */,
 				296DEA701F5D50D100C6FD00 /* TAAnimatedDotView.m in Sources */,
 				293D46051ECDAA02007C64A9 /* RootNavigationController.m in Sources */,
+				573FB89420A9C45000901F38 /* AimingSwitchViewController.m in Sources */,
 				29AD6C5B1ED3E28800B0879C /* PPNetworkCache.m in Sources */,
 				5709F95F209D484500CD935B /* getSensorViewController.m in Sources */,
 				57D1A5D420A0900400E56DE6 /* SelectSceneViewController.m in Sources */,
@@ -3108,8 +3135,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = UniversalApp/UniversalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 4A6RMPCXH3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3129,8 +3158,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baobo.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b88622c9-786b-42d2-a56e-be0a5c15a1ad";
+				PROVISIONING_PROFILE_SPECIFIER = baobo;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/UniversalApp/Define";
 			};
@@ -3142,8 +3171,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = UniversalApp/UniversalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 4A6RMPCXH3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3163,8 +3194,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.baobo.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b88622c9-786b-42d2-a56e-be0a5c15a1ad";
+				PROVISIONING_PROFILE_SPECIFIER = baobo;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/UniversalApp/Define";
 			};

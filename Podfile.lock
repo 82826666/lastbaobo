@@ -15,7 +15,10 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - IQKeyboardManager (3.3.7)
+  - JCore (1.1.7)
   - JMDropMenu (0.1.1)
+  - JPush (3.0.8):
+    - JCore (~> 1.1.7)
   - Masonry (1.1.0)
   - MBProgressHUD (1.0.0)
   - MJExtension (3.0.13)
@@ -36,6 +39,7 @@ DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - IQKeyboardManager (= 3.3.7)
   - JMDropMenu (~> 0.1.1)
+  - JPush
   - Masonry
   - MBProgressHUD (~> 1.0.0)
   - MJExtension
@@ -49,7 +53,9 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   IQKeyboardManager: 249c3946acf61345c18b038eb50863fe2793e3a8
+  JCore: f7459c81c135281a874a6beafdd321666adcc834
   JMDropMenu: 91bc440a85a7a9aa546283b4d16a0134d9fe261c
+  JPush: 9574d072cc37e93fa293ba69b43ce763c440943a
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJExtension: 5932755f451458eefa24239358817f8d291240c7
@@ -60,6 +66,6 @@ SPEC CHECKSUMS:
   YTKNetwork: df8a7a5597bda1664a4efaa7ef871a818a887fe0
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 5057ac1ab90d2a0bac67cce3cf3c92c1efbc005e
+PODFILE CHECKSUM: 51159172d2d485741465b4678e37dd0558709701
 
 COCOAPODS: 1.4.0

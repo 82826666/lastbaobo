@@ -36,6 +36,9 @@
     //网络监听
     [self monitorNetworkStatus];
     
+    //极光推送
+    [self initPush:launchOptions];
+    
     //键盘
     [self initKeyBoardService];
     

@@ -112,7 +112,7 @@ SINGLETON_FOR_CLASS(UserManager);
                 SET_USERDEFAULT(MASTER_ID, master_id);
                 SET_USERDEFAULT(MASTER, mas);
                 USERDEFAULT_SYN();
-                
+                [self initJupsh];
                 isSuccess = YES;
                 msg = [datadic objectForKey:@"msg"];
                 self.curUserInfo = [UserInfo modelWithDictionary:data];
@@ -252,5 +252,11 @@ SINGLETON_FOR_CLASS(UserManager);
         [userDefaults removeObjectForKey:key];
     }
     [userDefaults synchronize];
+}
+/*设置极光推送别名*/
+-(void)initJupsh{
+    [JPUSHService setAlias:[NSString stringWithFormat:@"%@",GET_USERDEFAULT(USER_ID)] completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        NSLog(@"code:%ld content:%@ seq:%ld",iResCode,iAlias,seq);
+    } seq:0];
 }
 @end
