@@ -37,7 +37,7 @@
     [self monitorNetworkStatus];
     
     //极光推送
-    [self initPush:launchOptions];
+//    [self initPush:launchOptions];
     
     //键盘
     [self initKeyBoardService];

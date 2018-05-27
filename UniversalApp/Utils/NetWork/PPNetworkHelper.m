@@ -162,32 +162,106 @@ static AFHTTPSessionManager *_sessionManager;
  *  @param success  成功Block
  *  @param failure  失败Block
  */
-+ (void)postRequestWithUrl:(NSString *)url client:(NSString*)client params:(NSDictionary *)params success:(void(^)(id json))success failure:(void (^)(NSError *error))failure
++ (void)postRequestWithUrl:(NSString *)url client:(NSString*)client str:(NSString *)str success:(void(^)(id json))success failure:(void (^)(NSError *error))failure
 {
-    //创建管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //1.确定请求路径
+    NSURL *URL = [NSURL URLWithString:url];
     
+    //2.创建一个请求对象
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"text/plain",@"application/text", nil];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json",@"application/x-www-form-urlencoded",@"application/text", nil];
+    // 2.1设置请求方式
+    // 注意: POST一定要大写
+    request.HTTPMethod = @"POST";
     
-    //设置Header
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@",client] forHTTPHeaderField:@"client"];
-    DLog(@"client:%@",client);
-    DLog(@"params:%@",params);
-    //发起请求
-    [manager POST:url parameters:@{@"m":@"none"} progress:^(NSProgress * _Nonnull downloadProgress) {
+    [request setValue:[NSString stringWithFormat:@"%@",client] forHTTPHeaderField:@"client"];
+    
+    // 2.2设置请求体
+    // 注意: 如果是给POST请求传递参数: 那么不需要写?号
+    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //3.把请求发送给服务器,发送一个异步请求
+    /*
+     第一个参数：请求对象
+     第二个参数：回调方法在哪个线程中执行，如果是主队列则block在主线程中执行，非主队列则在子线程中执行
+     第三个参数： completionHandlerBlock块：接受到响应的时候执行该block中的代码
+     response：响应头信息
+     data：响应体
+     connectionError：错误信息，如果请求失败，那么该参数有值
+     */
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse * __nullable response, NSData * __nullable data, NSError * __nullable connectionError) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        DLog(@"error:%@",error);
-        if (failure) {
-            failure(error);
-        }
+        //4.解析服务器返回的数据
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        success(str);
+        //转换并打印响应头信息
+//        NSHTTPURLResponse *r = (NSHTTPURLResponse *)response;
+//        DLog(@"str:%@",str);
+//        DLog(@"r:%@",r);
     }];
+
+    
+//     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+//    NSString *boundary = [NSString stringWithFormat:@"Boundary+%08X%08X", arc4random(), arc4random()];
+//    NSMutableData *body = [NSMutableData data];
+//    [params enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+//        NSMutableString *fieldStr = [NSMutableString string];
+//        [fieldStr appendString:[NSString stringWithFormat:@"–%@\r\n", boundary]];
+//        [fieldStr appendString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key]];
+//        [fieldStr appendString:[NSString stringWithFormat:@"%@", obj]];
+//        [body appendData:[fieldStr dataUsingEncoding:NSUTF8StringEncoding]];
+//        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//    }];
+//    NSString *bottomStr = [NSString stringWithFormat:@"–%@–", boundary];
+//    [body appendData:[bottomStr dataUsingEncoding:NSUTF8StringEncoding]];
+//    // 设置请求类型为post请求
+//    request.HTTPMethod = @"POST";
+//    // 设置request的请求体
+//    request.HTTPBody = body;
+//    // 设置头部数据，标明上传数据总大小，用于服务器接收校验
+//    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)body.length] forHTTPHeaderField:@"Content-Length"];
+//    // 设置头部数据，指定了http post请求的编码方式为multipart/form-data（上传文件必须用这个）。
+//    [request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary] forHTTPHeaderField:@"Content-Type"];
+//    [request setValue:[NSString stringWithFormat:@"%@",client] forHTTPHeaderField:@"client"];
+////    [request setValue:[NSString stringWithFormat:@"/chip/m.php HTTP/1.1"] forHTTPHeaderField:@"POST"];
+////    [request setValue:[NSString stringWithFormat:@"api.yaokongyun.cn"] forHTTPHeaderField:@"Host"];
+//    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//        DLog(@"str%@",str);
+//        //转换并打印响应头信息
+//        NSHTTPURLResponse *r = (NSHTTPURLResponse *)response;
+//
+//        NSLog(@"Result--%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+//        DLog(@"response%@",r);
+//        DLog(@"connectionError%@",connectionError);
+//    }];
+    
+    
+//    //创建管理者
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//
+//
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"text/plain",@"application/text", nil];
+////    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json",@"application/x-www-form-urlencoded",@"application/text", nil];
+//
+//    //设置Header
+//    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@",client] forHTTPHeaderField:@"client"];
+//    DLog(@"client:%@",client);
+//    DLog(@"params:%@",params);
+//    //发起请求
+//    [manager POST:url parameters:@{@"m":@"none"} progress:^(NSProgress * _Nonnull downloadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        if (success) {
+//            success(responseObject);
+//        }
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        DLog(@"error:%@",error);
+//        if (failure) {
+//            failure(error);
+//        }
+//    }];
 }
 #pragma mark - GET请求无缓存
 + (NSURLSessionTask *)GET:(NSString *)URL

@@ -32,6 +32,8 @@ static NSString *headerReuseIdentifier = @"hearderID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
+    DeviceTypeViewController *vc = [DeviceTypeViewController new];
+    [self pushViewController:vc];
 //    DLog(@"toten:%@",GET_USERDEFAULT(USER_TOKEN));
 //    Do any additional setup after loading the view.
 }

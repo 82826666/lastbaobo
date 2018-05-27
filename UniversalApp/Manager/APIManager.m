@@ -363,10 +363,18 @@
     NSString *path = [self getPathWithInterface:@"/device/gatelock/create_user"];
     [PPNetworkHelper postRequestWithUrl:path params:dic success:success failure:failure];
 }
+#pragma mark 获取品牌列表
+-(void)getBrandWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure {
+    NSString *path = @"https://api.yaokongyun.cn/chip/m.php";
+    NSString *client = [[function sharedManager] getRfClient:[dic objectForKey:@"t"] v:[dic objectForKey:@"v"] f:[dic objectForKey:@"f"] bid:[dic objectForKey:@"bid"]];
+    NSString *str = [NSString stringWithFormat:@"c=%@&m=%@&bid=%@&appid=%@&t=%@&v=%@&f=%@",[dic objectForKey:@"c"],[dic objectForKey:@"m"],[dic objectForKey:@"bid"],[dic objectForKey:@"appid"],[dic objectForKey:@"t"],[dic objectForKey:@"v"],[dic objectForKey:@"f"]];
+    [PPNetworkHelper postRequestWithUrl:path client:client str:str success:success failure:failure];
+}
 #pragma mark 根据品牌获取相应的设备
 -(void)getBrandDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure {
     NSString *path = @"https://api.yaokongyun.cn/chip/m.php";
     NSString *client = [[function sharedManager] getRfClient:[dic objectForKey:@"t"] v:[dic objectForKey:@"v"] f:[dic objectForKey:@"f"] bid:[dic objectForKey:@"bid"]];
-    [PPNetworkHelper postRequestWithUrl:path client:client params:dic success:success failure:failure];
+    NSString *str = [NSString stringWithFormat:@"c=%@&m=%@&bid=%@&appid=%@&t=%@&v=%@&f=%@",[dic objectForKey:@"c"],[dic objectForKey:@"m"],[dic objectForKey:@"bid"],[dic objectForKey:@"appid"],[dic objectForKey:@"t"],[dic objectForKey:@"v"],[dic objectForKey:@"f"]];
+    [PPNetworkHelper postRequestWithUrl:path client:client str:str success:success failure:failure];
 }
 @end

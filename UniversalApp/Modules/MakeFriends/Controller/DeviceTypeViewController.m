@@ -7,6 +7,7 @@
 //
 
 #import "DeviceTypeViewController.h"
+#import "SearchViewController.h"
 
 @interface DeviceTypeViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic, strong) NSMutableArray *dataSouce;
@@ -64,11 +65,17 @@
 -(void)initData{
     if (_dataSouce == nil) {
         _dataSouce = [NSMutableArray new];
-        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"title"}];
-        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"title"}];
+        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"空调",@"t":@"7"}];
+        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"电视",@"t":@"2"}];
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *row = [_dataSouce objectAtIndex:indexPath.row];
+    SearchViewController *search = [SearchViewController new];
+    search.dic = row;
+    [self pushViewController:search];
+}
 /*
 #pragma mark - Navigation
 

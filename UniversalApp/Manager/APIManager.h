@@ -138,6 +138,8 @@
 - (void)userAddMasterAuthWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 #pragma mark 6.8请求主机创建门锁用户
 - (void)deviceCreateUserWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 获取品牌列表
+-(void)getBrandWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 #pragma mark 根据品牌获取相应的设备
 -(void)getBrandDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 @end
