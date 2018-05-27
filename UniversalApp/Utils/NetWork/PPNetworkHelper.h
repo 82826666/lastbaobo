@@ -207,6 +207,15 @@ typedef void(^PPNetworkStatus)(PPNetworkStatusType status);
  */
 + (void)postRequestWithUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(id json))success failure:(void (^)(NSError *error))failure;
 /**
+ *  rf普通Post请求
+ *
+ *  @param url      Url地址
+ *  @param params   参数
+ *  @param success  成功Block
+ *  @param failure  失败Block
+ */
++ (void)postRequestWithUrl:(NSString *)url client:(NSString*)client params:(NSDictionary *)params success:(void(^)(id json))success failure:(void (^)(NSError *error))failure;
+/**
  *  POST请求,自动缓存
  *
  *  @param URL           请求地址

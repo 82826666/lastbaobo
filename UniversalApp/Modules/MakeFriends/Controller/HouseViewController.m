@@ -13,6 +13,8 @@
 #import "SensorViewController.h"
 #import "humitureViewController.h"
 #import "AimingSwitchViewController.h"
+#import "DeviceTypeViewController.h"
+#import "AddAimingSwitchViewController.h"
 static NSString *identifier = @"cellID";
 static NSString *headerReuseIdentifier = @"hearderID";
 @interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -100,7 +102,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
         sup.font = SYSTEMFONT(8);
     }else if(type == 20211){
         
-    }else if(type != 20511){
+    }else if(type != 20511 || type != 20711){
         sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
     }
     sup.accessibilityIdentifier = [dic objectForKey:@"type"];
@@ -173,7 +175,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     NSDictionary *dic = [arr objectAtIndex:row];
     CGFloat type = [label.accessibilityIdentifier integerValue];
     CGFloat ch;
-    DLog(@"type:%f",type);
+//    DLog(@"type452:%f",type);
     if(type == 20511 || type == 20311){
         OperateSensorViewController *vc = [OperateSensorViewController new];
         vc.dic = dic;
@@ -185,6 +187,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
     }else if(type == 20711){
         AimingSwitchViewController *vc = [AimingSwitchViewController new];
         vc.dic = dic;
+//        DeviceTypeViewController *vc = [DeviceTypeViewController new];
         [self pushViewController:vc];
     }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
         CGFloat value = [label.accessibilityValue integerValue];
@@ -302,6 +305,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
                         SensorViewController *vc = [SensorViewController new];
                         vc.dic = rowDic;
                         [self pushViewController:vc];
+                    }else if(type == 20711){
+                        AddAimingSwitchViewController *vc = [AddAimingSwitchViewController new];
+                        vc.dic = rowDic;
+                        [self pushViewController:vc];
                     }else if(type == 20111 || type == 20121 || type == 20131 || type == 20141){
                         KeyViewController *con = [KeyViewController new];
                         if (type == 20111) {
@@ -417,7 +424,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
                         //所有的分区都是闭合
                         [self.stateArray addObject:@"1"];
                     }
-//                    DLog(@"datasouce:%@",self.dataSource);
+                    DLog(@"datasouce:%@",self.dataSource);
                     [self.collectionView reloadData];
                 }else{
                     

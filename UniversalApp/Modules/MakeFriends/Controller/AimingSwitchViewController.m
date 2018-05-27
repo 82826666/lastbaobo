@@ -12,6 +12,7 @@
 @property(nonatomic, strong) UIImage *image;
 @property(nonatomic, strong) UIView *backgroudView;
 @property(nonatomic, strong) UILabel *topLabel;
+@property(nonatomic, strong) UIImageView *dotImageView;
 @end
 
 @implementation AimingSwitchViewController
@@ -38,6 +39,10 @@
     self.image = [UIImage imageNamed:@"color-open"];
     imageView.image = self.image;
     [self.view addSubview:imageView];
+    
+    _dotImageView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 60, 20, 20)];
+    _dotImageView.image = [UIImage imageNamed:@"dot"];
+    [self.view addSubview:_dotImageView];
 
     _topLabel = [[function sharedManager] getLabel:CGRectMake(KScreenWidth / 2, imageView.bottom + 50, 80, 30) text:@""];
     [self.view addSubview:_topLabel];
@@ -58,9 +63,7 @@
     _topLabel.text = [NSString stringWithFormat:@"%@%@",[arr objectAtIndex:0],text];
 }
 
-//当有一个或多个手指触摸事件在当前视图或window窗体中响应
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     NSSet *allTouches = [event allTouches];    //返回与当前接收者有关的所有的触摸对象
     UITouch *touch = [allTouches anyObject];   //视图中的所有对象
     CGPoint point = [touch locationInView:[touch view]]; //返回触摸点在视图中的当前坐标
@@ -75,6 +78,20 @@
     }
     DLog(@"x:%d",x);
     DLog(@"y:%d",y);
+}
+
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    NSSet *allTouches = [event allTouches];    //返回与当前接收者有关的所有的触摸对象
+    UITouch *touch = [allTouches anyObject];   //视图中的所有对象
+    CGPoint point = [touch locationInView:[touch view]]; //返回触摸点在视图中的当前坐标
+    point.x = point.x - 10;
+    point.y = point.y - 30;
+    _dotImageView.frame = CGRectMake(point.x, point.y, 20, 30);
+}
+//当有一个或多个手指触摸事件在当前视图或window窗体中响应
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
 }
 
 //获取图片某一点的颜色

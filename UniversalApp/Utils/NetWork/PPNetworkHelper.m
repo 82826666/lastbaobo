@@ -154,6 +154,41 @@ static AFHTTPSessionManager *_sessionManager;
         }
     }];
 }
+/**
+ *  rf普通Post请求
+ *
+ *  @param url      Url地址
+ *  @param params   参数
+ *  @param success  成功Block
+ *  @param failure  失败Block
+ */
++ (void)postRequestWithUrl:(NSString *)url client:(NSString*)client params:(NSDictionary *)params success:(void(^)(id json))success failure:(void (^)(NSError *error))failure
+{
+    //创建管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"text/plain",@"application/text", nil];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json",@"application/x-www-form-urlencoded",@"application/text", nil];
+    
+    //设置Header
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"%@",client] forHTTPHeaderField:@"client"];
+    DLog(@"client:%@",client);
+    DLog(@"params:%@",params);
+    //发起请求
+    [manager POST:url parameters:@{@"m":@"none"} progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (success) {
+            success(responseObject);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        DLog(@"error:%@",error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - GET请求无缓存
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(id)parameters

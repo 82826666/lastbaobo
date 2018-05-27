@@ -61,8 +61,23 @@ NS_ENUM(NSInteger,deviceState){
     [super viewDidLoad];
     self.isHidenNaviBar = YES;
     [self setupUI];
+    NSDictionary *params = @{
+                             @"c":@"l",
+                             @"m":@"none",
+                             @"bid":@"104",
+                             @"appid":@"15108982334949",
+                             @"t":@"7",
+                             @"v":@"3",
+                             @"f":@"FE54C5AFFF2BFAE4F690A526F294A122"
+                             };
+    [[APIManager sharedManager] getBrandDeviceWithParameters:params success:^(id data) {
+        DLog(@"success:%@",data);
+    } failure:^(NSError *error) {
+        DLog(@"error");
+    }];
+//    DLog(@"%@",[[function sharedManager] getRfClient:@"7" v:@"3" f:@"FE54C5AFFF2BFAE4F690A526F294A122" bid:@"104"]);
 //    printf("rgb=%lu\n", rgb);
-    DLog(@"%@",GET_USERDEFAULT(USER_TOKEN));
+//    DLog(@"token:%@",GET_USERDEFAULT(USER_TOKEN));
     // Do any additional setup after loading the view.
 }
 

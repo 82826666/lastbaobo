@@ -140,4 +140,30 @@
     button.frame = rect;
     return button;
 }
+//获取rf client
+-(NSString*)getRfClient:(NSString*)t v:(NSString*)v f:(NSString*)f bid:(NSString*)bid{
+    NSString *time = [self getNowTimeTimestamp2];
+    NSString *str = [NSString stringWithFormat:@"none%@%@%@%@%@",bid,t,v,f,time];
+    NSString *md5 = [self md5:str];
+    NSString *curr_code = @"";
+    for (int i=0; i < 5; i++) {
+        CGFloat _pow = 2<<i;
+        NSString *string = md5;
+        string = [string substringToIndex:_pow];
+        string = [string substringFromIndex:_pow - 1];//截取掉下标2之前的字符串
+        curr_code = [NSString stringWithFormat:@"%@%@",curr_code,string];
+    }
+    return [NSString stringWithFormat:@"%@_%@",time,curr_code];
+}
+-(NSString *)getNowTimeTimestamp2{
+    
+    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+    
+    NSTimeInterval a=[dat timeIntervalSince1970];
+    
+    NSString*timeString = [NSString stringWithFormat:@"%0.f", a];//转为字符型
+    
+    return timeString;
+    
+}
 @end
