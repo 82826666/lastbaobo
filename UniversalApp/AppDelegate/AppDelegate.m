@@ -4,11 +4,11 @@
 //
 //  Created by 徐阳 on 2017/5/17.
 //  Copyright © 2017年 徐阳. All rights reserved.
-// wujianyang
+// 戴泉明上传
 
 #import "AppDelegate.h"
 
-@interface AppDelegateß ()
+@interface AppDelegate ()
 
 @end
 
