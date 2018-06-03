@@ -377,4 +377,11 @@
     NSString *str = [NSString stringWithFormat:@"c=%@&m=%@&bid=%@&appid=%@&t=%@&v=%@&f=%@",[dic objectForKey:@"c"],[dic objectForKey:@"m"],[dic objectForKey:@"bid"],[dic objectForKey:@"appid"],[dic objectForKey:@"t"],[dic objectForKey:@"v"],[dic objectForKey:@"f"]];
     [PPNetworkHelper postRequestWithUrl:path client:client str:str success:success failure:failure];
 }
+#pragma mark 根据rid获取所有数据
+-(void)getAllDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure {
+    NSString *path = @"https://api.yaokongyun.cn/chip/m.php";
+    NSString *client = [[function sharedManager] getRfClient:[dic objectForKey:@"r"] v:@"" f:[dic objectForKey:@"f"] bid:@""];
+    NSString *str = [NSString stringWithFormat:@"c=%@&m=%@&r=%@&appid=%@&f=%@",[dic objectForKey:@"c"],[dic objectForKey:@"m"],[dic objectForKey:@"r"],[dic objectForKey:@"appid"],[dic objectForKey:@"f"]];
+    [PPNetworkHelper postRequestWithUrl:path client:client str:str success:success failure:failure];
+}
 @end

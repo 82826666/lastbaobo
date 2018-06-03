@@ -11,4 +11,5 @@
 @interface BrandDeviceViewController : RootViewController
 @property(nonatomic, strong) NSString *bid;
 @property(nonatomic, strong) NSString *t;
+@property(nonatomic, strong) NSDictionary *dic;
 @end

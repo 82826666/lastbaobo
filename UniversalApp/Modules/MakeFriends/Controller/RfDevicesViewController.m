@@ -1,47 +1,41 @@
 //
-//  HouseViewController.m
-//  baobozhineng
+//  RfDevicesViewController.m
+//  UniversalApp
 //
-//  Created by wjy on 2018/2/1.
-//  Copyright © 2018年 吴建阳. All rights reserved.
+//  Created by wjy on 2018/5/30.
+//  Copyright © 2018年 徐阳. All rights reserved.
 //
 
-#import "HouseViewController.h"
-#import <MMAlertView.h>
-#import "KeyViewController.h"
-#import "OperateSensorViewController.h"
-#import "SensorViewController.h"
-#import "humitureViewController.h"
-#import "AimingSwitchViewController.h"
-#import "DeviceTypeViewController.h"
-#import "AddAimingSwitchViewController.h"
 #import "RfDevicesViewController.h"
-#import "ControlAirViewController.h"
-static NSString *identifier = @"cellID";
-static NSString *headerReuseIdentifier = @"hearderID";
-@interface HouseViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
-{
-    
-}
+#import <MMAlertView.h>
+#import "DeviceTypeViewController.h"
+
+@interface RfDevicesViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic, strong) NSMutableDictionary* room;
 @property (nonatomic, strong) NSMutableArray* sectionArray;
 @property (nonatomic, strong) NSMutableArray* dataSource;
 @property (nonatomic, strong) NSMutableArray* stateArray;
 @end
-
-@implementation HouseViewController
+static NSString *identifier = @"cellID";
+static NSString *headerReuseIdentifier = @"hearderID";
+@implementation RfDevicesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    ControlAirViewController *vc = [ControlAirViewController new];
-    [self pushViewController:vc];
-//    DLog(@"toten:%@",GET_USERDEFAULT(USER_TOKEN));
-//    Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 -(void)setupUI{
-    self.title = @"家居";
+    self.title = @"红外/射频转发器";
+    //添加导航栏按钮
+    [self addNavigationItemWithTitles
+     :@[@"添加"] isLeft:NO target:self action:@selector(naviBtnClick:) tags:@[@1000]];
     //创建布局，苹果给我们提供的流布局
     UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc]init];
     //设置顶部高度
@@ -93,34 +87,20 @@ static NSString *headerReuseIdentifier = @"hearderID";
     [imageView setImage:[UIImage imageNamed:[[Picture sharedPicture]geticonTostr:[dic objectForKey:@"icon1"]]]];
     imageView.frame = CGRectMake(0, 15, 50, 50);
     imageView.centerX = cell.contentView.centerX;
-    DLog(@"dic:%@",dic);
-    UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
-    if(type == 25711){
-        sup.frame = CGRectMake(10, -5, cell.width, 30);
-        NSArray *setting = [[function sharedManager]stringToJSON:[dic objectForKey:@"setting"]];
-        CGFloat status1 = [[[setting objectAtIndex:0] objectForKey:@"status"] integerValue];
-        CGFloat status2 = [[[setting objectAtIndex:1] objectForKey:@"status"] integerValue];
-        NSString *ext = @"%";
-        sup.text = [NSString stringWithFormat:@"%.2f℃ %.2f%@",status1/100,status2/100,ext];
-        sup.font = SYSTEMFONT(8);
-    }else if(type == 20211){
-        
-    }else if(type == 22111){
-        
-    }else if(type != 20511 || type != 20711){
-//        sup.text = [[dic objectForKey:@"status1"]integerValue] > 0 ? @"开" : @"关";
-    }
-    sup.accessibilityIdentifier = [dic objectForKey:@"type"];
-    sup.accessibilityValue = @"0";
-    sup.tag = 2330;
+    
+//    UILabel *sup = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right - 15, -5, 40, 30)];
+//    sup.accessibilityIdentifier = [dic objectForKey:@"type"];
+//    sup.accessibilityValue = @"0";
+//    sup.tag = 2330;
     
     
     UILabel *name = [[UILabel alloc]initWithFrame:CGRectMake(0, imageView.bottom, KScreenWidth/4, 30)];
     name.textAlignment = NSTextAlignmentCenter;
-//    name.text = [dic objectForKey:@"name1"];
+    name.text = [dic objectForKey:@"name"];
+    DLog(@"name:%@",[dic objectForKey:@"name"]);
     
     [cell.contentView addSubview:imageView];
-    [cell.contentView addSubview:sup];
+//    [cell.contentView addSubview:sup];
     [cell.contentView addSubview:name];
     
     return cell;
@@ -139,8 +119,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
         
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, line1.bottom + 10, KScreenHeight, 30)];
         label.text = [self.sectionArray objectAtIndex:indexPath.section];
-        //        NSLog(@"sec:%ld",indexPath.section);
-        //        NSLog(@"text:%@",[self.sectionArray objectAtIndex:indexPath.section]);
         
         UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, label.bottom + 10, KScreenHeight, 0.5)];
         line2.backgroundColor = [UIColor lightGrayColor];
@@ -166,74 +144,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
 //点击时间监听
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell * cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath]; //即为要得到的cell
-    UILabel *label;
-    for (UIView *view in cell.contentView.subviews) {
-        CGFloat tag = view.tag;
-        if (tag == 2330) {
-            label = (UILabel*)view;
-            break;
-        }
-    }
     CGFloat sec = indexPath.section;
     CGFloat row = indexPath.row;
     NSArray *arr = [self.dataSource objectAtIndex:sec];
     NSDictionary *dic = [arr objectAtIndex:row];
-    CGFloat type = [label.accessibilityIdentifier integerValue];
-    CGFloat ch;
-//    DLog(@"type452:%f",type);
-    if(type == 20511 || type == 20311){
-        OperateSensorViewController *vc = [OperateSensorViewController new];
-        vc.dic = dic;
-        [self pushViewController:vc];
-    }else if(type == 22111){
-        RfDevicesViewController *vc = [RfDevicesViewController new];
-        vc.dic = dic;
-        [self pushViewController:vc];
-    }else if(type == 25711){
-        humitureViewController *vc = [humitureViewController new];
-        vc.dic = dic;
-        [self pushViewController:vc];
-    }else if(type == 20711){
-        AimingSwitchViewController *vc = [AimingSwitchViewController new];
-        vc.dic = dic;
-//        DeviceTypeViewController *vc = [DeviceTypeViewController new];
-        [self pushViewController:vc];
-    }else if (type == 20111 || type == 2021 || type == 20131 || type == 20141 || type == 20821 || type == 20811){
-        CGFloat value = [label.accessibilityValue integerValue];
-        if (value == 1) {
-            return ;
-        }else{
-            label.accessibilityValue = @"1";
-        }
-        
-        ch = [[dic objectForKey:@"ch1"] integerValue];
-        NSDictionary *cmd = @{
-                              @"cmd":@"edit",
-                              @"type":[dic objectForKey:@"type"],
-                              @"devid":[dic objectForKey:@"devid"],
-                              @"value":[label.text isEqualToString:@"开"] ? @(0) : @(1),
-                              @"ch":@(ch)
-                              };
-        NSDictionary *params = @{
-                                 @"master_id":GET_USERDEFAULT(MASTER_ID),
-                                 @"device_type":[dic objectForKey:@"type"],
-                                 @"cmd":[cmd jsonStringEncoded]
-                                 };
-        [[APIManager sharedManager]deviceZigbeeCmdsWithParameters:params success:^(id data) {
-            label.accessibilityValue = @"0";
-            NSDictionary *datadic = data;
-            if([[datadic objectForKey:@"code"] intValue] == 200 ){
-                if ([[[datadic objectForKey:@"data"] objectForKey:@"status"] integerValue] >= 0) {
-                    label.text = [label.text isEqualToString:@"开"] ?  @"关" : @"开";
-                    [MBProgressHUD showSuccessMessage:@"发送cmd命令成功"];
-                }
-            }else{
-                [MBProgressHUD showErrorMessage:@"发送cmd命令失败"];
-            }
-        } failure:^(NSError *error) {
-            [MBProgressHUD showErrorMessage:@"系统发生错误"];
-        }];
-    }
 }
 //设置cell的内边距
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -281,11 +195,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
     return _stateArray;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - 创建长按手势
 - (void)createLongPressGesture{
     //创建长按手势监听
@@ -310,31 +219,7 @@ static NSString *headerReuseIdentifier = @"hearderID";
             CGFloat type = [[rowDic objectForKey:@"type"] integerValue];
             MMPopupItemHandler block = ^(NSInteger index){
                 if(index == 0){
-                    if (type == 20511) {
-                        SensorViewController *vc = [SensorViewController new];
-                        vc.dic = rowDic;
-                        [self pushViewController:vc];
-                    }else if(type == 20711){
-                        AddAimingSwitchViewController *vc = [AddAimingSwitchViewController new];
-                        vc.dic = rowDic;
-                        [self pushViewController:vc];
-                    }else if(type == 20111 || type == 20121 || type == 20131 || type == 20141){
-                        KeyViewController *con = [KeyViewController new];
-                        if (type == 20111) {
-                            con.setNum = setNumOne;
-                            con.dataDic = rowDic;
-                        }else if(type == 20121) {
-                            con.setNum = setNumTwo;
-                            con.dataDic = rowDic;
-                        }else if(type == 20131) {
-                            con.setNum = setNumThree;
-                            con.dataDic = rowDic;
-                        }else if(type == 20141) {
-                            con.setNum = setNumFour;
-                            con.dataDic = rowDic;
-                        }
-                        [self pushViewController:con];
-                    }
+                    
                 }else if (index == 1){
                     [[APIManager sharedManager]deviceDeviceDeleteTwowaySwitchWithParameters:@{@"device_id":[rowDic objectForKey:@"id"]} success:^(id data) {
                         NSDictionary *dic = data;
@@ -386,7 +271,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
 -(void)loadData{
     [[APIManager sharedManager]deviceGetMasterRoomWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
         NSDictionary *dic = data;
-//        DLog(@"room:%@",dic);
         if ([[dic objectForKey:@"code"]integerValue] == 200) {
             [self.room removeAllObjects];
             NSArray *room = [dic objectForKey:@"data"];
@@ -394,10 +278,9 @@ static NSString *headerReuseIdentifier = @"hearderID";
                 NSDictionary *roomOne = [room objectAtIndex:i];
                 [self.room setValue:[roomOne objectForKey:@"name"] forKey:[NSString stringWithFormat:@"%@",[roomOne objectForKey:@"id"]]];
             }
-            
-            [[APIManager sharedManager]deviceGetDeviceInfoWithParameters:@{@"master_id":GET_USERDEFAULT(MASTER_ID)} success:^(id data) {
+            [[APIManager sharedManager]deviceDeviceGetRfDeviceWithParameters:@{@"device_id":[_dic objectForKey:@"id"],@"type":[_dic objectForKey:@"type"]} success:^(id data) {
                 NSDictionary *dic = data;
-//                DLog(@"device;%@",dic);
+                                DLog(@"msg;%@",[dic objectForKey:@"msg"]);
                 if ([[dic objectForKey:@"code"]integerValue] == 200) {
                     NSArray *testArray = [dic objectForKey:@"data"];
                     // 获取array中所有index值
@@ -420,8 +303,6 @@ static NSString *headerReuseIdentifier = @"hearderID";
                     for (int k=0; k < resultArray.count; k++) {
                         NSArray *deviceOne = [resultArray objectAtIndex:k];
                         NSDictionary *dic = deviceOne[0];
-//                        DLog("room:%@",self.room);
-//                        DLog(@"dfs:%@",dic);
                         if ([[dic objectForKey:@"room_id"] integerValue] <= 0) {
                             continue;
                         }
@@ -433,8 +314,10 @@ static NSString *headerReuseIdentifier = @"hearderID";
                         //所有的分区都是闭合
                         [self.stateArray addObject:@"1"];
                     }
-                    DLog(@"datasouce:%@",self.dataSource);
+//                    DLog(@"datasouce:%@",self.dataSource);
+//                    DLog(@"stateArray:%@",self.stateArray);
                     [self.collectionView reloadData];
+//                    [self.collectionView reloadData];
                 }else{
                     
                 }
@@ -449,5 +332,20 @@ static NSString *headerReuseIdentifier = @"hearderID";
     }];
     
 }
+
+-(void)naviBtnClick:(UIButton*)btn{
+    DeviceTypeViewController *vc = [DeviceTypeViewController new];
+    vc.dic = _dic;
+    [self pushViewController:vc];
+}
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

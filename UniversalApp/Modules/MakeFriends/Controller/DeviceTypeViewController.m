@@ -53,7 +53,7 @@
     //设置图像
     [cell.imageView setImage:[UIImage imageNamed:[data objectForKey:@"img"]]];
     //设置主标题
-    cell.textLabel.text = [data objectForKey:@"title"];
+    cell.textLabel.text = [data objectForKey:@"name"];
 
     DLog(@"title:%@",[data objectForKey:@"title"]);
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
@@ -65,8 +65,8 @@
 -(void)initData{
     if (_dataSouce == nil) {
         _dataSouce = [NSMutableArray new];
-        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"空调",@"t":@"7"}];
-        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"title":@"电视",@"t":@"2"}];
+        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"name":@"空调",@"t":@"7",@"type":@"12211",@"devid":[_dic objectForKey:@"id"]}];
+        [_dataSouce addObject:@{@"img":@"ic_in_air_rain",@"name":@"电视",@"t":@"2",@"type":@"12311",@"devid":[_dic objectForKey:@"id"]}];
     }
 }
 

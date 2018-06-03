@@ -24,6 +24,7 @@
 -(UILabel*)getLabel:(CGRect)rect text:(NSString*)text;
 #pragma 获取btn
 -(UIButton*)getBtn:(CGRect)rect;
+-(UIButton*)getBtn:(CGRect)rect imageName:(NSString*)imageName title:(NSString*)title;
 //获取rf client
 -(NSString*)getRfClient:(NSString*)t v:(NSString*)v f:(NSString*)f bid:(NSString*)bid;
 @end

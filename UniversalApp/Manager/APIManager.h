@@ -142,4 +142,6 @@
 -(void)getBrandWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 #pragma mark 根据品牌获取相应的设备
 -(void)getBrandDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
+#pragma mark 根据rid获取所有数据
+-(void)getAllDeviceWithParameters:(NSDictionary *)dic success:(void(^)(id data))success failure:(void(^)(NSError *error))failure;
 @end

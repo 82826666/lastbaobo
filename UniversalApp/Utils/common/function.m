@@ -140,6 +140,15 @@
     button.frame = rect;
     return button;
 }
+-(UIButton*)getBtn:(CGRect)rect imageName:(NSString*)imageName title:(NSString*)title{
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button1.frame = rect;
+    button1.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button1 setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button1 setTitle:title forState:UIControlStateNormal];
+    return button1;
+}
 //获取rf client
 -(NSString*)getRfClient:(NSString*)t v:(NSString*)v f:(NSString*)f bid:(NSString*)bid{
     NSString *time = [self getNowTimeTimestamp2];
